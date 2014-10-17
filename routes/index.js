@@ -1,9 +1,20 @@
-var express = require('express');
-var router = express.Router();
+exports.routes = function(app) {
 
-/* GET home page. */
-router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
-});
+	app.get('/', exports.index);
+	app.get('/mixes', exports.mixes);
+};
 
-module.exports = router;
+exports.index = function(req, res) {
+
+	res.render('index', { title: 'Grimelist' });
+
+};
+
+exports.mixes = function(req, res) {
+
+	res.render('mixes', { title: 'Grimelist' });
+
+};
+
+
+
