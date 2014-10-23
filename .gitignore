@@ -31,5 +31,5 @@ node_modules
 data
 
 #public css files
-public/style/*.css
-
+public
+public-src/*.css
