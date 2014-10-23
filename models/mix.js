@@ -28,11 +28,5 @@ mixSchema.statics.generateUrl = function(title) {
   return ts + "-" + title.toLowerCase().replace(/ +/g,'_').replace(/[^a-z0-9-_]/g,'').trim();
 }
 
-mixSchema.methods.hit = function() {
-  this.hits++;
-  this.popularity++;
-  this.save();
-}
-
 // Export model.
-module.exports = mongoose.model('Article', articleSchema);
+module.exports = mongoose.model('Mix', mixSchema);
