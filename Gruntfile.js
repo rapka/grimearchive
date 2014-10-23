@@ -50,10 +50,10 @@ module.exports = function(grunt) {
 
 		clean: {
 			all: [
-				'public/style', 
-				'public/js', 
-				'public/img/*.png', 
-				'public/img/*.webm', 
+				'public/style',
+				'public/js',
+				'public/img/*.png',
+				'public/img/*.webm',
 				'public/favicon.ico'
 			]
 		},
@@ -61,7 +61,7 @@ module.exports = function(grunt) {
 		express: {
 			dev: {
 				options: {
-					script: 'app.js'
+					script: 'bin/www'
 				}
 			}
 		},
