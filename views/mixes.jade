@@ -1,9 +1,7 @@
 extends layout
+extends nav
 
 block content
     h1.
         User List
-    ul
-        each mix, i in mixes
-            li
-                a(href="mailto:#{user.email}")= mix.username
+    

@@ -3,28 +3,32 @@ var mongoose = require('mongoose')
    , ObjectId = Schema.ObjectId;
 
 // Define the model.
-var articleSchema = new Schema({
-    title: String,
-    author: { type: ObjectId, ref: 'User' },
-    body: String,
-    snippet: String,
-    url: String,
-    date: { type: Date, default: Date.now },
-    tags: [],
-    image: String,
-    draft: {type: Boolean, default: true},
-    approved: {type: Boolean, default: false},
-    hits: {type: Number, default: 0},
-    popularity: {type: Number, default: 0}
+var mixSchema = new Schema({
+  title: String,
+  uploader: { type: "String", default: "Anonymous"},
+  date: { type: Date, default: Date.now },
+  length: Number,
+  dj: String,
+  crews: [],
+  mcs: [],
+  station, String,
+  day: Number,
+  month: Number,
+  year: Number,
+  length: Number,
+  downloads: Number,
+  bitrate: Number,
+  md5: String
+   
 });
 
-articleSchema.statics.generateUrl = function(title) {
+mixSchema.statics.generateUrl = function(title) {
   var ts = String(new Date().getTime());
   ts = ts.substr(ts.length - 4);
   return ts + "-" + title.toLowerCase().replace(/ +/g,'_').replace(/[^a-z0-9-_]/g,'').trim();
 }
 
-articleSchema.methods.hit = function() {
+mixSchema.methods.hit = function() {
   this.hits++;
   this.popularity++;
   this.save();

@@ -29,6 +29,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use('/', routes);
 
 
+// Connect to mongo.
+//mongoose.connect('mongodb://127.0.0.1/' + config.get('datadb'));
 
 // error handlers
 

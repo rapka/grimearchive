@@ -1,7 +1,19 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+	head
+		title= title
+		link(rel='stylesheet', href='/stylesheets/style.css')
+	body
+		.title-pic
+			img(src='/img/title.png')
+		ul.nav-bar
+		li
+			a(href='/') Home
+		li
+			a(href='/articles/tag/News') Mixes
+		li
+			a(href='/articles/tag/tips') Upload
+		li
+			a(href='/articles/tags') About
+	
+	block content
