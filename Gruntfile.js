@@ -1,3 +1,6 @@
+//install scripts:
+//npm install --save grunt load-grunt-tasks grunt-shell grunt-contrib-watch grunt-autoprefixer grunt-contrib-less grunt-express-server grunt-contrib-clean grunt-contrib-uglify grunt-contrib-copy
+
 module.exports = function(grunt) {
 
 	require('load-grunt-tasks')(grunt);
