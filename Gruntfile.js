@@ -50,11 +50,11 @@ module.exports = function(grunt) {
 
 		clean: {
 			all: [
-				'public/style',
-				'public/js',
-				'public/img/*.png',
-				'public/img/*.webm',
-				'public/favicon.ico'
+			'public/style',
+			'public/js',
+			'public/img/*.png',
+			'public/img/*.webm',
+			'public/favicon.ico'
 			]
 		},
 
@@ -84,8 +84,8 @@ module.exports = function(grunt) {
 					dot: true,
 					cwd: 'public-src',
 					src: [
-						'js/**/*.js',
-						'img/**/*'
+					'js/**/*.js',
+					'img/**/*'
 					],
 					dest: 'public'
 				}
@@ -97,7 +97,7 @@ module.exports = function(grunt) {
 					dot: true,
 					cwd: 'public-src',
 					src: [
-						'img/**/*'
+					'img/**/*'
 					],
 					dest: 'public'
 				}
@@ -106,6 +106,17 @@ module.exports = function(grunt) {
 		},
 
 		watch: {
+
+			express: {
+				files: [
+					'bin/www',
+					'app.js',
+				],
+				tasks: ['express:dev'],
+				options: {
+					nospawn: true
+				}
+			},
 			styles: {
 				files: ['public-src/style/**/*.less'],
 				tasks: ['buildstyles']
@@ -122,30 +133,30 @@ module.exports = function(grunt) {
 
 	});
 
-	grunt.registerTask('buildstyles', 'Compile and autoprefix LESS to CSS', [
-		'less:development',
-		'autoprefixer'
+grunt.registerTask('buildstyles', 'Compile and autoprefix LESS to CSS', [
+	'less:development',
+	'autoprefixer'
 	]);
 
-	grunt.registerTask('buildprod', 'Builds all files for prod deploys', [
-		'clean',
-		'less:production',
-		'autoprefixer',
-		'uglify',
-		'copy:production'
+grunt.registerTask('buildprod', 'Builds all files for prod deploys', [
+	'clean',
+	'less:production',
+	'autoprefixer',
+	'uglify',
+	'copy:production'
 	]);
 
-	grunt.registerTask('builddev', 'Builds all files for dev testing', [
-		'clean',
-		'buildstyles',
-		'copy'
+grunt.registerTask('builddev', 'Builds all files for dev testing', [
+	'clean',
+	'buildstyles',
+	'copy'
 	]);
 
-	grunt.registerTask('work', 'Build and run app for development', [
-		'clean',
-		'builddev',
-		'express:dev',
-		'watch'
+grunt.registerTask('work', 'Build and run app for development', [
+	'clean',
+	'builddev',
+	'express:dev',
+	'watch'
 	]);
 
 }

@@ -11,7 +11,7 @@ var mixSchema = new Schema({
   dj: String,
   crews: [],
   mcs: [],
-  station, String,
+  station: String,
   day: Number,
   month: Number,
   year: Number,

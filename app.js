@@ -27,9 +27,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use('/users', users);
 //app.use('/', routes);
 
-
 // Connect to mongo.
-//mongoose.connect('mongodb://127.0.0.1/' + config.get('datadb'));
+mongoose.connect('mongodb://127.0.0.1/grime');
 
 // error handlers
 
@@ -55,6 +54,12 @@ app.use(function(err, req, res, next) {
     });
 });
 
+// Load models.
+var models_path = __dirname + '/models'
+fs.readdirSync(models_path).forEach(function (file) {
+    if (~file.indexOf('.js')) require(models_path + '/' + file)
+});
+
 // Load routes.
 var routesPath = path.join(__dirname , '/routes');
 fs.readdirSync(routesPath).forEach(function (file) {
@@ -63,6 +68,7 @@ fs.readdirSync(routesPath).forEach(function (file) {
         route.routes(app);
     }
 });
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
