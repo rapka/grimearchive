@@ -24,6 +24,7 @@
     "load-grunt-tasks": "^1.0.0",
     "mongoose": "^3.8.18",
     "morgan": "~1.3.0",
-    "serve-favicon": "~2.1.3"
+    "serve-favicon": "~2.1.3",
+    "id3_reader": "git://github.com/interbred-monkey/id3_reader.git#41890a5d7cf6d3c90256a6c0796f95d93231d34f"
   }
 }

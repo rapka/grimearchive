@@ -7,7 +7,6 @@ var ObjectId = require('mongoose').Types.ObjectId;
 exports.routes = function(app) {
 
 	app.get('/mixes', exports.index);
-	app.get('/mixes/add/:id', exports.add);
 	app.get('/mixes/:id', exports.view);
 
 
@@ -15,9 +14,12 @@ exports.routes = function(app) {
 
 exports.index = function(req, res) {
 
-	res.render('mixes', {
-		title: 'Grimelist',
-		mixes:  mixes
+	Mix.find().sort({date: -1}).limit(40)
+		.exec(function(err, mixes) {
+			if (err){
+				throw err;
+			} 
+			res.render('mixes', {title: 'Grimelist', mixes: mixes});
 	});
 };
 
@@ -29,25 +31,6 @@ exports.mixes = function(req, res) {
 		mixes:  mixes
 	});
 
-};
-
-exports.add = function(req, res) {
-	var mix = new Mix({
-		title: req.params.id
-	});
-
-	console.log("poop");
-
-	mix.save(function(err){
-		if (err){
-			throw err;
-			res.end("error");
-		}
-		else {
-			res.end("DONE!");
-		}
-	});
-	
 };
 
 exports.view = function(req, res) {
