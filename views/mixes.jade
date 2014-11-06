@@ -1,4 +1,7 @@
 extends layout
 
 block content
-	
+	h2= 'MIXES'
+	ul
+		each mix in mixes
+			li= mix.title

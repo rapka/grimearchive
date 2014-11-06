@@ -1,12 +1,21 @@
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
+
 var Mix = mongoose.model('Mix');
-var fs = require('fs');
-var path = require('path');
-var busboy = require('connect-busboy');
+
+
 
 var ObjectId = require('mongoose').Types.ObjectId;
 //, fs = require('fs')
 //, path = require('path'); 
+
+// create application/json parser
+var jsonParser = bodyParser.json();
+
+
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
 
 var allowedTypes = [
 "audio/mpeg3",
@@ -20,7 +29,7 @@ var allowedTypes = [
 exports.routes = function(app) {
 
 	app.get('/upload', exports.index);
-	app.post('/upload', exports.add);
+	app.post('/upload', jsonParser, exports.add);
 
 
 };
@@ -34,6 +43,9 @@ exports.index = function(req, res) {
 exports.add = function(req, res) {
 	 // Create and save.
 	var fstream;
+	//console.log("mcs:", req);
+	console.log("mcs:", req.headers);
+	console.log("mcs:", req.body);
     req.pipe(req.busboy);
 
 	req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
@@ -44,24 +56,63 @@ exports.add = function(req, res) {
 			res.status(415).send("415: Disallowed file type: " + mimetype);
 			return;
 		}
+		
+		console.log("mcs:", req.body.dj);
+		console.log("mcs:", req.body.title);
+		console.log("mcs:", req.body.crews);
 
 		var mix = new Mix({
 			_id: mongoose.Types.ObjectId(req.body._id),
 			title: req.body.title,
 			dj: req.body.dj,
-			file: filename
+			file: filename,
+			mcs: req.body.mcs.split(","),
+			crews: req.body.crews.split(","),
+			station: req.body.station,
+			day: parseInt(req.body.day),
+			month: parseInt(req.body.month),
+			year: parseInt(req.body.year),
+			md5: md5(file)
+
+
 		});
 
 
+		var filePath = __dirname + '/../upload/' + filename
 
-    	console.log("Uploading: " + filename); 
-    	fstream = fs.createWriteStream(__dirname + '/../upload/' + filename);
+    	console.log("Uploading: " + filePath); 
+    	fstream = fs.createWriteStream(filePath);
     	file.pipe(fstream);
     	fstream.on('close', function () {
-    		    	console.log("updating tags");
-		mix.updateTags();
-    		res.redirect('/mixes/');
+    		console.log("updating tags");
+			mix.updateTags();
+
+			probe(filePath, function(err, probeData) {
+				console.log("probing");
+				if (err) {
+	 				res.status(500).send("500: Probe Error.");
+	 				return;
+	 			}
+	
+    			mix.bitrate = probeData['streams'][0]['bit_rate'];
+    			mix.duration = probeData['streams'][0]['duration'];
+    			//console.log(probeData.streams.bit_rate);
+	
+			});
+
+			//File written successfully, save the entry in mongo.
+			mix.save(function(err) {
+			   	if (err) {
+					res.status(500).send("500: Could not save file entry to database.");
+			    	return;
+			   	}
+				res.redirect('/mixes/');
+			  });
+
+
     	});
+
+
 
 
     });

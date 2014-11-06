@@ -8,12 +8,12 @@ var bodyParser = require('body-parser');
 var busboy = require('connect-busboy');
 var fs = require('fs');
 var id3_reader = require('id3_reader');
+var probe = require('node-ffprobe');
+
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+
 
 
 // uncomment after placing your favicon in /public
@@ -21,11 +21,15 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 //app.use(express.methodOverride());
 //app.use(express.multipart());
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(busboy()); 
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 //app.use('/users', users);
 //app.use('/', routes);
@@ -58,7 +62,7 @@ app.use(function(err, req, res, next) {
 });
 
 // Load models.
-var models_path = __dirname + '/models'
+var models_path = __dirname + '/models';
 fs.readdirSync(models_path).forEach(function (file) {
     if (~file.indexOf('.js')) require(models_path + '/' + file)
 });

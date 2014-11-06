@@ -25,6 +25,8 @@
     "mongoose": "^3.8.18",
     "morgan": "~1.3.0",
     "serve-favicon": "~2.1.3",
-    "id3_reader": "git://github.com/interbred-monkey/id3_reader.git#41890a5d7cf6d3c90256a6c0796f95d93231d34f"
+    "id3_reader": "richardadjogah/id3_reader",
+    "node-ffprobe": "~1.2.2",
+    "MD5": "~1.2.1"
   }
 }

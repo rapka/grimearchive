@@ -1,4 +1,6 @@
 var id3_reader = require('id3_reader');
+var fs = require('fs');
+
 var mongoose = require('mongoose')
    , Schema = mongoose.Schema
    , ObjectId = Schema.ObjectId;
@@ -17,8 +19,8 @@ var mixSchema = new Schema({
   day: Number,
   month: Number,
   year: Number,
-  length: Number,
-  downloads: Number,
+  duration: Number,
+  downloads: {type: Number, default: 0},
   bitrate: Number,
   md5: String,
   file: String
@@ -28,7 +30,8 @@ var mixSchema = new Schema({
 
 //tbd
 mixSchema.methods.updateTags = function() {
-  var titleString = "ERROR";
+
+  var titleString = "Invalid Title";
 
   //either use user supplied title or radio station
   if (this.title) {
@@ -81,7 +84,7 @@ mixSchema.methods.updateTags = function() {
   }
 
   //update mp3 artist tiltle
-  var artistString = "ERRROR";
+  var artistString = "";
 
   var filePath = __dirname + '/../upload/' + this.file;
 
@@ -93,35 +96,43 @@ mixSchema.methods.updateTags = function() {
   }
   console.log("old tags:");
   id3_reader.read('/Users/richard/Desktop/1-02 XMAS_EVET10 [120][thanaton3 mix].mp3', function(success, msg, data) {
-    //console.log(success);
-    //console.log(msg);
+    console.log(success);
+    console.log(msg);
     //console.log(data);
   
   })
 
-  var albumArt = "../public-src/img/albumart.png";
+  var albumArtPath = __dirname + "/../public/img/albumart.png";
+  var albumArt = fs.readFileSync(albumArtPath);
+  //console.log("art length:", albumArt.length);
 
 
   //create id3 tags
   var tags = { 
-   title: titleString,
-   artist: artistString,
-   album: 'Grimelist',
-   genre: 'Grime',
-   band: 'Grimelist'//,
-   //attached_picture: albumArt
+    APIC: albumArt,
+    TIT2: titleString,
+    TPE1: artistString,
+    TALB: 'Grimelist',
+    TCON: 'Grime',
+    TPE2: 'Grimelist'
+   
  }
 
- // if (this.year) {
- //  tags['year'] = this.year;
- // }
+ if (this.year) {
+  tags['year'] = this.year;
+ }
 
 id3_reader.write(filePath, tags, function(success, msg) {
    console.log(success);
-    console.log(msg);
+    //console.log(msg);
+    //id3_reader.read(filePath, function(success, msg, data) {
+    //console.log(success);
+    //console.log(msg);
+    // console.log(data);
+  
 
   
-  });
+});
 
 
 

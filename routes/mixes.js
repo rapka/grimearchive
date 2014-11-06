@@ -19,6 +19,7 @@ exports.index = function(req, res) {
 			if (err){
 				throw err;
 			} 
+			
 			res.render('mixes', {title: 'Grimelist', mixes: mixes});
 	});
 };
