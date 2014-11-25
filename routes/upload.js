@@ -1,24 +1,9 @@
 var mongoose = require('mongoose');
-
 var Mix = mongoose.model('Mix');
 
-var ObjectId = require('mongoose').Types.Obje
-
-var allowedTypes = [
-"audio/mpeg3",
-"audio/mpeg",
-"audio/mp3",
-"image/jpeg",
-"image/gif",
-"image/tiff"
-];
-
 exports.routes = function(app) {
-
 	app.get('/upload', exports.index);
 	app.post('/upload', exports.add);
-
-
 };
 
 exports.index = function(req, res) {
@@ -28,18 +13,14 @@ exports.index = function(req, res) {
 };
 
 exports.add = function(req, res) {
-	res.redirect('/mix/');
+	res.redirect('/mixes/');
 };
 
 exports.view = function(req, res) {
-	
 	var mix = Mix.findOne({}).exec(function (err, mix){
 		res.render('mixes', {
 			title: 'Grimelist',
 			mix: mix
 		});
 	});
-
-
-
 };

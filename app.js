@@ -11,20 +11,16 @@ var id3_reader = require('id3_reader');
 var probe = require('node-ffprobe');
 var mongoose = require('mongoose');
 var md5 = require('MD5');
-var multer	= require('multer');
+var multer = require('multer');
 
 var app = express();
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
-
 app.use(logger('dev'));
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(busboy()); 
+app.use(busboy());
 
 var uploadHandler = require('./uploadHandler.js');
 app.use(multer({ dest: './upload/',
@@ -84,6 +80,5 @@ app.use(function(req, res, next) {
 		err.status = 404;
 		next(err);
 });
-
 
 module.exports = app;

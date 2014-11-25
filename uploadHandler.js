@@ -1,7 +1,6 @@
 var fs = require('fs');
 var probe = require('node-ffprobe');
 
-
 // Load models.
 var models_path = __dirname + '/models';
 fs.readdirSync(models_path).forEach(function (file) {
@@ -9,10 +8,7 @@ fs.readdirSync(models_path).forEach(function (file) {
 });
 
 var mongoose = require('mongoose');
-//var bodyParser = require('body-parser');
-
 var Mix = mongoose.model('Mix');
-
 var ObjectId = require('mongoose').Types.ObjectId;
 
 var allowedTypes = [
@@ -23,7 +19,6 @@ var allowedTypes = [
 	"image/gif",
 	"image/tiff"
 ];
-
 
 exports.onFileUploadStart = function (file) {
 	//Only allow files with a type in the allowedTypes array.
