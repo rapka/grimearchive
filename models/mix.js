@@ -2,8 +2,8 @@ var id3_reader = require('id3_reader');
 var fs = require('fs');
 
 var mongoose = require('mongoose')
-	 , Schema = mongoose.Schema
-	 , ObjectId = Schema.ObjectId;
+	, Schema = mongoose.Schema
+	, ObjectId = Schema.ObjectId;
 
 // Define the model.
 var mixSchema = new Schema({
@@ -28,8 +28,9 @@ var mixSchema = new Schema({
 
 mixSchema.methods.updateTags = function() {
 
-	var ts = String(new Date().getTime());
-	this.url = ts.substr(ts.length - 4);
+ 	if (this.file) {
+		this.url = this.file.split('.')[0];
+ 	}
 
 	var titleString = "Invalid Title";
 
@@ -108,9 +109,9 @@ mixSchema.methods.updateTags = function() {
 		TPE2: 'Grimelist'
  }
 
-  if (this.year) {
-  	tags['TYER'] = this.year;
-  }
+	if (this.year) {
+		tags['TYER'] = this.year;
+	}
 
 	id3_reader.write(filePath, tags, function(success, msg) {
 		if (!success) { 

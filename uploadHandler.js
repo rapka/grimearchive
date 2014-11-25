@@ -20,6 +20,12 @@ var allowedTypes = [
 	"image/tiff"
 ];
 
+exports.rename = function (fieldname, filename) {
+	
+	var ts = String(new Date().getTime());
+	return ts.substr(ts.length - 4);
+}
+
 exports.onFileUploadStart = function (file) {
 	//Only allow files with a type in the allowedTypes array.
 	if (allowedTypes.indexOf(file.mimetype) == -1) {

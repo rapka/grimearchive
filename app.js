@@ -24,6 +24,7 @@ app.use(busboy());
 
 var uploadHandler = require('./uploadHandler.js');
 app.use(multer({ dest: './upload/',
+        rename: uploadHandler.rename,
 		onFileUploadStart: uploadHandler.onFileUploadStart,
 		onFileUploadComplete: uploadHandler.onFileUploadComplete,
 		onParseEnd: uploadHandler.onParseEnd,

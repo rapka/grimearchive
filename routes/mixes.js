@@ -4,7 +4,9 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 exports.routes = function(app) {
 	app.get('/mixes', exports.index);
-	app.get('/mixes/:url', exports.view);
+	app.get('/mix/:url', exports.view);
+
+
 };
 
 exports.index = function(req, res) {
@@ -28,6 +30,8 @@ exports.mixes = function(req, res) {
 
 exports.view = function(req, res) {
 	var mix = Mix.findOne({url: req.params.url}).exec(function (err, mix){
+		console.log("mmiiixx");
+		console.log(req.params.url);
 		res.render('mix', {
 			title: 'Grimelist',
 			mix: mix

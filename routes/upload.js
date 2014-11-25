@@ -13,7 +13,11 @@ exports.index = function(req, res) {
 };
 
 exports.add = function(req, res) {
-	res.redirect('/mixes/');
+	console.log(req.files.file.name);
+	var url = req.files.file.name.split('.')[0];
+	res.redirect('/mix/' + url);
+
+
 };
 
 exports.view = function(req, res) {
