@@ -2,6 +2,39 @@ extends layout
 
 block content
 	h2= 'MIXES'
-	ul
-		each mix in mixes
-			li= mix.title
+
+	table
+		thead
+			tr.mix-header
+				td title
+				td dj
+				td uploader
+				td crews
+				td mcs
+				td bitrate
+				td downloads
+				td date
+
+		tbody
+			each mix in mixes
+				tr.mix-row 		
+					td 
+						a(href='/mix/' + mix.url) #{mix.title}
+					td= mix.dj
+					td= mix.uploader
+					td
+						each crew in mix.crews	
+							!{crew} 
+					td
+						each mc in mix.mcs	
+							!{mc}
+					td= mix.bitrate
+					td= mix.downloads
+					if mix.day && mix.month && mix.year
+						td  #{mix.day} / #{mix.month} / #{mix.year}
+					else if mix.day && mix.month
+						td #{mix.daty} / #{mix.month}
+					else if mix.year
+						td= mix.year
+					else
+						td unknown
