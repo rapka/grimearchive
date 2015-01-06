@@ -13,9 +13,15 @@ exports.index = function(req, res) {
 };
 
 exports.add = function(req, res) {
-	console.log(req.files.file.name);
-	var url = req.files.file.name.split('.')[0];
-	res.redirect('/mix/' + url);
+	if (typeof req.files.file !== 'undefined') { 
+		console.log(req.files.file.name);
+		var url = req.files.file.name.split('.')[0];
+		res.redirect('/mix/' + url);
+	}
+	else {
+		console.log("no file");
+		res.redirect('/upload');
+	}
 
 
 };

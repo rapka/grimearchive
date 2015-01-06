@@ -44,7 +44,7 @@ mixSchema.methods.updateTags = function() {
 
 	//append date
 	if (this.day && this.month && this.year){
-		titleString += ", " + this.year + "/" + this.month + "/" + this.day;
+		titleString += ", " + this.year.toString() + "-" + this.month.toString() + "-" + this.day.toString();
 	}
 
 	//append mcs
@@ -53,11 +53,11 @@ mixSchema.methods.updateTags = function() {
 	}
 	else if (this.mcs.length >= 1){
 		titleString += " feat. ";
-		for (var i = 0; i < eq.body.mcs.length; i++){
+		for (var i = 0; i < this.mcs.length; i++){
 			if (i == 0) {
 				titleString += this.mcs[i];
 			}
-			if (i == (eq.body.mcs.length - 1)) {
+			else if (i == (this.mcs.length - 1)) {
 				titleString += " & " + this.mcs[i];
 			}
 			else {
@@ -71,11 +71,11 @@ mixSchema.methods.updateTags = function() {
 	}
 	else if (this.crews.length >= 1){
 		titleString += " feat. ";
-		for (var i = 0; i < eq.body.crews.length; i++){
+		for (var i = 0; i < this.crews.length; i++){
 			if (i == 0) {
 				titleString += this.crews[i];
 			}
-			if (i == (eq.body.crews.length - 1)) {
+			else if (i == (this.crews.length - 1)) {
 				titleString += " & " + this.crews[i];
 			}
 			else {
@@ -110,7 +110,7 @@ mixSchema.methods.updateTags = function() {
  }
 
 	if (this.year) {
-		tags['TYER'] = this.year;
+		tags['TYER'] = this.year.toString();
 	}
 
 	id3_reader.write(filePath, tags, function(success, msg) {

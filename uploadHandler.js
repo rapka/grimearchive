@@ -46,6 +46,11 @@ exports.onFileUploadData = function (file, data) {
 }
 
 exports.onParseEnd = function (req, next) {
+
+	if (typeof req.files.file === 'undefined') { 
+		console.log("error: no file selected");
+		return;
+	}
 	var mix = new Mix({
 		_id: mongoose.Types.ObjectId(req.body._id),
 		title: req.body.title,
@@ -72,9 +77,8 @@ exports.onParseEnd = function (req, next) {
 	mix.updateTags();
 	var filePath = __dirname + '/../upload/' + req.files.file.name;
 	probe(filePath, function(err, probeData) {
-		console.log("probing");
 		if (err) {
-			//res.status(500).send("500: Probe Error.");
+			console.log("500: Probe Error.");
 			return;
 		}
 		mix.bitrate = probeData['streams'][0]['bit_rate'];
