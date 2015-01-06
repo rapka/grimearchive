@@ -35,9 +35,23 @@ exports.onFileUploadStart = function (file) {
 }
 
 exports.onFileUploadComplete = function (file) {
-	//tbd: some mp3 operations may have to be done here
-	//console.log(file.fieldname + ' uploaded to  ' + file.path)
-
+	probe(file.path, function(err, probeData) {
+		if (err) {
+			console.log("500: Probe Error.");
+			return;
+		}
+		console.log(probeData['streams'][0]['duration']);
+		Mix.update({file:file.name}, 
+		{
+			bitrate: probeData['streams'][0]['bit_rate'] / 1000,
+			duration: probeData['streams'][0]['duration']
+		}, function(err, count) {
+			if (err) {
+				console.error("Error updating mix.");
+			return;
+			}
+		});
+	});
 }
 
 exports.onFileUploadData = function (file, data) {
@@ -75,15 +89,6 @@ exports.onParseEnd = function (req, next) {
 		mix.crews = req.body.crews.split(",");
 	}
 	mix.updateTags();
-	var filePath = __dirname + '/../upload/' + req.files.file.name;
-	probe(filePath, function(err, probeData) {
-		if (err) {
-			console.log("500: Probe Error.");
-			return;
-		}
-		mix.bitrate = probeData['streams'][0]['bit_rate'];
-		mix.duration = probeData['streams'][0]['duration'];
-	});
 
 	//File written successfully, save the entry in mongo.
 	mix.save(function(err) {
