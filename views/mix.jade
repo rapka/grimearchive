@@ -38,5 +38,5 @@ block content
 		p Duration:#{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)} Bitrate: #{mix.bitrate}kbps Downloads: #{mix.downloads} 
 	div
 		p
-			a(href='/download/' + mix.file) Download 
+			a(download href='/download/' + mix.url) Download 
 			a(href='mailto:thecollegehill@gmail.com?subject=Report%20for%20Grimelist%20Mix%20%23' + mix.url) Report
