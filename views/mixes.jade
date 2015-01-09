@@ -14,20 +14,22 @@ block content
 				td bitrate
 				td downloads
 				td date
+				td duration
 
 		tbody
 			each mix in mixes
 				tr.mix-row 		
 					td 
 						a(href='/mix/' + mix.url) #{mix.title}
-					td= mix.dj
+					td
+						a(href='/dj/' + mix.dj) !{mix.dj}
 					td= mix.uploader
 					td
 						each crew in mix.crews	
-							!{crew} 
+							a(href='/crew/' + crew) !{crew}
 					td
 						each mc in mix.mcs	
-							!{mc}
+							a(href='/mc/' + mc) !{mc}
 					td= mix.bitrate
 					td= mix.downloads
 					if mix.day && mix.month && mix.year
@@ -38,3 +40,4 @@ block content
 						td= mix.year
 					else
 						td unknown
+					td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)}

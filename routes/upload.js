@@ -22,8 +22,6 @@ exports.add = function(req, res) {
 		console.log("no file");
 		res.redirect('/upload');
 	}
-
-
 };
 
 exports.view = function(req, res) {
