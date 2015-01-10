@@ -18,3 +18,17 @@ html
 					a(href='/about') About
 	
 	block content
+
+	div.footer
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+		script(type='text/javascript').
+			console.log("footer script");
+			$.ajax({
+				url: '/quote',
+				type: 'GET',
+				success: function(data){
+				$('.quote').append('"' + data + '"');
+				}
+			});
+		div.quote
+		p © 2015 College Hill. Mixes are hosted for non-profit archival use only. Contact thecollegehill@gmail.com for copyright concerns. 
