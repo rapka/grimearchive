@@ -17,6 +17,11 @@ html
 					a(href='/upload') Upload
 				li
 					a(href='/about') About
+				li
+					.searchbar
+						form(name="search", action="/search", method="get", enctype='multipart/form-data')
+							input(type="text", name="title")
+							input(type='submit', value='Search')
 	
 	block content
 

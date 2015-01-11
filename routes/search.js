@@ -6,6 +6,7 @@ exports.routes = function(app) {
 	app.get('/dj/:url', exports.dj);
 	app.get('/mc/:url', exports.mc);
 	app.get('/crew/:url', exports.crew);
+	app.get('/search/:term', exports.search);
 
 };
 
@@ -43,4 +44,8 @@ exports.crew = function(req, res) {
 
 			res.render('mixes', {title: 'Grimelist', mixes: mixes});
 	});
+};
+
+exports.search = function(req, res) {
+	
 };
