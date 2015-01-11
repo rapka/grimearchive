@@ -21,6 +21,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(busboy());
+app.use(favicon(__dirname + '/public/img/favicon.ico')); 
 
 var uploadHandler = require('./uploadHandler.js');
 app.use(multer({ dest: './upload/',
@@ -81,5 +82,6 @@ app.use(function(req, res, next) {
 		err.status = 404;
 		next(err);
 });
+
 
 module.exports = app;
