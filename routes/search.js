@@ -11,7 +11,7 @@ exports.routes = function(app) {
 };
 
 exports.dj = function(req, res) {
-	Mix.find({dj: req.params.url}).sort({date: -1}).limit(40)
+	Mix.find({dj: req.params.url, hidden: false}).sort({date: -1}).limit(40)
 		.exec(function(err, mixes) {
 			if (err){
 				console.log("find error");
@@ -23,7 +23,7 @@ exports.dj = function(req, res) {
 };
 
 exports.mc = function(req, res) {
-	Mix.find({mcs: req.params.url}).sort({date: -1}).limit(40)
+	Mix.find({mcs: req.params.url, hidden: false}).sort({date: -1}).limit(40)
 		.exec(function(err, mixes) {
 			if (err){
 				console.log("find error");
@@ -35,7 +35,7 @@ exports.mc = function(req, res) {
 };
 
 exports.crew = function(req, res) {
-	Mix.find({crews: req.params.url}).sort({date: -1}).limit(40)
+	Mix.find({crews: req.params.url, hidden: false}).sort({date: -1}).limit(40)
 		.exec(function(err, mixes) {
 			if (err){
 				console.log("find error");

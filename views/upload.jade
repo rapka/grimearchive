@@ -10,6 +10,7 @@ block content
 				p Crews:
 				p Radio Station / Rave:
 				p Air Date:
+				p Description:
 			div.upload-inputs
 				form(name="upload", action="/upload", method="post", enctype='multipart/form-data')
 					input(type="text", name="title")
@@ -25,6 +26,8 @@ block content
 					input(type="text", name="day")
 					input(type="text", name="month")
 					input(type="text", name="year")
+					br
+					textarea(name="description" cols="40" rows="5")
 					br
 					input(type="file", name="file")
 					input(type='submit', value='Upload')

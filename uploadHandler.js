@@ -88,6 +88,9 @@ exports.onParseEnd = function (req, next) {
 	if (req.body.crews) {
 		mix.crews = req.body.crews.split(",");
 	}
+	if (req.body.description) {
+		mix.description = req.body.description;
+	}
 	mix.updateTags();
 
 	//File written successfully, save the entry in mongo.

@@ -1,42 +1,48 @@
 extends layout
 
 block content
-
-	div
-		p Title: #{mix.title}
-	div
-		p DJ: 
-			a(href='/dj/' + mix.dj) #{mix.dj}
-	div
-		p Uploader:  
-			a(href='/dj/' + mix.uploader) #{mix.uploader}
-	div 
-			if mix.mcs.length != 0
-				p MCs: 
-					each mc in mix.mcs	
-						a(href='/mc/' + mc) #{mc}
-			else
-				p MCs: None
-	div
-		p Crews: 
-			if mix.crews.length != 0 
-				each crew in mix.crews	
-					a(href='/crew/' + crew) #{crew}
-			else
-				p Crews: None
-	div 
-		p Aired: 
-			if mix.day && mix.month && mix.year
-				td  !{mix.day} / #{mix.month} / #{mix.year}
-			else if mix.day && mix.month
-				td #{mix.daty} / #{mix.month}
-			else if mix.year
-				td= mix.year
-			else
-				td Unknown Date
-	div
-		p Duration: #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)} Bitrate: #{mix.bitrate}kbps Downloads: #{mix.downloads} 
-	div
-		p
-			a(download href='/download/' + mix.url) Download 
-			a(href='mailto:thecollegehill@gmail.com?subject=Report%20for%20Grimelist%20Mix%20%23' + mix.url) Report
+	if mix.hidden == false
+		div
+			p Title: #{mix.title}
+		div
+			p DJ: 
+				a(href='/dj/' + mix.dj) #{mix.dj}
+		div
+			p Uploader:  
+				a(href='/dj/' + mix.uploader) #{mix.uploader}
+		div 
+				if mix.mcs.length != 0
+					p MCs: 
+						each mc in mix.mcs	
+							a(href='/mc/' + mc) #{mc}
+				else
+					p MCs: None
+		div
+			p Crews: 
+				if mix.crews.length != 0 
+					each crew in mix.crews	
+						a(href='/crew/' + crew) #{crew}
+				else
+					p Crews: None
+		div 
+			p Aired: 
+				if mix.day && mix.month && mix.year
+					td  !{mix.day} / #{mix.month} / #{mix.year}
+				else if mix.day && mix.month
+					td #{mix.daty} / #{mix.month}
+				else if mix.year
+					td= mix.year
+				else
+					td Unknown Date
+		if mix.description
+			div
+				p= mix.description
+		div
+			p Duration: #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)} Bitrate: #{mix.bitrate}kbps Downloads: #{mix.downloads} 
+		div
+			p
+				a(download href='/download/' + mix.url) Download 
+				a(href='mailto:thecollegehill@gmail.com?subject=Report%20for%20Grimelist%20Mix%20%23' + mix.url) Report
+	else
+		div
+			p Mix Unavailable

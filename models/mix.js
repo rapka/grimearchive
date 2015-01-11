@@ -22,7 +22,9 @@ var mixSchema = new Schema({
 	duration: Number,
 	downloads: {type: Number, default: 0},
 	bitrate: Number,
-	file: String
+	file: String,
+	hidden: { type: Boolean, default: false},
+	description: String
 	 
 });
 
