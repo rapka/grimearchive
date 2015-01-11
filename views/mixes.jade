@@ -23,14 +23,14 @@ block content
 					td 
 						a(href='/mix/' + mix.url) #{mix.title}
 					td
-						a(href='/dj/' + mix.dj) !{mix.dj}
+						a(href='/dj/' + mix.dj + '/page/1') !{mix.dj}
 					td= mix.uploader
 					td
 						each crew in mix.crews	
-							a(href='/crew/' + crew) !{crew}
+							a(href='/crew/' + crew + '/page/1') !{crew}
 					td
 						each mc in mix.mcs	
-							a(href='/mc/' + mc) !{mc}
+							a(href='/mc/' + mc + '/page/1') !{mc}
 					td= mix.bitrate
 					td= mix.downloads
 					if mix.day && mix.month && mix.year
@@ -45,5 +45,5 @@ block content
 					td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()} #{mix.date.getHours()}:#{mix.date.getHours()} 
 	div.page-selection
 		if page > 1
-			a(href='/mixes/page/' + (parseInt(page) - 1)) Last Page
-		a(href='/mixes/page/' + (parseInt(page) + 1)) Next Page
+			a(href= url + (parseInt(page) - 1)) Last Page
+		a(href= url + (parseInt(page) + 1)) Next Page
