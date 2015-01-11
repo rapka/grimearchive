@@ -7,14 +7,17 @@ exports.routes = function(app) {
 };
 
 exports.download = function(req, res) {
-	Mix.findOne({url: req.params.url}).exec(function(err, mixes) {
+	Mix.findOne({url: req.params.url}).exec(function(err, mix) {
 			if (err){
 				console.log("find error");
 				throw err;
 			}
+			mix.downloads++;
 			var options = {
 				root: __dirname + '/../upload'
 			};
+
+			mix.save();
 			res.sendFile(req.params.url + '.mp3', options);
 	});
 };
