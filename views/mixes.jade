@@ -13,8 +13,9 @@ block content
 				td mcs
 				td bitrate
 				td downloads
-				td date
+				td air date
 				td duration
+				td uploaded
 
 		tbody
 			each mix in mixes
@@ -33,7 +34,7 @@ block content
 					td= mix.bitrate
 					td= mix.downloads
 					if mix.day && mix.month && mix.year
-						td  #{mix.day} / #{mix.month} / #{mix.year}
+						td  #{mix.day}/#{mix.month}/#{mix.year}
 					else if mix.day && mix.month
 						td #{mix.daty} / #{mix.month}
 					else if mix.year
@@ -41,6 +42,7 @@ block content
 					else
 						td unknown
 					td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)}
+					td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()} #{mix.date.getHours()}:#{mix.date.getHours()} 
 	div.page-selection
 		if page > 1
 			a(href='/mixes/page/' + (parseInt(page) - 1)) Last Page
