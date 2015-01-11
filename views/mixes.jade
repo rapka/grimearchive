@@ -41,3 +41,7 @@ block content
 					else
 						td unknown
 					td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)}
+	div.page-selection
+		if page > 1
+			a(href='/mixes/page/' + (parseInt(page) - 1)) Last Page
+		a(href='/mixes/page/' + (parseInt(page) + 1)) Next Page
