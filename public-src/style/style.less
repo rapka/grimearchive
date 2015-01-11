@@ -16,10 +16,15 @@ a {
   color: #00B7FF;
 }
 
+p {
+	margin: 10px 0px 10px 0px;
+}
+
+
 .nav-bar { 
 	ul {
 		li {
-			display : inline-block;
+			display: inline-block;
 			padding-left: 30px;
 			padding-right: 30px;
 		}
@@ -28,7 +33,7 @@ a {
 
 ul.mix-header { 
 	li {
-		display : inline-block;
+		display: inline-block;
 		padding-left: 30px;
 		padding-right: 30px;
 	}
@@ -36,9 +41,47 @@ ul.mix-header {
 
 ul.mix-row { 
 	li {
-		display : inline-block;
+		display: inline-block;
 		padding-left: 30px;
 		padding-right: 30px;
 	}
 }
 
+.content {
+	margin-left: auto;
+	margin-right: auto;
+	width: 1180px;
+}
+
+.footer {
+	width: 1180px;
+	margin-left: auto;
+	margin-right: auto;
+
+	.quote {
+		width: 600px;
+		margin-left: auto;
+		margin-right: auto;
+		&:hover {
+			cursor: pointer;
+		}
+	}
+}
+
+.upload {
+	overflow: auto;
+
+	.upload-labels {
+		float: left;
+	}
+
+	.upload-inputs {
+		float: left;
+		input {
+			border: 0px;
+			padding: 0px;
+			margin: 5px 2px 5px 2px;
+		}
+
+	}
+}

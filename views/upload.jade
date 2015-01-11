@@ -1,28 +1,32 @@
 extends layout
 
 block content
-	.upload
-		form(name="upload", action="/upload", method="post", enctype='multipart/form-data')
-			p.
-				Title:
-			input(type="text", name="title")
-			p.
-				DJ:
-			input(type="text", name="dj")
-			p.
-				MCs:
-			input(type="text", name="mcs")
-			p.
-				Crews:
-			input(type="text", name="crews")
-			p.
-				Radio Station / Rave:
-			input(type="text", name="station")
-			p.
-				Air Date:
-			input(type="text", name="day")
-			input(type="text", name="month")
-			input(type="text", name="year")
-			br
-			input(type="file", name="file")
-			input(type='submit', value='Upload')
+	.upload.content 
+		
+			div.upload-labels
+				p Title:
+				p DJ: 
+				p MCs:
+				p Crews:
+				p Radio Station / Rave:
+				p Air Date:
+			div.upload-inputs
+				form(name="upload", action="/upload", method="post", enctype='multipart/form-data')
+					input(type="text", name="title")
+					br
+					input(type="text", name="dj")
+					br
+					input(type="text", name="mcs")
+					br
+					input(type="text", name="crews")
+					br
+					input(type="text", name="station")
+					br
+					input(type="text", name="day")
+					input(type="text", name="month")
+					input(type="text", name="year")
+					br
+					input(type="file", name="file")
+					input(type='submit', value='Upload')
+
+			
