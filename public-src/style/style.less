@@ -12,9 +12,9 @@ body {
 	}
 }
 
-a {
-  color: #00B7FF;
-}
+// a {
+//   color: #00B7FF;
+// }
 
 p {
 	margin: 10px 0px 10px 0px;
@@ -86,4 +86,58 @@ ul.mix-row {
 		}
 
 	}
+}
+
+.big{
+	font: 50px "Helvetica", Helvetica, Arial, sans-serif;
+	display: inline-block;
+
+	a {
+		text-decoration: none;
+	}
+
+	&.big-yellow {
+		color: #FFF117;
+		a {
+			color: #FFF117;
+			&:hover {
+				color: #FFF77E;
+			}
+		}
+	}
+	&.big-blue {
+		color: #36E0FF;	
+	}
+	&.big-red {
+		color: #FF31A0;
+		a {
+			color: #FF31A0;
+			&:hover {
+				color: #FF86F5;
+			}
+		}
+	}
+	&.big-green {
+		color: #BFFF25;
+		a {
+			color: #BFFF25;
+			&:hover {
+				color: #FFFF9A;
+			}
+		}
+	}
+}
+.mix-description {
+	font: 30px "Helvetica", Helvetica, Arial, sans-serif;
+}
+.mix-uploader {
+	font: 16px "Helvetica", Helvetica, Arial, sans-serif;
+	a {
+		text-decoration: none;
+		color: #FF31A0;
+		&:hover {
+			color: #FF86F5;
+		}
+	}
+
 }

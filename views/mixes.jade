@@ -21,7 +21,10 @@ block content
 			each mix in mixes
 				tr.mix-row 		
 					td 
-						a(href='/mix/' + mix.url) #{mix.title}
+						if mix.title
+							a(href='/mix/' + mix.url) #{mix.title}
+						else
+							a(href='/mix/' + mix.url) Untitled
 					td
 						a(href='/dj/' + mix.dj + '/page/1') !{mix.dj}
 					td= mix.uploader

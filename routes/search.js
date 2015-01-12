@@ -44,7 +44,7 @@ exports.mc = function(req, res) {
 				throw err;
 			}
 
-			var url = '/mc/' + req.params.url + '/page/';
+			var currentUrl = '/mc/' + req.params.url + '/page/';
 			res.render('mixes', {url: currentUrl, mixes: mixes, page: page});
 	});
 };
@@ -64,7 +64,7 @@ exports.crew = function(req, res) {
 				throw err;
 			}
 
-			var url = '/crew/' + req.params.url + '/page/';
+			var currentUrl = '/crew/' + req.params.url + '/page/';
 			res.render('mixes', {url: currentUrl, mixes: mixes, page: page});
 	});
 };

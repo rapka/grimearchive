@@ -2,47 +2,68 @@ extends layout
 
 block content
 	if mix.hidden == false
-		div
-			p Title: #{mix.title}
-		div
-			p DJ: 
+		div.big.big-yellow
+			if mix.dj
 				a(href='/dj/' + mix.dj) #{mix.dj}
-		div
-			p Uploader:  
-				a(href='/dj/' + mix.uploader) #{mix.uploader}
-		div 
-				if mix.mcs.length != 0
-					p MCs: 
-						each mc in mix.mcs	
-							a(href='/mc/' + mc) #{mc}
-				else
-					p MCs: None
-		div
-			p Crews: 
-				if mix.crews.length != 0 
-					each crew in mix.crews	
-						a(href='/crew/' + crew) #{crew}
-				else
-					p Crews: None
-		div 
-			p Aired: 
+			else
+				| Unknown DJ
+			
+		div.big.big-blue 
+			if mix.title
+				mix.title
+			else
+				| Untitled
+		br
+		if mix.mcs.length != 0
+			div.big.big-red 
+				| feat. 
+				each mc in mix.mcs	
+					a(href='/mc/' + mc) #{mc}
+					| /
+			br
+		if mix.crews.length != 0
+			div.big.big-green 
+				each crew in mix.crews	
+					a(href='/crew/' + crew) #{crew}
+					| /
+			br
+		div.big.big-yellow
 				if mix.day && mix.month && mix.year
-					td  !{mix.day} / #{mix.month} / #{mix.year}
+					| !{mix.day}/#{mix.month}/#{mix.year}
 				else if mix.day && mix.month
-					td #{mix.daty} / #{mix.month}
+					| #{mix.daty} / #{mix.month}
 				else if mix.year
-					td= mix.year
+					| #{mix.year}
 				else
-					td Unknown Date
+					| Unknown Date
+		div.big.big-blue
+				| @#{mix.station}
+		br
+		div.big.big-green
+			| #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)} 
+		div.big.big-blue
+			| #{Math.floor(mix.bitrate)}kbps 
+		div.big.big-yellow
+			| #{mix.downloads} Downloads
+		div.big.big-red
+			a(download href='/download/' + mix.url) Download
+
+
 		if mix.description
-			div
+			div.mix-description
 				p= mix.description
-		div
-			p Duration: #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)} Bitrate: #{mix.bitrate}kbps Downloads: #{mix.downloads} 
-		div
-			p
-				a(download href='/download/' + mix.url) Download 
+
+		div.mix-uploader
+			p Uploaded #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()} by 
+				if mix.uploader == 'Anonymous'
+					| Anonymous
+				else 
+					a(href='/dj/' + mix.uploader) #{mix.uploader}
+				| . 
 				a(href='mailto:thecollegehill@gmail.com?subject=Report%20for%20Grimelist%20Mix%20%23' + mix.url) Report
-	else
-		div
-			p Mix Unavailable
+				|  | 
+				a(href='mailto:thecollegehill@gmail.com?subject=Correction%20for%20Grimelist%20Mix%20%23' + mix.url) Submit correction
+	else 
+
+		div.big.big-red
+			p Mix Unavailable :(
