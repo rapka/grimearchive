@@ -26,7 +26,10 @@ block content
 						else
 							a(href='/mix/' + mix.url) Untitled
 					td
-						a(href='/dj/' + mix.dj + '/page/1') !{mix.dj}
+						if mix.dj
+							a(href='/dj/' + mix.dj + '/page/1') !{mix.dj}
+						else
+							| Unknown DJ
 					td= mix.uploader
 					td
 						each crew in mix.crews	
@@ -34,7 +37,7 @@ block content
 					td
 						each mc in mix.mcs	
 							a(href='/mc/' + mc + '/page/1') !{mc}
-					td= mix.bitrate
+					td= Math.floor(mix.bitrate)
 					td= mix.downloads
 					if mix.day && mix.month && mix.year
 						td  #{mix.day}/#{mix.month}/#{mix.year}
