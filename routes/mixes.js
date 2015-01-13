@@ -45,8 +45,22 @@ exports.page = function(req, res) {
 
 exports.view = function(req, res) {
 	var mix = Mix.findOne({url: req.params.url}).exec(function (err, mix){
+		var title;
+		if (mix.dj) {
+			title = mix.dj + " - "; 
+		}
+		else {
+			title = "Unknown DJ - ";
+		}
+
+		if (mix.title) {
+			title += mix.title;
+		}
+		else {
+			title += "Untitled";
+		}
 		res.render('mix', {
-			title: 'Grimelist',
+			title: title,
 			mix: mix
 		});
 	});
