@@ -38,6 +38,7 @@ block content
 					script(type='text/javascript').
 						$('input[type="submit"]').on('click', function(evt) {
 								//evt.preventDefault();
+								console.log("uploading");
 								$('div.progress').show();
 								//var formData = new FormData();
 								var file = document.getElementById('_file').files[0];
@@ -49,7 +50,7 @@ block content
 								
 								xhr.upload.onprogress = function(e) {
 									if (e.lengthComputable) {
-
+										console.log(percentage + '%');
 										var percentage = (e.loaded / e.total) * 100;
 										$('progress').text(percentage + '%');
 									}
