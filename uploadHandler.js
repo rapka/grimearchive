@@ -1,5 +1,6 @@
 var fs = require('fs');
 var probe = require('node-ffprobe');
+var jquery = require('jquery');
 
 // Load models.
 var models_path = __dirname + '/models';
@@ -56,7 +57,9 @@ exports.onFileUploadComplete = function (file) {
 
 exports.onFileUploadData = function (file, data) {
 	//tbd: will be used for progress bar
-	console.log(data.length + ' of ' + file.fieldname + ' arrived');
+	//var currentPercent = parseInt($('.progress').text());
+	//var newPercent = (0.01 * currentPercent * file.size) + (data.length / file.size);
+	//console.log(newPercent, '%');
 }
 
 exports.onParseEnd = function (req, next) {
