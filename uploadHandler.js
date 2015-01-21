@@ -14,10 +14,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 var allowedTypes = [
 	"audio/mpeg3",
 	"audio/mpeg",
-	"audio/mp3",
-	"image/jpeg",
-	"image/gif",
-	"image/tiff"
+	"audio/mp3"
 ];
 
 exports.rename = function (fieldname, filename) {
@@ -52,11 +49,14 @@ exports.onFileUploadComplete = function (file) {
 			}
 		});
 	});
+
+		var url = file.name.split('.')[0];
+		//res.redirect('/mix/' + url);
 }
 
 exports.onFileUploadData = function (file, data) {
 	//tbd: will be used for progress bar
-	//console.log(data.length + ' of ' + file.fieldname + ' arrived');
+	console.log(data.length + ' of ' + file.fieldname + ' arrived');
 }
 
 exports.onParseEnd = function (req, next) {
