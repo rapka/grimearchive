@@ -30,15 +30,15 @@ block content
 					textarea(name="description" cols="40" rows="5")
 					br
 					input(type="file", name="file" id='_file')
-					input(type='submit', value='Upload')
+					input(type='submit', value='Upload', id='_submit')
 			div.upload-bar
 					div.progress_outer
 						#_progress.progress
 					script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
 					script(type='text/javascript').
-						var _submit = $("_submit"), 
-						_file = $("_file"), 
-						_progress = $("_progress");
+						var _submit = $("_submit"); 
+						var _file = $("_file"); 
+						var _progress = $("_progress");
 						
 						var upload = function(){
 						
