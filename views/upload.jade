@@ -40,18 +40,17 @@ block content
 								//evt.preventDefault();
 								console.log("uploading");
 								$('div.progress').show();
-								//var formData = new FormData();
-								var file = document.getElementById('_file').files[0];
-
-								//formData.append('_file', file);
-								
+	
 								var xhr = new XMLHttpRequest();
-								xhr.addEventListener("progress", progressHandler, false);
-								xhr.upload.addEventListener("progress", progressHandler, false);
-								xhr.open('post', '/', true);
-								xhr.addEventListener("progress", progressHandler, false);
-								xhr.upload.addEventListener("progress", progressHandler, false);						
-								
+								xhr.upload.addEventListener("progress", function (evt) {
+										if (e.lengthComputable) {
+											var percentage = (e.loaded / e.total) * 100;
+											console.log(percentage + '%');
+											$('progress').text(percentage + '%');
+										}
+									}, false);
+								xhr.open('post', '/upload', true);
+
 								
 								xhr.onerror = function(e) {
 									//showInfo('An error occurred while submitting the form. Maybe your file is too big');
@@ -66,11 +65,6 @@ block content
 							});
 
 							function progressHandler(e) {
-									if (e.lengthComputable) {
-										
-										var percentage = (e.loaded / e.total) * 100;
-										console.log(percentage + '%');
-										$('progress').text(percentage + '%');
-									}
+								
 								};
   
