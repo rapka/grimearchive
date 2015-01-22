@@ -46,8 +46,8 @@ block content
 								//formData.append('_file', file);
 								
 								var xhr = new XMLHttpRequest();
-								xhr.upload.addEventListener("progress", progressHandler, false);
-								
+								xhr.addEventListener("progress", progressHandler, false);
+
 								xhr.open('post', '/', true);
 								
 								
