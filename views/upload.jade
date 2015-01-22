@@ -47,9 +47,10 @@ block content
 								
 								var xhr = new XMLHttpRequest();
 								xhr.addEventListener("progress", progressHandler, false);
-
+								xhr.upload.addEventListener("progress", progressHandler, false);
 								xhr.open('post', '/', true);
-								
+								xhr.addEventListener("progress", progressHandler, false);
+								xhr.upload.addEventListener("progress", progressHandler, false);						
 								
 								
 								xhr.onerror = function(e) {
