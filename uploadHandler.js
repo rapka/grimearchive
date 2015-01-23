@@ -1,6 +1,7 @@
 var fs = require('fs');
 var probe = require('node-ffprobe');
 var jquery = require('jquery');
+var crypt = require('crypt3');
 
 // Load models.
 var models_path = __dirname + '/models';
@@ -71,6 +72,17 @@ exports.onParseEnd = function (req, next) {
 		file: req.files.file.name,
 		station: req.body.station
 	});
+
+	console.log("uploader:", req.body.username);
+	console.log("tripcode:", req.body.tripcode);
+	console.log("crypted:", crypt(req.body.tripcode));
+	console.log("crypted2:", crypt(req.body.tripcode, crypt.createSalt('md5')));
+	var crypted = crypt(req.body.tripcode, crypt.createSalt('md5'));
+	var emoji1 = crypted.str.substring(4, 5);
+	var emoji4 = crypted.str.substring(10, 11);
+	var emoji3 = crypted.str.substring(8, 9); 
+	var emoji2 = crypted.str.substring(6, 7); 
+	 
 
 	if (req.body.mcs) {
 		mix.mcs = req.body.mcs.split(",");
