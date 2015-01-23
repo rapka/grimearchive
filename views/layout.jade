@@ -7,16 +7,20 @@ html
 	body
 		.title-pic
 			img(src='/img/title.png')
-		.nav-bar
+		div.nav-bar.medium
 			ul
 				li
-					a(href='/') Home
+					.blue
+						a(href='/') Home
 				li
-					a(href='/mixes/') Mixes
+					.yellow
+						a(href='/mixes/') Mixes
 				li
-					a(href='/upload') Upload
+					.red
+						a(href='/upload') Upload
 				li
-					a(href='/about') About
+					.green
+						a(href='/about') About
 				li
 					.searchbar
 						form(name="search", action="/search", method="get", enctype='multipart/form-data')

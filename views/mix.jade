@@ -2,32 +2,32 @@ extends layout
 
 block content
 	if mix.hidden == false
-		div.big.big-yellow
+		div.big.yellow
 			if mix.dj
 				a(href='/dj/' + mix.dj) #{mix.dj}
 			else
 				| Unknown DJ
 			
-		div.big.big-blue 
+		div.big.blue 
 			if mix.title
 				| #{mix.title}
 			else
 				| Untitled
 		br
 		if mix.mcs.length != 0
-			div.big.big-red 
+			div.big.red 
 				| feat. 
 				each mc in mix.mcs	
 					a(href='/mc/' + mc) #{mc}
 					| /
 			br
 		if mix.crews.length != 0
-			div.big.big-green 
+			div.big.green 
 				each crew in mix.crews	
 					a(href='/crew/' + crew) #{crew}
 					| /
 			br
-		div.big.big-yellow
+		div.big.yellow
 				if mix.day && mix.month && mix.year
 					| !{mix.day}/#{mix.month}/#{mix.year}
 				else if mix.day && mix.month
@@ -36,16 +36,16 @@ block content
 					| #{mix.year}
 				else
 					| Unknown Date
-		div.big.big-blue
+		div.big.blue
 				| @#{mix.station}
 		br
-		div.big.big-green
+		div.big.green
 			| #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)} 
-		div.big.big-blue
+		div.big.blue
 			| #{Math.floor(mix.bitrate)}kbps 
-		div.big.big-yellow
+		div.big.yellow
 			| #{mix.downloads} Downloads
-		div.big.big-red
+		div.big.red
 			a(download href='/download/' + mix.url) Download
 
 
@@ -65,5 +65,5 @@ block content
 				a(href='mailto:thecollegehill@gmail.com?subject=Correction%20for%20Grimelist%20Mix%20%23' + mix.url) Submit correction
 	else 
 
-		div.big.big-red
+		div.big.red
 			p Mix Unavailable :(

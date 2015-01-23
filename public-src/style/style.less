@@ -54,6 +54,7 @@ ul.mix-row {
 }
 
 .footer {
+	clear: both;
 	width: 1180px;
 	font: 12px "Helvetica", Helvetica, Arial, sans-serif;
 	text-align: center;
@@ -74,7 +75,9 @@ ul.mix-row {
 }
 
 .upload {
-	overflow: auto;
+	//overflow: auto;
+
+
 
 	.upload-labels {
 		float: left;
@@ -92,12 +95,10 @@ ul.mix-row {
 
 	}
 
-	.progress_outer {
-        border: 1px solid #000;
-    }
+
     .progress {
+    	float: left;
         width: 20%;
-        background: #DEDEDE;
         height: 20px;  
     }
 }
@@ -109,38 +110,58 @@ ul.mix-row {
 	a {
 		text-decoration: none;
 	}
+}
 
-	&.big-yellow {
+.medium {
+	font: 16px "Helvetica", Helvetica, Arial, sans-serif;
+
+	a {
+		text-decoration: none;
+	}
+}
+
+
+.yellow {
+	color: #FFF117;
+	a {
 		color: #FFF117;
-		a {
-			color: #FFF117;
-			&:hover {
-				color: #FFF77E;
-			}
-		}
-	}
-	&.big-blue {
-		color: #36E0FF;	
-	}
-	&.big-red {
-		color: #FF31A0;
-		a {
-			color: #FF31A0;
-			&:hover {
-				color: #FF86F5;
-			}
-		}
-	}
-	&.big-green {
-		color: #BFFF25;
-		a {
-			color: #BFFF25;
-			&:hover {
-				color: #FFFF9A;
-			}
+		&:hover {
+			color: #FFF77E;
 		}
 	}
 }
+
+.blue {
+	color: #36E0FF;	
+	a {
+		color: #36E0FF;	
+		&:hover {
+			color: #57F2FF;
+		}
+	}
+}
+
+.red {
+	color: #FF31A0;
+	a {
+		color: #FF31A0;
+		&:hover {
+			color: #FF86F5;
+		}
+	}
+}
+
+.green {
+	color: #BFFF25;
+	a {
+		color: #BFFF25;
+		&:hover {
+			color: #FFFF9A;
+		}
+	}
+}
+
+
 
 .mix-description {
 	font: 30px "Helvetica", Helvetica, Arial, sans-serif;
