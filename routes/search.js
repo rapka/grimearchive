@@ -11,7 +11,7 @@ exports.routes = function(app) {
 };
 
 exports.dj = function(req, res) {
-		var page = req.params.page;
+	var page = req.params.page;
 
 	if (page < 1) {
 		page = 1;

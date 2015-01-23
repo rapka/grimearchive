@@ -11,7 +11,7 @@ exports.routes = function(app) {
 };
 
 exports.index = function(req, res) {
-	Mix.find().sort({date: -1}).limit(10)
+	Mix.find().sort({date: -1}).limit(20)
 		.exec(function(err, mixes) {
 			if (err){
 				console.log("find error");
@@ -24,21 +24,21 @@ exports.index = function(req, res) {
 
 exports.page = function(req, res) {
 	var page = req.params.page;
-
+	console.log("pagE:", page);
 	if (page < 1) {
 		page = 1;
 	}
 
-	var skip = (page - 1) * 10;
+	var skip = (page - 1) * 20;
 
-	Mix.find().skip(skip).sort({date: -1}).limit(10)
+	Mix.find({hidden: false}).skip(skip).sort({date: -1}).limit(20)
 		.exec(function(err, mixes) {
 			if (err){
 				console.log("find error");
 				throw err;
 			}
-
-			res.render('mixes', {title: 'Grimelist', mixes: mixes, page: page});
+			var currentUrl = '/mixes/page/';
+			res.render('mixes', {title: 'Grimelist', mixes: mixes, url: currentUrl, page: page});
 	});
 };
 
