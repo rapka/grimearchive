@@ -56,16 +56,10 @@ exports.onFileUploadComplete = function (file) {
 }
 
 exports.onFileUploadData = function (file, data) {
-	//tbd: will be used for progress bar
-	//var currentPercent = parseInt($('.progress').text());
-	//var newPercent = (0.01 * currentPercent * file.size) + (data.length / file.size);
-	//console.log(newPercent, '%');
+	//unused for now
 }
 
 exports.onParseEnd = function (req, next) {
-	console.log("reeeq");
-	console.log(req.body);
-	console.log(req.files.file.name);
 	if (typeof req.files.file === 'undefined') { 
 		console.log("error: no file selected");
 		return;

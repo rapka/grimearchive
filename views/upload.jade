@@ -37,35 +37,27 @@ block content
 					script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
 					script(type='text/javascript').
 						function uploadFile() {
-							//evt.preventDefault();
-							console.log("uploading");
+							evt.preventDefault();
 							var form = document.getElementById('_form');
 							var fd = new FormData(form);
 							
 							var xhr = new XMLHttpRequest();
 							xhr.upload.addEventListener("progress", function (evt) {
-									console.log("listener!");
 									if (evt.lengthComputable) {
 										var percentage = (evt.loaded / evt.total) * 100;
-										console.log(percentage + '%');
 										$('progress').text(percentage + '%');
 									}
 								}, false);
 							xhr.onreadystatechange = function() {
 								var result;
-								console.log("redirectingf");
 								if (xhr.readyState == 4) {
-									console.log("text!");
-									console.log(xhr.responseText);
 									window.location = xhr.responseText; 
 								}
 
 							};
 							xhr.open('post', '/upload', true);
 							
-							xhr.send(fd);
-
-								
+							xhr.send(fd);	
 						}
 						
 
