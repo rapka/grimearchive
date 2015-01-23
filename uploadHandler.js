@@ -63,7 +63,9 @@ exports.onFileUploadData = function (file, data) {
 }
 
 exports.onParseEnd = function (req, next) {
-
+	console.log("reeeq");
+	console.log(req.body);
+	console.log(req.files.file.name);
 	if (typeof req.files.file === 'undefined') { 
 		console.log("error: no file selected");
 		return;

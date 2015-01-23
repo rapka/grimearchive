@@ -13,10 +13,12 @@ exports.index = function(req, res) {
 };
 
 exports.add = function(req, res) {
+	console.log("ADDDD");
 	if (typeof req.files.file !== 'undefined') { 
 		console.log(req.files.file.name);
 		var url = req.files.file.name.split('.')[0];
-		res.redirect('/mix/' + url);
+		res.send('/mix/' + url);
+
 	}
 	else {
 		console.log("no file");
