@@ -58,7 +58,28 @@ block content
 				if mix.uploader == 'Anonymous'
 					| Anonymous
 				else 
-					a(href='/dj/' + mix.uploader) #{mix.uploader}
+					a(href='/uploader/' + mix.uploader + "#" + mix.tripcode) #{mix.uploader}
+					div.tripcode
+						| #{mix.tripcode}
+					script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+					script(type='text/javascript').
+						var updateEmojis = function(event) {
+							var tripcode = $('.tripcode').text().substring(0, 8);
+							console.log("tripp");
+							console.log(tripcode);
+							$.ajax({
+							url: '/emoji/' + tripcode,
+							type: 'GET',
+							success: function(data){
+								console.log(data);
+								$('.tripcode').html(data);
+			
+							}
+							});
+						}
+						$(function(){
+							updateEmojis();
+						});
 				| . 
 				a(href='mailto:thecollegehill@gmail.com?subject=Report%20for%20Grimelist%20Mix%20%23' + mix.url) Report
 				|  | 

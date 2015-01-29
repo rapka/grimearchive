@@ -10,6 +10,7 @@ var mixSchema = new Schema({
 	url: String,
 	title: String,
 	uploader: { type: "String", default: "Anonymous"},
+	tripcode: String,
 	date: { type: Date, default: Date.now },
 	length: Number,
 	dj: String,

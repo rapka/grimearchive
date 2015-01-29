@@ -27,16 +27,16 @@ block content
 							a(href='/mix/' + mix.url) Untitled
 					td
 						if mix.dj
-							a(href='/dj/' + mix.dj + '/page/1') !{mix.dj}
+							a(href='/dj/' + mix.dj) !{mix.dj}
 						else
 							| Unknown DJ
 					td= mix.uploader
 					td
 						each crew in mix.crews	
-							a(href='/crew/' + crew + '/page/1') !{crew}
+							a(href='/crew/' + crew) !{crew}
 					td
 						each mc in mix.mcs	
-							a(href='/mc/' + mc + '/page/1') !{mc}
+							a(href='/mc/' + mc) !{mc}
 					td= Math.floor(mix.bitrate)
 					td= mix.downloads
 					if mix.day && mix.month && mix.year
@@ -53,4 +53,9 @@ block content
 		if page > 1
 			a(href= url + (parseInt(page) - 1)) Last Page
 			| 
-		a(href= url + (parseInt(page) + 1)) Next Page
+
+		if hasNext
+			if !isNaN(page) 
+				a(href= url + (parseInt(page) + 1)) Next Page
+			else 
+				a(href= url + ('2')) Next Page

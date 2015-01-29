@@ -2,6 +2,7 @@ var fs = require('fs');
 var probe = require('node-ffprobe');
 var jquery = require('jquery');
 var crypt = require('crypt3');
+var crypto = require('crypto');
 
 // Load models.
 var models_path = __dirname + '/models';
@@ -73,15 +74,23 @@ exports.onParseEnd = function (req, next) {
 		station: req.body.station
 	});
 
+	if (req.body.username) {
+		mix.uploader = req.body.username;
+	}
+	if (req.body.tripcode) {
+		//var crypted = crypt(req.body.tripcode, crypt.createSalt('md5'));
+		var crypted = crypto.createHash('sha256').update(req.body.tripcode).digest('hex').substring(0,8);
+		mix.tripcode = crypted;
+	}
 	console.log("uploader:", req.body.username);
 	console.log("tripcode:", req.body.tripcode);
 	console.log("crypted:", crypt(req.body.tripcode));
 	console.log("crypted2:", crypt(req.body.tripcode, crypt.createSalt('md5')));
-	var crypted = crypt(req.body.tripcode, crypt.createSalt('md5'));
-	var emoji1 = crypted.str.substring(4, 5);
-	var emoji4 = crypted.str.substring(10, 11);
-	var emoji3 = crypted.str.substring(8, 9); 
-	var emoji2 = crypted.str.substring(6, 7); 
+	//var crypted2 = crypt(req.body.tripcode, crypt.createSalt('md5'));
+	//var emoji1 = crypted.str.substring(4, 5);
+	//var emoji4 = crypted.str.substring(10, 11);
+	//var emoji3 = crypted.str.substring(8, 9); 
+	//var emoji2 = crypted.str.substring(6, 7); 
 	 
 
 	if (req.body.mcs) {
