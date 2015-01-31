@@ -208,7 +208,7 @@ exports.uploader = function(req, res) {
 					console.log("find error");
 					throw err;
 				}
-				var currentUrl = '/crew/' + req.params.url + '/page/';
+				var currentUrl = '/uploader/' + req.params.url + '/page/';
 				
 				var hasNext = false;
 				if (count > (skip + pageCount)) {

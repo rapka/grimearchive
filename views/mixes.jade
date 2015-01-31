@@ -30,13 +30,19 @@ block content
 							a(href='/dj/' + mix.dj) !{mix.dj}
 						else
 							| Unknown DJ
-					td= mix.uploader
+					td
+						if mix.uploader == 'Anonymous'
+							| Anonymous
+						else
+							a(href='/dj/' + mix.uploader + '#' + mix.tripcode) !{mix.uploader}#!{mix.tripcode}
 					td
 						each crew in mix.crews	
 							a(href='/crew/' + crew) !{crew}
+							| / 
 					td
 						each mc in mix.mcs	
 							a(href='/mc/' + mc) !{mc}
+							| / 
 					td= Math.floor(mix.bitrate)
 					td= mix.downloads
 					if mix.day && mix.month && mix.year

@@ -58,7 +58,7 @@ block content
 				if mix.uploader == 'Anonymous'
 					| Anonymous
 				else 
-					a(href='/uploader/' + mix.uploader + "#" + mix.tripcode) #{mix.uploader}
+					a(id="upload_link" href='/uploader/' + mix.uploader + '#' + mix.tripcode) #{mix.uploader}
 					div.tripcode
 						| #{mix.tripcode}
 					script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
@@ -72,7 +72,11 @@ block content
 							type: 'GET',
 							success: function(data){
 								console.log(data);
-								$('.tripcode').html(data);
+								var oldLink = $('#upload_link').attr('href');
+
+								var link = '<a href="' + $('#upload_link').attr('href') + '">';
+								link += data + '</a>';
+								$('.tripcode').html(link);
 			
 							}
 							});
