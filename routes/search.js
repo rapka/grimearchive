@@ -13,8 +13,8 @@ exports.routes = function(app) {
 	app.get('/crew/:url/page/:page', exports.crew);
 	app.get('/crew/:url', exports.crew);
 	app.get('/search/:term', exports.search);
-	app.get('/uploader/:uploader/page/:page', exports.uploader);
-	app.get('/uploader/:uploader', exports.uploader);
+	app.get('/uploader/:url/page/:page', exports.uploader);
+	app.get('/uploader/:url', exports.uploader);
 };
 
 exports.mixes = function(req, res) {
@@ -52,7 +52,7 @@ exports.mixes = function(req, res) {
 					hasNext = true;
 				}
 
-				res.render('mixes', {title: 'Grimelist', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+				res.render('mixes', {title: 'All Mixes', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
@@ -92,7 +92,7 @@ exports.dj = function(req, res) {
 					hasNext = true;
 				}
 
-				res.render('mixes', {title: 'Grimelist', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+				res.render('mixes', {title: req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
@@ -132,7 +132,7 @@ exports.mc = function(req, res) {
 					hasNext = true;
 				}
 
-				res.render('mixes', {title: 'Grimelist', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+				res.render('mixes', {title: req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
@@ -172,7 +172,7 @@ exports.crew = function(req, res) {
 					hasNext = true;
 				}
 
-				res.render('mixes', {title: 'Grimelist', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+				res.render('mixes', {title: req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
@@ -193,9 +193,14 @@ exports.uploader = function(req, res) {
 
 	var skip = (page - 1) * pageCount;
 
-	var user = req.params.url.split("#")[0];
-	var trip = req.params.url.split("#")[1];
+	var user = req.params.url.split("-")[0];
+	var trip = req.params.url.split("-")[1];
+	console.log("uuuu");
+	console.log(req.params.url);
+	console.log(user);
+	console.log(trip);
 	Mix.count({uploader: user, tripcode: trip, hidden: false}).exec(function(err, count) {
+		console.log(count);
 			if (err){
 				console.log("find error");
 				throw err;
@@ -215,7 +220,7 @@ exports.uploader = function(req, res) {
 					hasNext = true;
 				}
 
-				res.render('mixes', {title: 'Grimelist', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+				res.render('mixes', {title: user, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };

@@ -40,12 +40,21 @@ ul.mix-header {
 	}
 }
 
+table {
+	//border: 1px solid #FFFFFF;
+}
+
+td {
+	padding: 3px;
+}
 tr.mix-row { 
 	//td {
 		font: 16px "Helvetica", Helvetica, Arial, sans-serif;
 		padding-left: 30px;
 		padding-right: 30px;
-
+		.tripcode {
+			display: inline-block;
+		}
 
 		a {
 			text-decoration: none;
@@ -169,7 +178,18 @@ tr.mix-row {
 	}
 }
 
+.page-selection {
+	font: 16px "Helvetica", Helvetica, Arial, sans-serif;
+	color: #616161;
 
+	a {
+		text-decoration: none;
+		color: #BFFF25;
+		&:hover {
+			color: #FFFF9A;
+		}
+	}
+}
 
 .mix-description {
 	font: 30px "Helvetica", Helvetica, Arial, sans-serif;
