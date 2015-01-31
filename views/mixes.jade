@@ -6,16 +6,17 @@ block content
 	table
 		thead
 			tr.mix-header
-				td title
-				td dj
-				td uploader
-				td crews
-				td mcs
-				td bitrate
-				td downloads
-				td air date
-				td duration
-				td uploaded
+				td Title
+				td DJ
+				td Mcs
+				td Crews
+				td Station / Rave
+				td Air date
+				td Duration
+				td Bitrate
+				td Downloads
+				td Uploader
+				td Uploaded
 
 		tbody
 			each mix in mixes
@@ -30,24 +31,46 @@ block content
 							a(href='/dj/' + mix.dj) !{mix.dj}
 						else
 							| Unknown DJ
+
+					td
+						each mc in mix.mcs	
+							a(href='/mc/' + mc) !{mc}
+							| /
+					td
+						each crew in mix.crews	
+							a(href='/crew/' + crew) !{crew}
+							| /
+					td
+						if mix.station
+							a(href='/station/' + mix.station) #{mix.station}
+						else
+							| Unknown Station
+					if mix.day && mix.month && mix.year
+						td  #{mix.day}/#{mix.month}/#{mix.year}
+					else if mix.day && mix.month
+						td #{mix.daty} / #{mix.month}
+					else if mix.year
+						td= mix.year
+					else
+						td unknown
+					td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)}
+					td= Math.floor(mix.bitrate)
+					td= mix.downloads
 					td
 						if mix.uploader == 'Anonymous'
 							| Anonymous
 						else
-							a(id='upload_link' href='/uploader/' + mix.uploader + '-' + mix.tripcode) !{mix.uploader}#
+							a(id='upload_link' href='/uploader/' + mix.uploader + '-' + mix.tripcode) !{mix.uploader}
 							div.tripcode
 								!{mix.tripcode}
 								script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
 								script(type='text/javascript').
 									var updateEmojis = function(event) {
 										var tripcode = $('.tripcode').text().substring(0, 8);
-										console.log("tripp");
-										console.log(tripcode);
 										$.ajax({
 											url: '/emoji/' + tripcode,
 											type: 'GET',
 											success: function(data){
-												console.log(data);
 												var oldLink = $('#upload_link').attr('href');
 				
 												var link = '<a href="' + $('#upload_link').attr('href') + '">';
@@ -60,25 +83,7 @@ block content
 									$(function(){
 										updateEmojis();
 									});
-					td
-						each crew in mix.crews	
-							a(href='/crew/' + crew) !{crew}
-							| / 
-					td
-						each mc in mix.mcs	
-							a(href='/mc/' + mc) !{mc}
-							| / 
-					td= Math.floor(mix.bitrate)
-					td= mix.downloads
-					if mix.day && mix.month && mix.year
-						td  #{mix.day}/#{mix.month}/#{mix.year}
-					else if mix.day && mix.month
-						td #{mix.daty} / #{mix.month}
-					else if mix.year
-						td= mix.year
-					else
-						td unknown
-					td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)}
+					
 					td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()} #{mix.date.getHours()}:#{mix.date.getHours()} 
 	div.page-selection
 		if page > 1

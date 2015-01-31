@@ -15,6 +15,8 @@ exports.routes = function(app) {
 	app.get('/search/:term', exports.search);
 	app.get('/uploader/:url/page/:page', exports.uploader);
 	app.get('/uploader/:url', exports.uploader);
+	app.get('/station/:url', exports.station);
+	app.get('/station/:url/page/:page', exports.station);
 };
 
 exports.mixes = function(req, res) {
@@ -221,6 +223,46 @@ exports.uploader = function(req, res) {
 				}
 
 				res.render('mixes', {title: user, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+		});
+	});
+};
+
+exports.station = function(req, res) {
+	var page;
+
+	if (typeof req.params.page !== 'undefined') {
+
+		page = req.params.page;
+		
+		if (page < 1) {
+			page = 1;
+		}
+	} else {
+		page = 1;
+	}
+
+	var skip = (page - 1) * pageCount;
+
+	Mix.count({hidden: false}).exec(function(err, count) {
+			if (err){
+				console.log("find error");
+				throw err;
+			}
+
+		Mix.find({crews: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(pageCount)
+			.exec(function(err, mixes) {
+				if (err){
+					console.log("find error");
+					throw err;
+				}
+				var currentUrl = '/station/' + req.params.url + '/page/';
+				
+				var hasNext = false;
+				if (count > (skip + pageCount)) {
+					hasNext = true;
+				}
+
+				res.render('mixes', {title: req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
