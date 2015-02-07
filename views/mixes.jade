@@ -33,13 +33,19 @@ block content
 							| Unknown DJ
 
 					td
-						each mc in mix.mcs	
-							a(href='/mc/' + mc) !{mc}
-							| /
+						if mix.mcs.length
+							each mc in mix.mcs	
+								a(href='/mc/' + mc) !{mc}
+								| /
+						else
+							| -
 					td
-						each crew in mix.crews	
-							a(href='/crew/' + crew) !{crew}
-							| /
+						if mix.crews.length
+							each crew in mix.crews	
+								a(href='/crew/' + crew) !{crew}
+								| /
+						else
+							| -
 					td
 						if mix.station
 							a(href='/station/' + mix.station) #{mix.station}
