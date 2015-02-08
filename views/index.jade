@@ -1,10 +1,10 @@
 extends layout
 
 block content
-	h1= title
+	h2 Welcome to #{title}
 	.nav-bar
-		
-	p Popular mixes
+	p Grimetapes is a digital archive that aims to preserve the history of grime by providing free downloads of live recordings both old and new.
+	h3 POPULAR MIXES
 
 	table
 		thead
@@ -94,7 +94,7 @@ block content
 									});
 					
 					td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()} #{mix.date.getHours()}:#{mix.date.getHours()} 
-	p Recent
+	h3 RECENT MIXES
 
 	table
 		thead

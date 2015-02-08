@@ -3,34 +3,45 @@ extends layout
 block content
 	.upload.content 
 		
-			div.upload-labels
-				p Title:
-				p DJ: 
-				p MCs:
-				p Crews:
-				p Radio Station / Rave:
-				p Air Date:
-				p Description:
-				p username/tripcode
+			//- div.upload-labels
+			//- 	p Title:
+			//- 	p DJ: 
+			//- 	p MCs:
+			//- 	p Crews:
+			//- 	p Radio Station / Rave:
+			//- 	p Air Date:
+			//- 	p Description:
+			//- 	p username/tripcode
 			div.upload-inputs
 				form(id="_form", name="upload", action="/upload", method="post", enctype='multipart/form-data')
+					| Title:
 					input(type="text", name="title")
-					br
+					
+					| DJ: 
 					input(type="text", name="dj")
 					br
+					| MCs:
 					input(type="text", name="mcs")
-					br
+					
+					| Crews: 
 					input(type="text", name="crews")
 					br
+					| Radio Station / Rave: 
 					input(type="text", name="station")
 					br
+					| Air Date:
 					input(type="text", name="day")
 					input(type="text", name="month")
 					input(type="text", name="year")
 					br
+					| Name: 
 					input(type="text", name="username")
+					| Tripcode: 
 					input(type="text", name="tripcode")
+					div.tripcode-tooltip
+						| (?)
 					br
+					p Additional comments:
 					textarea(name="description" cols="40" rows="5")
 					br
 					input(type="file", name="file" id='_file')

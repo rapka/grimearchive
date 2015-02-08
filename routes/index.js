@@ -8,13 +8,13 @@ exports.routes = function(app) {
 };
 
 exports.index = function(req, res) {
-	Mix.find({hidden: false}).sort({date: -1}).limit(10).exec(function(err, recent) {
+	Mix.find({hidden: false}).sort({date: -1}).limit(6).exec(function(err, recent) {
 			if (err){
 				console.log("find error");
 				throw err;
 			}
 
-		Mix.find({hidden: false}).sort({downloads: -1}).limit(10).exec(function(err, popular) {
+		Mix.find({hidden: false}).sort({downloads: -1}).limit(6).exec(function(err, popular) {
 				if (err){
 					console.log("find error");
 					throw err;

@@ -7,6 +7,12 @@ body {
 	font-family: sans-serif;
 }
 
+h3 {
+	font: 2
+	0px "Helvetica", Helvetica, Arial, sans-serif;
+	color: #FF31A0;
+}
+
 .title-pic {
 	img {
 		width: 400px;
@@ -75,6 +81,7 @@ tr.mix-row {
 .footer {
 	clear: both;
 	width: 1180px;
+	padding-top: 20px;
 	//font: 12px "Helvetica", Helvetica, Arial, sans-serif;
 	text-align: center;
 	margin-left: auto;
@@ -95,19 +102,25 @@ tr.mix-row {
 
 .upload {
 	//overflow: auto;
-
+	font: 16px "Helvetica", Helvetica, Arial, sans-serif;
+	
 	.upload-labels {
 		float: left;
 	}
 
 	.upload-inputs {
+		
 		margin: 5px 0px 0px 0px;
 		float: left;
 		input, textarea {
-			font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+			font: 16px "Helvetica", Helvetica, Arial, sans-serif;
 			border: 0px;
 			padding: 0px;
-			margin: 5px 2px 5px 2px;
+			margin: 5px 5px 5px 5px;
+
+		}
+		.tripcode-tooltip {
+			display: inline;
 		}
 
 	}
@@ -179,6 +192,7 @@ tr.mix-row {
 }
 
 .page-selection {
+	padding-top: 10px;
 	font: 16px "Helvetica", Helvetica, Arial, sans-serif;
 	color: #616161;
 
