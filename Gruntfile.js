@@ -87,6 +87,7 @@ module.exports = function(grunt) {
 					dot: true,
 					cwd: 'public-src',
 					src: [
+					'style/**/*.css',
 					'js/**/*.js',
 					'img/**/*'
 					],

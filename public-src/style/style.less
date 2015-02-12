@@ -112,13 +112,44 @@ tr.mix-row {
 		
 		margin: 5px 0px 0px 0px;
 		float: left;
-		input, textarea {
+		textarea {
 			font: 16px "Helvetica", Helvetica, Arial, sans-serif;
 			border: 0px;
 			padding: 0px;
 			margin: 5px 5px 5px 5px;
 
+			&:focus {
+				outline: #36E0FF;
+			}
 		}
+
+		input {
+			height: 25px;
+			font: 16px "Helvetica", Helvetica, Arial, sans-serif;
+			border: 0px;
+			padding: 3px;
+			margin: 5px 5px 5px 5px;
+
+			&:focus {
+				outline: #36E0FF  solid 2px;
+			}
+		}
+
+		.tagsinput {
+			font-size: 16px;
+
+			span.tag {
+				font: 16px "Helvetica", Helvetica, Arial, sans-serif;
+				font-size: 16px;
+				border: 1px solid #FF31A0;
+				background: #FF86F5;
+
+				a {
+					color: #FF31A0;
+				}
+			}
+		}
+
 		.tripcode-tooltip {
 			display: inline;
 		}
