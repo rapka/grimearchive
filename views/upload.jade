@@ -34,12 +34,17 @@ block content
 					input(type="text", name="month" placeholder="month")
 					input(type="text", name="year" placeholder="year")
 					br
-					| Name: 
+					| Username: 
 					input(type="text", name="username")
 					| Tripcode: 
 					input(type="text", name="tripcode")
 					div.tripcode-tooltip
 						| (?)
+					div.tooltip
+						br
+						| Grimetapes uploaders are anonymous, but if you want any mixes you upload to be identifiable,
+						| you can provide a name and tripcode that will be used to identify you.
+						| Tripcodes are passwords that get encrypted and displayed as a unique series of emojis next to your name.
 					br
 					p Additional comments:
 					textarea(name="description" cols="40" rows="5")
@@ -91,6 +96,10 @@ block content
 							
 							xhr.send(fd);	
 						}
+							$('.tripcode-tooltip').click(function() {
+
+								$( ".tooltip" ).toggle();
+							})
 
 							$('#mcs').tagsInput({
 								 'defaultText':'',

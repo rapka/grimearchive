@@ -19,10 +19,6 @@ h3 {
 	}
 }
 
-// a {
-//   color: #00B7FF;
-// }
-
 p {
 	margin: 10px 0px 10px 0px;
 }
@@ -123,6 +119,16 @@ tr.mix-row {
 			}
 		}
 
+		input#mcs_tag{
+				margin: 0px;
+				padding: 2px;	
+		}
+
+		input#crews_tag{
+				margin: 0px;	
+				padding: 2px;	
+		}
+
 		input {
 			height: 25px;
 			font: 16px "Helvetica", Helvetica, Arial, sans-serif;
@@ -152,8 +158,19 @@ tr.mix-row {
 
 		.tripcode-tooltip {
 			display: inline;
+			color: #36E0FF;	
+
+			&:hover {
+			color: #57F2FF;
+			cursor: pointer;
+			}
 		}
 
+		.tooltip {
+
+			display: none;
+
+		}
 	}
 
 
