@@ -14,29 +14,35 @@ block content
 			//- 	p username/tripcode
 			div.upload-inputs
 				form(id="_form", name="upload", action="/upload", method="post", enctype='multipart/form-data')
-					| Title:
+					div.upload-label
+						| Title:
 					input(type="text", name="title")
-					
-					| DJ: 
+					div.upload-label
+						| DJ: 
 					input(type="text", name="dj")
 					br
-					| MCs:
+					div.upload-label
+						| MCs:
 					input(type="text", name="mcs" id="mcs")
-					
-					| Crews: 
+					div.upload-label
+						| Crews: 
 					input(type="text", name="crews" id="crews")
 					br
-					| Radio Station / Rave: 
+					div.upload-label
+						| Radio Station / Rave: 
 					input(type="text", name="station")
 					br
-					| Air Date:
+					div.upload-label
+						| Air Date:
 					input(type="text", name="day" placeholder="day")
 					input(type="text", name="month" placeholder="month")
 					input(type="text", name="year" placeholder="year")
 					br
-					| Username: 
+					div.upload-label
+						| Username: 
 					input(type="text", name="username")
-					| Tripcode: 
+					div.upload-label
+						| Tripcode: 
 					input(type="text", name="tripcode")
 					div.tripcode-tooltip
 						| (?)
@@ -51,7 +57,7 @@ block content
 					br
 					input(type="file", name="file" id='_file')
 					input(type='button',  onclick="uploadFile()", value='Upload', id='_submit' accept='mp3')
-					div.progress
+					div.progress.big
 						| O%
 					script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
 					script(src="/js/jquery.tagsinput.js")
