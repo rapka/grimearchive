@@ -65,9 +65,11 @@ block content
 					script(type='text/javascript').
 
 						function uploadFile() {
+							console.log("uploading");
 							var file = document.getElementById('_file');
 							
 							file.onchange = function(e){
+							console.log("onchaaa");
 							    var ext = this.value.match(/\.([^\.]+)$/)[1];
 							    switch(ext)
 							    {
@@ -87,7 +89,9 @@ block content
 							var xhr = new XMLHttpRequest();
 							xhr.upload.addEventListener("progress", function (evt) {
 									if (evt.lengthComputable) {
+										console.log("progreesss");
 										var percentage = (evt.loaded / evt.total) * 100;
+										console.log(percentage);
 										$('progress').text(percentage + '%');
 									}
 								}, false);
