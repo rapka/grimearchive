@@ -19,10 +19,29 @@ var allowedTypes = [
 	"audio/mp3"
 ];
 
+
+var existsSync = function(filePath){
+	try{
+		fs.statSync(filePath);
+	}catch(err){
+		if(err.code == 'ENOENT') return false;
+	}
+	return true;
+};
+
 exports.rename = function (fieldname, filename) {
 	
 	var ts = String(new Date().getTime());
-	return ts.substr(ts.length - 4);
+	var num = ts.substr(ts.length - 7)
+	var path = __dirname  + "/upload/" + num + ".mp3";
+	//var stats = fs.accessSync(path);
+	// Check for duplicates
+	while (existsSync(path)) {
+		num = ts.substr(ts.length - 7)
+		path = __dirname  + "/upload/" + num + ".mp3";
+		//stats = fs.accessSync(path);
+	}
+	return num;
 }
 
 exports.onFileUploadStart = function (file) {
@@ -81,8 +100,6 @@ exports.onParseEnd = function (req, next) {
 		var crypted = crypto.createHash('sha256').update(req.body.tripcode).digest('hex').substring(0,8);
 		mix.tripcode = crypted;
 	}
-
-	 
 
 	if (req.body.mcs) {
 		mix.mcs = req.body.mcs.split(",");
