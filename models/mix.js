@@ -49,6 +49,9 @@ mixSchema.methods.updateTags = function() {
 	if (this.day && this.month && this.year){
 		titleString += ", " + this.year.toString() + "-" + this.month.toString() + "-" + this.day.toString();
 	}
+	else if (this.year) {
+		titleString += ", " + this.year.toString();
+	}
 
 	//append mcs
 	if (this.mcs.length == 1){

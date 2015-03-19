@@ -31,9 +31,9 @@ block content
 				if mix.day && mix.month && mix.year
 					| !{mix.day}/#{mix.month}/#{mix.year}
 				else if mix.day && mix.month
-					| #{mix.daty} / #{mix.month}
+					| #{mix.day} / #{mix.month}
 				else if mix.year
-					| #{mix.year}
+					| Unknown Date, #{mix.year}
 				else
 					| Unknown Date
 		div.big.blue
