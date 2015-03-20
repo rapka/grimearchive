@@ -84,7 +84,15 @@ block content
 							xhr.onreadystatechange = function() {
 								var result;
 								if (xhr.readyState == 4) {
-									window.location = xhr.responseText; 
+									var split = xhr.responseText.split("/")[2];
+									setInterval(function() { 
+										$.get("upload/" + split, function (data) {
+											if (parseInt(data) > 0) {
+													window.location = xhr.responseText; 
+												}
+											}); 
+										}, 200);
+									
 								}
 
 							};

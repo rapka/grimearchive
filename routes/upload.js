@@ -4,11 +4,21 @@ var Mix = mongoose.model('Mix');
 exports.routes = function(app) {
 	app.get('/upload', exports.index);
 	app.post('/upload', exports.add);
+	app.get('/upload/:url', exports.checkFfmpeg)
 };
 
 exports.index = function(req, res) {
 	res.render('upload', {
 		title: 'Grimelist',
+	});
+};
+
+exports.checkFfmpeg = function(req, res) {
+	var mix = Mix.findOne({url: req.params.url}).exec(function (err, mix){
+		//if (mix.bitrate && mix.length) {
+			res.send(mix.bitrate.toString());
+		//}
+		//res.send("false");
 	});
 };
 
