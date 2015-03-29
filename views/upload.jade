@@ -1,105 +1,76 @@
 extends layout
 
 block content
+
 	.upload.content 
+		//-.upload-vertical
+		//-	| UPLOAD
 		
-			//- div.upload-labels
-			//- 	p Title:
-			//- 	p DJ: 
-			//- 	p MCs:
-			//- 	p Crews:
-			//- 	p Radio Station / Rave:
-			//- 	p Air Date:
-			//- 	p Description:
-			//- 	p username/tripcode
-			div.upload-inputs
-				form(id="_form", name="upload", action="/upload", method="post", enctype='multipart/form-data')
-					div.upload-label
-						| Title:
-					input(type="text", name="title")
-					div.upload-label
-						| DJ: 
-					input(type="text", name="dj")
-					br
-					div.upload-label
-						| MCs:
-					input(type="text", name="mcs" id="mcs")
-					div.upload-label
-						| Crews: 
-					input(type="text", name="crews" id="crews")
-					br
-					div.upload-label
-						| Radio Station / Rave: 
-					input(type="text", name="station")
-					br
-					div.upload-label
-						| Air Date:
-					input(type="text", name="day" placeholder="day" class="date")
-					input(type="text", name="month" placeholder="month" class="date")
-					input(type="text", name="year" placeholder="year" class="date")
-					br
-					div.upload-label
-						| Username: 
-					input(type="text", name="username")
-					div.upload-label
-						| Tripcode: 
-					input(type="text", name="tripcode")
+		//- div.upload-labels
+		//- 	p Title:
+		//- 	p DJ: 
+		//- 	p MCs:
+		//- 	p Crews:
+		//- 	p Radio Station / Rave:
+		//- 	p Air Date:
+		//- 	p Description:
+		//- 	p username/tripcode
+		div.upload-inputs
+			form(id="_form", name="upload", action="/upload", method="post", enctype='multipart/form-data')
+				div.upload-label
+					| Title
+				input(type="text", name="title")
+				div.upload-label
+					| DJ
+				input(type="text", name="dj")
+				br
+				div.upload-label.tag-input
+					| MCs
+				input(type="text", name="mcs" id="mcs")
+				div.upload-label.tag-input
+					| Crews
+				input(type="text", name="crews" id="crews")
+				div.upload-label
+					| Radio Station / Rave: 
+				input(type="text", name="station")
+				br
+				div.upload-label
+					| Air Date
+				input(type="text", name="day" placeholder="day" class="date")
+				input(type="text", name="month" placeholder="month" class="date")
+				input(type="text", name="year" placeholder="year" class="date")
+				br
+				div.upload-divider
+				div.upload-label
+					| Username
+				input(type="text", name="username")
+				div.upload-label
+					| Tripcode 
 					div.tripcode-tooltip
 						| (?)
-					div.tooltip
-						br
-						| Grimetapes uploaders are anonymous, but if you want any mixes you upload to be identifiable,
-						| you can provide a name and tripcode that will be used to identify you.
-						| Tripcodes are passwords that get encrypted and displayed as a unique series of emojis next to your name.
+				input(type="text", name="tripcode")
+
+				div.tooltip
 					br
-					p Additional comments:
-					textarea(name="description" cols="40" rows="5")
-					br
-					input(type="file", name="file" id='_file')
-					input(type='button',  onclick="uploadFile()", value='Upload', id='_submit' accept='audio/mpeg3,audio/mpeg,audio/mp3')
-					div.progress.big
-						| O%
-					script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
-					script(src="/js/jquery.tagsinput.js")
-					link(rel="stylesheet" type="text/css" href="style/jquery.tagsinput.css")
-					script(type='text/javascript').
-
-						function uploadFile() {
-							console.log("uploading");
-
-
-							//evt.preventDefault();
-							var form = document.getElementById('_form');
-							var fd = new FormData(form);
-							
-							var xhr = new XMLHttpRequest();
-							xhr.upload.addEventListener("progress", function (evt) {
-									if (evt.lengthComputable) {
-										console.log("progreesss");
-										var percentage = Math.floor((evt.loaded / evt.total) * 100);
-										console.log(percentage);
-										$('.progress').text(percentage + '%');
-									}
-								}, false);
-							xhr.onreadystatechange = function() {
-								var result;
-								if (xhr.readyState == 4) {
-									var split = xhr.responseText.split("/")[2];
-									setInterval(function() { 
-										$.get("upload/" + split, function (data) {
-											if (parseInt(data) > 0) {
-													window.location = xhr.responseText; 
-												}
-											}); 
-										}, 200);
-									
-								}
-
-							};
-							xhr.open('post', '/upload', true);
-							
-							xhr.send(fd);	
-						}
+					| Grimelist uploaders are anonymous, but if you want any mixes you upload to be identifiable,
+					| you can provide a name and tripcode that will be used to identify you.
+					| Tripcodes are passwords that get encrypted and displayed as a unique series of emojis next to your name.
+				br
+				div.upload-label
+					| Additional comments
+				textarea(name="description" cols="40" rows="5")
+				br
+				input(type="file", name="file" id='_file')
+				input(type='button',  onclick="uploadFile()", value='Upload', id='_submit' accept='audio/mpeg3,audio/mpeg,audio/mp3')
+				script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+				script(src="/js/jquery.tagsinput.js")
+				link(rel="stylesheet" type="text/css" href="style/jquery.tagsinput.css")
+				script(type='text/javascript').
+					function uploadFile() {
+						console.log("uploading");
+						//evt.preventDefault();
+						var form = document.getElementById('_form');
+						var fd = new FormData(form);
 
 						var file = document.getElementById('_file');
 							
@@ -111,19 +82,62 @@ block content
 						    		$('.progress').text("Invalid file type");
 						    	} 
 						};
+						
+						var acceptedTypes = ['mp3'];
 
-						$('.tripcode-tooltip').click(function() {
-							$( ".tooltip" ).toggle();
-						})
-						$('#mcs').tagsInput({
-							 'defaultText':'',
-							 'height':'20px',
-							 'width':'400px'
-							});
-						$('#crews').tagsInput({
-							 'defaultText':'',
-							 'height':'20px',
-							 'width':'400px'
-							});
+						var xhr = new XMLHttpRequest();
+						var filename = document.getElementById('_file').value;
+						//var ext = filename.match(/\.([^\.]+)$/)[1];
+						console.log($('#_file'));
+						if (document.getElementById('_file').value == ''){
+								$('#_submit').prop('value', 'No file selected');
+						}
+						else if (acceptedTypes.indexOf(filename.match(/\.([^\.]+)$/)[1]) == -1 ) {
+							$('#_submit').prop('value', 'Invalid file type');
+						}
+						else {
+							xhr.upload.addEventListener("progress", function (evt) {
+									if (evt.lengthComputable) {
+										console.log("progreesss");
+										var percentage = Math.floor((evt.loaded / evt.total) * 100);
+										console.log(percentage);
+										$('#_submit').prop('value', percentage + '%');
+									}
+								}, false);
+							xhr.onreadystatechange = function() {
+								var result;
+								console.log(xhr);
+	
+								if (xhr.readyState == 4) {
+									var split = xhr.responseText.split("/")[2];
+									setInterval(function() { 
+										$.get("upload/" + split, function (data) {
+											if (parseInt(data) > 0) {
+													window.location = xhr.responseText; 
+												}
+											}); 
+										}, 200);
+									
+								}
+							};
+							xhr.open('post', '/upload', true);
+							
+							xhr.send(fd);	
+						}
+					}
+
+					$('.tripcode-tooltip').click(function() {
+						$( ".tooltip" ).toggle();
+					})
+					$('#mcs').tagsInput({
+						 'defaultText':'',
+						 'height':'20px',
+						 'width':'404px'
+						});
+					$('#crews').tagsInput({
+						 'defaultText':'',
+						 'height':'20px',
+						 'width':'404px'
+						});
 						
 

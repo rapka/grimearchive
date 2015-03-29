@@ -8,8 +8,7 @@ body {
 }
 
 h3 {
-	font: 2
-	0px "Helvetica", Helvetica, Arial, sans-serif;
+	font: 20px "Helvetica", Helvetica, Arial, sans-serif;
 	color: #FF31A0;
 }
 
@@ -34,6 +33,40 @@ p {
 	}
 }
 
+.header-title {
+	width: 10%;
+}
+.header-dj {
+	width: 7%;
+}
+.header-mc{
+	width: 15%;
+}
+.header-crew {
+	width: 17%;
+}
+.header-station {
+	width: 5.5%;
+}
+.header-date {
+	width: 5%;
+}
+.header-duration {
+	width: 3.5%;
+}
+.header-bitrate {
+	width: 3%;
+}
+.header-downloads {
+	width: 5%;
+}
+.header-uploader {
+	width: 8%;
+}
+.header-uploaded {
+	width: 4%;
+}
+
 ul.mix-header { 
 	li {
 		display: inline-block;
@@ -43,15 +76,23 @@ ul.mix-header {
 }
 
 table {
+	table-layout: fixed;
+	width: 100%;
 	//border: 1px solid #FFFFFF;
 }
 
 td {
 	height: 24px;
-	padding: 0px 5px 0 5px;
+	overflow: hidden;
+	//padding: 0px 5px 0 5px;
 }
+
 tr.mix-row { 
 	//td {
+
+
+
+
 		font: 16px "Helvetica", Helvetica, Arial, sans-serif;
 		padding-left: 30px;
 		padding-right: 30px;
@@ -70,9 +111,8 @@ tr.mix-row {
 }
 
 .content {
-	margin-left: auto;
-	margin-right: auto;
-	width: 1180px;
+	margin: 0 auto;
+	width: 400px;
 }
 
 .footer {
@@ -100,8 +140,17 @@ tr.mix-row {
 .upload {
 	//overflow: auto;
 	font: 16px "Helvetica", Helvetica, Arial, sans-serif;
-	
+
+	.upload-vertical {
+		transform: rotate(270deg);
+		//transform-origin: left bottom 0;
+		font-size:  100px;
+	}
+
 	.upload-label {
+		color: #BFFF25;
+		width: 400px;
+		text-align: center;
 		padding-top: 5px;
 	}
 
@@ -114,26 +163,53 @@ tr.mix-row {
 			border: 0px;
 			padding: 0px;
 			margin: 5px 5px 5px 5px;
+			width: 400px;
+			resize: none;
 
 			&:focus {
 				outline: #36E0FF;
 			}
 		}
 
+		.tagsinput {
+			margin: 5px;
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
+
 		input#mcs_tag{
+			padding-top: 0px;
+			padding-bottom: 0px;
 			margin: 0px;
-			padding: 2px;	
+			//padding: 2px;	
+			padding: 0 ;
+			width: 402px;
 		}
 
 		input#crews_tag{
 			margin: 0px;	
-			padding: 2px;	
+			padding: 0;
 		}
 
 		input#_submit {
 			color: #FF31A0;
 			background: black;
 			border: 1px solid #FF31A0;
+			display: block;
+
+			&:hover {
+				color: #FF86F5;
+				cursor: pointer;
+			}
+		}
+
+		.upload-divider{
+			margin: 5px;
+			width: 405px;
+			color: #888888;
+			height: 0;
+			border: 1px solid;
+
 		}
 
 		input {
@@ -144,13 +220,22 @@ tr.mix-row {
 			padding: 3px;
 			margin: 5px 5px 5px 5px;
 
+			&.tag-input {
+				
+				
+			}
+
 			&:focus {
 				outline: #36E0FF  solid 2px;
 			}
 		}
 
 		input.date {
-			width: 121px;
+			width: 122px;
+		}
+
+		input#_file {
+
 		}
 
 		.tagsinput {
@@ -179,7 +264,7 @@ tr.mix-row {
 		}
 
 		.tooltip {
-
+			width: 420px;
 			display: none;
 
 		}
@@ -191,6 +276,11 @@ tr.mix-row {
         width: 20%;
         height: 20px;  
     }
+}
+
+.mix-element {
+	max-width: 1600px;
+	word-wrap: break-word;
 }
 
 .big{

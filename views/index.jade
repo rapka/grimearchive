@@ -9,17 +9,17 @@ block content
 	table
 		thead
 			tr.mix-header
-				td Title
-				td DJ
-				td Mcs
-				td Crews
-				td Station / Rave
-				td Air date
-				td Duration
-				td Bitrate
-				td Downloads
-				td Uploader
-				td Uploaded
+				td.header-title Title
+				td.header-dj DJ
+				td.header-mc Mcs
+				td.header-crew Crews
+				td.header-station Station / Rave
+				td.header-date Air date
+				td.header-duration Duration
+				td.header-bitrate Bitrate
+				td.header-downloads Downloads
+				td.header-uploader Uploader
+				td.header-uploaded Uploaded
 
 		tbody
 			each mix in popular
@@ -37,16 +37,22 @@ block content
 
 					td
 						if mix.mcs.length
-							each mc in mix.mcs	
-								a(href='/mc/' + mc) !{mc}
-								| /
+							each mc, index in mix.mcs
+								if index < 4
+									a(href='/mc/' + mc) !{mc}
+									| /
+								else if index == 4
+									a(href='/mix/' + mix.url) more
 						else
 							| -
 					td
 						if mix.crews.length
-							each crew in mix.crews	
-								a(href='/crew/' + crew) !{crew}
-								| /
+							each crew, index in mix.crews
+								if index < 3		
+									a(href='/crew/' + crew) !{crew}
+									| /
+								else if index == 3
+									a(href='/mix/' + mix.url) more
 						else
 							| -
 					td
@@ -93,23 +99,23 @@ block content
 										updateEmojis();
 									});
 					
-					td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()} #{mix.date.getHours()}:#{mix.date.getHours()} 
+					td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
 	h3 RECENT MIXES
 
 	table
 		thead
 			tr.mix-header
-				td Title
-				td DJ
-				td Mcs
-				td Crews
-				td Station / Rave
-				td Air date
-				td Duration
-				td Bitrate
-				td Downloads
-				td Uploader
-				td Uploaded
+				td.header-title Title
+				td.header-dj DJ
+				td.header-mc Mcs
+				td.header-crew Crews
+				td.header-station Station / Rave
+				td.header-date Air date
+				td.header-duration Duration
+				td.header-bitrate Bitrate
+				td.header-downloads Downloads
+				td.header-uploader Uploader
+				td.header-uploaded Uploaded
 
 		tbody
 			each mix in recent
@@ -124,19 +130,24 @@ block content
 							a(href='/dj/' + mix.dj) !{mix.dj}
 						else
 							| Unknown DJ
-
 					td
 						if mix.mcs.length
-							each mc in mix.mcs	
-								a(href='/mc/' + mc) !{mc}
-								| /
+							each mc, index in mix.mcs
+								if index < 4
+									a(href='/mc/' + mc) !{mc}
+									| /
+								else if index == 4
+									a(href='/mix/' + mix.url) more
 						else
 							| -
 					td
 						if mix.crews.length
-							each crew in mix.crews	
-								a(href='/crew/' + crew) !{crew}
-								| /
+							each crew, index in mix.crews
+								if index < 3		
+									a(href='/crew/' + crew) !{crew}
+									| /
+								else if index == 3
+									a(href='/mix/' + mix.url) more
 						else
 							| -
 					td
@@ -183,4 +194,4 @@ block content
 										updateEmojis();
 									});
 					
-					td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()} #{mix.date.getHours()}:#{mix.date.getHours()} 
+					td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}

@@ -2,32 +2,32 @@ extends layout
 
 block content
 	if mix.hidden == false
-		div.big.yellow
+		div.big.yellow.mix-element
 			if mix.dj
 				a(href='/dj/' + mix.dj) #{mix.dj}
 			else
 				| Unknown DJ
 			
-		div.big.blue 
+		div.big.blue.mix-element 
 			if mix.title
 				| #{mix.title}
 			else
 				| Untitled
 		br
 		if mix.mcs.length != 0
-			div.big.red 
+			div.big.red.mix-element 
 				| feat. 
 				each mc in mix.mcs	
 					a(href='/mc/' + mc) #{mc}
 					| /
 			br
 		if mix.crews.length != 0
-			div.big.green 
+			div.big.green.mix-element 
 				each crew in mix.crews	
 					a(href='/crew/' + crew) #{crew}
 					| /
 			br
-		div.big.yellow
+		div.big.yellow.mix-element 
 				if mix.day && mix.month && mix.year
 					| !{mix.day}/#{mix.month}/#{mix.year}
 				else if mix.day && mix.month
@@ -36,16 +36,16 @@ block content
 					| Unknown Date, #{mix.year}
 				else
 					| Unknown Date
-		div.big.blue
+		div.big.blue.mix-element 
 				| @#{mix.station}
 		br
-		div.big.green
+		div.big.green.mix-element 
 			| #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)} 
-		div.big.blue
+		div.big.blue.mix-element 
 			| #{Math.floor(mix.bitrate)}kbps 
-		div.big.yellow
+		div.big.yellow.mix-element 
 			| #{mix.downloads} Downloads
-		div.big.red
+		div.big.red.mix-element 
 			a(download href='/download/' + mix.url) Download
 
 
