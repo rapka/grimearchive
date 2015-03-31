@@ -12,6 +12,8 @@ var probe = require('node-ffprobe');
 var mongoose = require('mongoose');
 var md5 = require('MD5');
 var multer = require('multer');
+var session = require('express-session');
+var config = require('./config');
 
 var app = express();
 
@@ -60,6 +62,14 @@ app.use(function(err, req, res, next) {
 				error: {}
 		});
 });
+
+app.use(session({
+  genid: function(req) {
+    return genuuid() // use UUIDs for session IDs
+  },
+  secret: config.secret,
+  cookie: { secure: true }
+}))
 
 // Load models.
 var models_path = __dirname + '/models';
