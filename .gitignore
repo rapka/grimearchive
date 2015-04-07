@@ -35,3 +35,7 @@ public-src/*.css
 
 #upload folder
 upload
+
+#private config files
+config.json
+admins.json
