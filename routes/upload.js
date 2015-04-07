@@ -9,7 +9,7 @@ exports.routes = function(app) {
 
 exports.index = function(req, res) {
 	res.render('upload', {
-		title: 'Grimelist',
+		title: 'Grimelist'
 	});
 };
 
@@ -36,11 +36,3 @@ exports.add = function(req, res) {
 	}
 };
 
-exports.view = function(req, res) {
-	var mix = Mix.findOne({}).exec(function (err, mix){
-		res.render('mixes', {
-			title: 'Grimelist',
-			mix: mix
-		});
-	});
-};

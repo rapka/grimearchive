@@ -34,6 +34,16 @@ app.use(multer({ dest: './upload/',
 		onFileUploadData: uploadHandler.onFileUploadData
 }));
 
+
+app.use(session({
+	saveUninitialized: true,
+	resave: false,
+	secret: config.secret,
+	cookie: {
+  		secure: true
+ 	}
+}));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -63,13 +73,6 @@ app.use(function(err, req, res, next) {
 		});
 });
 
-app.use(session({
-  genid: function(req) {
-    return genuuid() // use UUIDs for session IDs
-  },
-  secret: config.secret,
-  cookie: { secure: true }
-}))
 
 // Load models.
 var models_path = __dirname + '/models';

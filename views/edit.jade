@@ -3,68 +3,40 @@ extends layout
 block content
 
 	.upload.content 
-		//-.upload-vertical
-		//-	| UPLOAD
-		
-		//- div.upload-labels
-		//- 	p Title:
-		//- 	p DJ: 
-		//- 	p MCs:
-		//- 	p Crews:
-		//- 	p Radio Station / Rave:
-		//- 	p Air Date:
-		//- 	p Description:
-		//- 	p username/tripcode
+
 		div.upload-inputs
 			form(id="_form", name="upload", action="/upload", method="post", enctype='multipart/form-data')
 				div.upload-label
 					| Title
-				input(type="text", name="title")
+				input(type="text", name="title" value='#{mix.title}')
 				div.upload-label
 					| DJ
-				input(type="text", name="dj")
+				input(type="text", name="dj" value='#{mix.dj}')
 				br
-				div.upload-label.tag-input
+				div.upload-label
 					| MCs
-				input(type="text", name="mcs" id="mcs")
-				div.upload-label.tag-input
+				input(type="text", name="mcs" value='#{mix.mcs}')
+				div.upload-label
 					| Crews
-				input(type="text", name="crews" id="crews")
+				input(type="text", name="crews" value='#{mix.crews}')
 				div.upload-label
 					| Radio Station / Rave: 
-				input(type="text", name="station")
+				input(type="text", name="station" value='#{mix.station}')
 				br
 				div.upload-label
 					| Air Date
-				input(type="text", name="day" placeholder="day" class="date")
-				input(type="text", name="month" placeholder="month" class="date")
-				input(type="text", name="year" placeholder="year" class="date")
+				input(type="text", name="day" placeholder="day" class="date" value='#{mix.day}')
+				input(type="text", name="month" placeholder="month" class="date" value='#{mix.month}')
+				input(type="text", name="year" placeholder="year" class="date" value='#{mix.year}')
 				br
 				div.upload-divider
-				div.upload-label
-					| Username
-				input(type="text", name="username")
-				div.upload-label
-					| Tripcode 
-					div.tripcode-tooltip
-						| (?)
-				input(type="text", name="tripcode")
-
-				div.tooltip
-					br
-					| Grimelist uploaders are anonymous, but if you want any mixes you upload to be identifiable,
-					| you can provide a name and tripcode that will be used to identify you.
-					| Tripcodes are passwords that get encrypted and displayed as a unique series of emojis next to your name.
 				br
 				div.upload-label
 					| Additional comments
 				textarea(name="description" cols="40" rows="5")
 				br
-				input(type="file", name="file" id='_file' accept='audio/mpeg3,audio/mpeg,audio/mp3')
-				input(type='button',  onclick="uploadFile()", value='Upload', id='_submit')
+				input(type='button',  onclick="uploadFile()", value='Upload', id='_submit' accept='audio/mpeg3,audio/mpeg,audio/mp3')
 				script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
-				script(src="/js/jquery.tagsinput.js")
-				link(rel="stylesheet" type="text/css" href="style/jquery.tagsinput.css")
 				script(type='text/javascript').
 					function uploadFile() {
 						console.log("uploading");
@@ -126,18 +98,5 @@ block content
 						}
 					}
 
-					$('.tripcode-tooltip').click(function() {
-						$( ".tooltip" ).toggle();
-					})
-					$('#mcs').tagsInput({
-						 'defaultText':'',
-						 'height':'20px',
-						 'width':'404px'
-						});
-					$('#crews').tagsInput({
-						 'defaultText':'',
-						 'height':'20px',
-						 'width':'404px'
-						});
-						
+		
 

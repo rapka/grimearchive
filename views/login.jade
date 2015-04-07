@@ -1,7 +1,19 @@
 extends layout
 
 block content
-	if form
-		p FORM GOES HERE
-	else
+	if message == "loggedIn"
 		p YOURE LOGGED IN
+	else if message == "invalid"
+		p INVALID
+	if !message || message == "invalid"
+		form(name="admin", action="/admin/login", method="post")
+			div.upload-label
+				| User name
+			input(type="text", name="user")
+			div.upload-label
+				| PW
+			input(type="password", name="password")
+			input(type='submit', value='Login', id='_submit')
+
+	else
+		p LOL

@@ -33,6 +33,7 @@
     "busboy": "~0.2.9",
     "multer": "~0.1.6",
     "emoji": "~0.3.2",
-    "express-session": "~1.10"
+    "express-session": "~1.10",
+    "uuid": "2.0.1"
   }
 }
