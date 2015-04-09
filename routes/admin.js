@@ -13,11 +13,16 @@ exports.routes = function(app) {
 
 exports.loginForm = function(req, res) {
 	console.log(req.session);
-	console.log(req.session.name);
-	if (req.session.name) {
-		res.render('login', { message: 'loggedIn'});
+	console.log(req.session.username);
+	if (req.session.username && req.params.message == 'loggedIn') {
+		console.log("meees111");
+		res.render('login', { message: req.params.message});
+	}
+	else if (req.params.message == 'loggedIn') {
+		res.render('login');
 	}
 	else {
+		console.log("meees");
 		res.render('login', { message: req.params.message});
 	}
 	
@@ -35,11 +40,13 @@ exports.login = function(req, res) {
 	for (user in admins){
 		if (req.body.user == user && hashed == admins[user]) {
 			console.log(user);
-			req.session.name = user;
+			req.session.username = user;
 			console.log('1');
 			console.log(req.session);
-			console.log(req.session.name);
-			res.redirect("/admin/loggedIn");
+			console.log(req.session.username);
+			req.session.save(function (err) {
+				res.redirect("/admin/loggedIn");
+			});
 			return;
 		}
 		
@@ -48,7 +55,7 @@ exports.login = function(req, res) {
 };
 
 exports.edit = function(req, res) {
-	if (!req.session.name) {
+	if (!req.session.username) {
     	res.status(401).send("401: You don't have access to this page.");
     	return;
  	}

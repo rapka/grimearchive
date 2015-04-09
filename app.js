@@ -12,15 +12,15 @@ var probe = require('node-ffprobe');
 var mongoose = require('mongoose');
 var md5 = require('MD5');
 var multer = require('multer');
-var session = require('express-session');
+var expressSession = require('express-session');
 var config = require('./config');
 
 var app = express();
 
 app.use(logger('dev'));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(cookieParser());
+//app.use(cookieParser());
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(busboy());
 app.use(favicon(__dirname + '/public/img/favicon.ico')); 
@@ -35,7 +35,7 @@ app.use(multer({ dest: './upload/',
 }));
 
 
-app.use(session({
+app.use(expressSession({
 	saveUninitialized: true,
 	resave: false,
 	secret: config.secret,
@@ -43,6 +43,9 @@ app.use(session({
   		secure: true
  	}
 }));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
