@@ -35,23 +35,27 @@ exports.login = function(req, res) {
 	console.log(req.body.password);
 	var hashed = crypto.createHash('sha256').update(req.body.password).digest('hex');
 	console.log(hashed);
-	console.log("???");
-	console.log(admins);
-	for (user in admins){
-		if (req.body.user == user && hashed == admins[user]) {
-			console.log(user);
-			req.session.username = user;
+	console.log("???", req.body.user);
+	console.log(admins["collige"]);
+	//for (user in admins){
+	console.log("user", admins[req.params.user]);
+		if (admins.hasOwnProperty(req.body.user) && admins[req.body.user] === hashed) {
+			req.session.username = req.body.user;
 			console.log('1');
 			console.log(req.session);
 			console.log(req.session.username);
 			req.session.save(function (err) {
+				console.log(req.session);
+				console.log(req.session.username);
 				res.redirect("/admin/loggedIn");
 			});
-			return;
+			//return;
 		}
-		
-	}
-	res.redirect("/admin/invalid");
+		else {
+			res.redirect("/admin/invalid");
+		}
+	//}
+	
 };
 
 exports.edit = function(req, res) {

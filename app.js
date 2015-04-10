@@ -13,13 +13,13 @@ var mongoose = require('mongoose');
 var md5 = require('MD5');
 var multer = require('multer');
 var expressSession = require('express-session');
+var FileStore = require('session-file-store')(expressSession);
 var config = require('./config');
 
 var app = express();
 
 app.use(logger('dev'));
 //app.use(cookieParser());
-
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(busboy());
@@ -36,11 +36,12 @@ app.use(multer({ dest: './upload/',
 
 
 app.use(expressSession({
-	saveUninitialized: true,
-	resave: false,
+	store: new FileStore({}),
+	saveUninitialized: false,
+	resave: true,
 	secret: config.secret,
 	cookie: {
-  		secure: true
+  		secure: false
  	}
 }));
 
