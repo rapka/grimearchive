@@ -39,3 +39,6 @@ upload
 #private config files
 config.json
 admins.json
+
+#sessions directory
+sessions
