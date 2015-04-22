@@ -110,9 +110,9 @@ mixSchema.methods.updateTags = function() {
 		APIC: albumArt,
 		TIT2: titleString,
 		TPE1: artistString,
-		TALB: 'Grimelist',
+		TALB: 'The Grime Archive',
 		TCON: 'Grime',
-		TPE2: 'Grimelist'
+		TPE2: 'The Grime Archive'
  }
 
 	if (this.year) {
