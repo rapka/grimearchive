@@ -17,15 +17,17 @@ block content
 		if mix.mcs.length != 0
 			div.big.red.mix-element 
 				| feat. 
-				each mc in mix.mcs	
+				each mc, index in mix.mcs	
 					a(href='/mc/' + mc) #{mc}
-					| /
+					if index != (mix.mcs.length - 1)
+						| /
 			br
 		if mix.crews.length != 0
 			div.big.green.mix-element 
-				each crew in mix.crews	
+				each crew, index in mix.crews	
 					a(href='/crew/' + crew) #{crew}
-					| /
+					if index != (mix.crews.length - 1)
+						| /
 			br
 		div.big.yellow.mix-element 
 				if mix.day && mix.month && mix.year
@@ -44,9 +46,13 @@ block content
 		div.big.blue.mix-element 
 			| #{Math.floor(mix.bitrate)}kbps 
 		div.big.yellow.mix-element 
-			| #{mix.downloads} Downloads
+			| #{mix.downloads} 
+			if mix.downloads == 1
+				| Download
+			else
+				| Downloads
 		div.big.red.mix-element 
-			a(download href='/download/' + mix.url) Download
+			a(download href='/download/' + mix.url) [Download]
 
 
 		if mix.description
