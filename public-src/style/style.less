@@ -137,6 +137,11 @@ tr.mix-row {
 	//overflow: auto;
 	font: 16px "Helvetica", Helvetica, Arial, sans-serif;
 
+	.upload-title {
+		text-align: center;
+		font-size: 26px;	
+	}
+
 	.upload-vertical {
 		transform: rotate(270deg);
 		//transform-origin: left bottom 0;
@@ -154,6 +159,48 @@ tr.mix-row {
 		
 		margin: 5px 0px 0px 0px;
 		float: left;
+
+		.file-inputs {
+			position: relative;
+
+			input#_file {
+				position: relative;
+				opacity: 0;
+				z-index: 5;
+
+				&:hover {
+					color: #FF86F5;
+					cursor: pointer;
+				}
+			}
+
+			.file-overlay {
+				z-index: 1;
+				text-align: center;
+				position: absolute;
+				top: 5px;
+				left: 5px;
+				width: 400px;
+				height: 25px;
+				color: #FF31A0;
+				background: black;
+				border: 1px solid #FF31A0;
+				display: block;
+
+				p {
+					top: -7px;
+					position: relative;
+
+					&:hover {
+						color: #FF86F5;
+						cursor: pointer;
+					}
+				}
+
+
+			}
+		}
+
 		textarea {
 			font: 16px "Helvetica", Helvetica, Arial, sans-serif;
 			border: 0px;
@@ -295,7 +342,6 @@ tr.mix-row {
 		text-decoration: none;
 	}
 }
-
 
 .yellow {
 	color: #FFF117;

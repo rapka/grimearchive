@@ -15,6 +15,12 @@ block content
 		//- 	p Air Date:
 		//- 	p Description:
 		//- 	p username/tripcode
+		.upload-title.blue
+			p Upload
+		.upload-text
+			p No fields are required, but please fill out as many as possible.
+			p Only MP3 files are supported. Tags are automatically updated with mix information.
+
 		div.upload-inputs
 			form(id="_form", name="upload", action="/upload", method="post", enctype='multipart/form-data')
 				div.upload-label
@@ -60,7 +66,10 @@ block content
 					| Additional comments
 				textarea(name="description" cols="40" rows="5")
 				br
-				input(type="file", name="file" id='_file' accept='audio/mpeg3,audio/mpeg,audio/mp3')
+				.file-inputs
+					input(type="file", name="file" id='_file' accept='audio/mpeg3,audio/mpeg,audio/mp3')
+					.file-overlay
+						p.file-button Select a File
 				input(type='button',  onclick="uploadFile()", value='Upload', id='_submit')
 				script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
 				script(src="/js/jquery.tagsinput.js")
@@ -126,9 +135,15 @@ block content
 						}
 					}
 
+					$("input[type=file]").on('change',function(){
+						$(".file-button").text(this.files[0].name);
+					});
+
 					$('.tripcode-tooltip').click(function() {
 						$( ".tooltip" ).toggle();
 					})
+
+
 					$('#mcs').tagsInput({
 						 'defaultText':'',
 						 'height':'20px',
