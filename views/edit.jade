@@ -59,8 +59,6 @@ block content
 
 						var xhr = new XMLHttpRequest();
 						var filename = document.getElementById('_file').value;
-						//var ext = filename.match(/\.([^\.]+)$/)[1];
-						console.log($('#_file'));
 						if (document.getElementById('_file').value == ''){
 								$('#_submit').prop('value', 'No file selected');
 						}
@@ -70,9 +68,7 @@ block content
 						else {
 							xhr.upload.addEventListener("progress", function (evt) {
 									if (evt.lengthComputable) {
-										console.log("progreesss");
 										var percentage = Math.floor((evt.loaded / evt.total) * 100);
-										console.log(percentage);
 										$('#_submit').prop('value', percentage + '%');
 									}
 								}, false);

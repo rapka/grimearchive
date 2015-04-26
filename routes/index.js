@@ -20,7 +20,7 @@ exports.index = function(req, res) {
 					throw err;
 				}
 				
-				res.render('index', { title: 'Grimelist', popular: popular, recent: recent});
+				res.render('index', { title: 'Grime Archive', popular: popular, recent: recent});
 		});
 	});
 
@@ -28,6 +28,6 @@ exports.index = function(req, res) {
 };
 
 exports.about = function(req, res) {
-	res.render('about', { title: 'Grimelist' });
+	res.render('about', { title: 'About Grime Archive' });
 };
 
