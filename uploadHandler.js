@@ -153,7 +153,10 @@ exports.onParseEnd = function (req, next) {
 
 		if (req.body.hidden) {
 			console.log(req.body.hidden);
-			mix.hidden = req.body.hidden;
+			mix.hidden = true;
+		}
+		else {
+			mix.hidden = false;
 		}
 		if (req.body.mcs) {
 			mix.mcs = req.body.mcs.split(",");
