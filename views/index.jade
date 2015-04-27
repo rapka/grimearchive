@@ -63,9 +63,9 @@ block content
 					if mix.day && mix.month && mix.year
 						td  #{mix.day}/#{mix.month}/#{mix.year}
 					else if mix.day && mix.month
-						td #{mix.daty} / #{mix.month}
+						td #{mix.day}/#{mix.month}/????
 					else if mix.year
-						td= mix.year
+						td ??/??/#{mix.year}
 					else
 						td unknown
 					td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)}
@@ -158,9 +158,9 @@ block content
 					if mix.day && mix.month && mix.year
 						td  #{mix.day}/#{mix.month}/#{mix.year}
 					else if mix.day && mix.month
-						td #{mix.daty} / #{mix.month}
+						td #{mix.day}/#{mix.month}/????
 					else if mix.year
-						td= mix.year
+						td ??/??/#{mix.year}
 					else
 						td unknown
 					td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)}
