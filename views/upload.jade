@@ -54,6 +54,13 @@ block content
 					| Additional comments
 				textarea(name="description" cols="40" rows="5")
 				br
+				div.upload-divider
+				div.upload-label
+					| MP3 Options
+				p Preserve embedded art?
+				input(type="checkbox", name="day" class="date")
+				p Use title as album title?
+				input(type="checkbox", name="day" class="date")
 				.file-inputs
 					input(type="file", name="file" id='_file' accept='audio/mpeg3,audio/mpeg,audio/mp3')
 					.file-overlay
@@ -135,12 +142,12 @@ block content
 					$('#mcs').tagsInput({
 						 'defaultText':'',
 						 'height':'20px',
-						 'width':'404px'
+						 'width':'406px'
 						});
 					$('#crews').tagsInput({
 						 'defaultText':'',
 						 'height':'20px',
-						 'width':'404px'
+						 'width':'406px'
 						});
 						
 
