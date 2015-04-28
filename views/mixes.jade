@@ -71,6 +71,8 @@ block content
 					td
 						if mix.uploader == 'Anonymous'
 							| Anonymous
+						else if !mix.tripcode
+							a(id='upload_link' href='/uploader/' + mix.uploader) !{mix.uploader}
 						else
 							a(id='upload_link' href='/uploader/' + mix.uploader + '-' + mix.tripcode) !{mix.uploader}
 							div.tripcode
