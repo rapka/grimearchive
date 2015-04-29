@@ -179,6 +179,7 @@ tr.mix-row {
 		float: left;
 
 		.file-inputs {
+			margin-top: 20px;
 			position: relative;
 
 			input#_file {
@@ -222,7 +223,7 @@ tr.mix-row {
 			border: 0px;
 			padding: 0px;
 			margin: 5px 5px 5px 5px;
-			width: 400px;
+			width: 406px;
 			resize: none;
 
 			&:focus {
@@ -270,53 +271,59 @@ tr.mix-row {
 			border: 1px solid;
 		}
 
-		.mp3-option {
-			display: inline;
-		}
+		.option-container {
+			padding-top: 10px;
+			
+			.mp3-option {
+				display: inline-block;
+			}
 
-		.squaredOne {
-			width: 20px;
-			height: 20px;
-			background: @darkPink;
-			position: relative;
-			display: inline-block;
-		}
-		
-		.squaredOne label {
-			cursor: pointer;
-			position: absolute;
-			width: 16px;
-			height: 16px;
-			left: 2px;
-			top: 2px;
-			background: #000000;
-		}
-		
-		.squaredOne label:after {
-			filter: alpha(opacity=0);
-			opacity: 0;
-			content: '';
-			position: absolute;
-			width: 12px;
-			height: 12px;
-			background: @darkPink;		
-			top: 2px;
-			left: 2px;
+			.squaredOne {
+				width: 20px;
+				height: 20px;
+				background: @darkPink;
+				position: relative;
+				display: block;
+				float: right;
+				right: 6px;
+				top: -1px;
+			}
+			
+			.squaredOne label {
+				cursor: pointer;
+				position: absolute;
+				width: 16px;
+				height: 16px;
+				left: 2px;
+				top: 2px;
+				background: #000000;
+			}
+			
+			.squaredOne label:after {
+				filter: alpha(opacity=0);
+				opacity: 0;
+				content: '';
+				position: absolute;
+				width: 12px;
+				height: 12px;
+				background: @darkPink;		
+				top: 2px;
+				left: 2px;
 
-		}
-		
-		.squaredOne label:hover::after {
-			opacity: 0.3;
-		}
-		
-		.squaredOne input[type=checkbox]:checked + label:after {
-			opacity: 1;
-		}
+			}
+			
+			.squaredOne label:hover::after {
+				opacity: 0.3;
+			}
+			
+			.squaredOne input[type=checkbox]:checked + label:after {
+				opacity: 1;
+			}
 
-		input#squaredOne, input#squaredOne2 {
-			display: none;
+			input#squaredOne, input#squaredOne2 {
+				display: none;
+			}
 		}
-
 		input {
 			width: 400px;
 			height: 25px;
@@ -358,7 +365,7 @@ tr.mix-row {
 			}
 		}
 
-		.tripcode-tooltip {
+		.tooltip-button {
 			display: inline;
 			color: #36E0FF;	
 
@@ -369,9 +376,7 @@ tr.mix-row {
 		}
 
 		.tooltip {
-			width: 420px;
 			display: none;
-
 		}
 	}sc
 

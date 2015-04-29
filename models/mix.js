@@ -115,7 +115,10 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 		TPE2: 'The Grime Archive'
  	};
 
- 	if (albumtitle) {
+ 	if (albumtitle && this.title) {
+ 		tags['TALB'] = this.title;
+ 	}
+ 	else if (albumtitle) {
  		tags['TALB'] = titleString;
  	}
  	else {
@@ -137,13 +140,10 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
  	}
  	else {
  		var parser = mm(fs.createReadStream(filePath), function (err, metadata) {
- 			console.log("META");
- 			console.log(metadata);
   			var albumArtPath = __dirname + "/../public/img/albumart.png";
 			var albumArt = fs.readFileSync(albumArtPath);
 			//console.log(artBuffer, 'utf8');
 			if (metadata.picture[0].format == 'jpg') {
-				console.log("JPEG PIc");
 				tags['APICJPEG'] = metadata.picture[0].data;
 			}
 			else if (metadata.picture[0].format == 'png') {

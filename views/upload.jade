@@ -40,11 +40,11 @@ block content
 				input(type="text", name="username")
 				div.upload-label
 					| Tripcode 
-					div.tripcode-tooltip
+					div.tripcode-tooltip.tooltip-button
 						| (?)
 				input(type="text", name="tripcode")
 
-				div.tooltip
+				div.tooltip.tripcode-tooltip-text
 					br
 					| Grime Archive uploaders are anonymous, but if you want any mixes you upload to be identifiable,
 					| you can provide a name and tripcode that will be used to identify you.
@@ -57,18 +57,32 @@ block content
 				div.upload-divider
 				div.upload-label
 					| MP3 Options
-				div.mp3-option 
-					| Preserve embedded art?
-				div.squaredOne
-					input(type="checkbox" value="None" id="squaredOne" name="preserve")
-					label(for="squaredOne")
+				div.option-container
+					div.mp3-option 
+						| Preserve embedded art?
+					div.squaredOne
+						input(type="checkbox" value="None" id="squaredOne" name="preserve")
+						label(for="squaredOne")
+					div.preserve-tooltip.tooltip-button
+						|   (?)
+					div.tooltip.preserve-tooltip-text
+						br
+						| If checked, album art embedded in your file will be kept after uploading, otherwise a standard image will be used.
+						| Note that only PNG and JPEG images will be kept.
 				br
-				div.mp3-option
-					| Use title as album title?
-				div.squaredOne
-					input(type="checkbox" value="None" id="squaredOne2" name="albumtitle")
-					label(for="squaredOne2")
-					
+				div.option-container
+					div.mp3-option
+						| Use title as album title?
+					div.squaredOne
+						input(type="checkbox" value="None" id="squaredOne2" name="albumtitle")
+						label(for="squaredOne2")
+					div.album-tooltip.tooltip-button
+						|   (?)
+					div.tooltip.album-tooltip-text
+						br
+						| If checked, the title of the mix will also be used as the tag for the album title, 
+						| otherwise the title 'Grime Archive' will be used.
+						
 				.file-inputs
 					input(type="file", name="file" id='_file' accept='audio/mpeg3,audio/mpeg,audio/mp3')
 					.file-overlay
@@ -143,7 +157,15 @@ block content
 					});
 
 					$('.tripcode-tooltip').click(function() {
-						$( ".tooltip" ).toggle();
+						$( ".tripcode-tooltip-text" ).toggle();
+					})
+
+					$('.preserve-tooltip').click(function() {
+						$( ".preserve-tooltip-text" ).toggle();
+					})
+
+					$('.album-tooltip').click(function() {
+						$( ".album-tooltip-text" ).toggle();
 					})
 
 					$('#mcs').tagsInput({
