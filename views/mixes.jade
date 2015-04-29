@@ -56,7 +56,7 @@ block content
 						if mix.station
 							a(href='/station/' + mix.station) #{mix.station}
 						else
-							| unknown
+							| ???
 					if mix.day && mix.month && mix.year
 						td  #{mix.day}/#{mix.month}/#{mix.year}
 					else if mix.day && mix.month
@@ -64,7 +64,7 @@ block content
 					else if mix.year
 						td ??/??/#{mix.year}
 					else
-						td unknown
+						td ???
 					td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)}
 					td= Math.floor(mix.bitrate)
 					td= mix.downloads

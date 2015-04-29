@@ -268,5 +268,41 @@ exports.station = function(req, res) {
 };
 
 exports.search = function(req, res) {
-	
+	var page;
+
+	if (typeof req.params.page !== 'undefined') {
+
+		page = req.params.page;
+		
+		if (page < 1) {
+			page = 1;
+		}
+	} else {
+		page = 1;
+	}
+
+	var skip = (page - 1) * pageCount;
+
+	Mix.count({hidden: false}).exec(function(err, count) {
+			if (err){
+				console.log("find error");
+				throw err;
+			}
+
+		Mix.find({crews: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(pageCount)
+			.exec(function(err, mixes) {
+				if (err){
+					console.log("find error");
+					throw err;
+				}
+				var currentUrl = '/station/' + req.params.url + '/page/';
+				
+				var hasNext = false;
+				if (count > (skip + pageCount)) {
+					hasNext = true;
+				}
+
+				res.render('mixes', {title: 'Mixes from ' + req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+		});
+	});
 };
