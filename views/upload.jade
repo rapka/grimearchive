@@ -57,10 +57,18 @@ block content
 				div.upload-divider
 				div.upload-label
 					| MP3 Options
-				p Preserve embedded art?
-				input(type="checkbox", name="day" class="date")
-				p Use title as album title?
-				input(type="checkbox", name="day" class="date")
+				div.mp3-option 
+					| Preserve embedded art?
+				div.squaredOne
+					input(type="checkbox" value="None" id="squaredOne" name="preserve")
+					label(for="squaredOne")
+				br
+				div.mp3-option
+					| Use title as album title?
+				div.squaredOne
+					input(type="checkbox" value="None" id="squaredOne2" name="albumtitle")
+					label(for="squaredOne2")
+					
 				.file-inputs
 					input(type="file", name="file" id='_file' accept='audio/mpeg3,audio/mpeg,audio/mp3')
 					.file-overlay
@@ -137,7 +145,6 @@ block content
 					$('.tripcode-tooltip').click(function() {
 						$( ".tooltip" ).toggle();
 					})
-
 
 					$('#mcs').tagsInput({
 						 'defaultText':'',

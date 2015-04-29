@@ -1,5 +1,8 @@
 var id3_reader = require('id3_reader');
 var fs = require('fs');
+var Buffer = require('buffer').Buffer;
+var mm = require('musicmetadata');
+
 
 var mongoose = require('mongoose')
 	, Schema = mongoose.Schema
@@ -29,7 +32,7 @@ var mixSchema = new Schema({
 	 
 });
 
-mixSchema.methods.updateTags = function() {
+mixSchema.methods.updateTags = function(preserve, albumtitle) {
 
  	if (this.file) {
 		this.url = this.file.split('.')[0];
@@ -102,28 +105,58 @@ mixSchema.methods.updateTags = function() {
 		artistString = "Unknown DJ";
 	}
 
-	var albumArtPath = __dirname + "/../public/img/albumart.png";
-	var albumArt = fs.readFileSync(albumArtPath);
-
 	//create id3 tags
 	var tags = { 
-		APIC: albumArt,
+		
 		TIT2: titleString,
 		TPE1: artistString,
 		TALB: 'The Grime Archive',
 		TCON: 'Grime',
 		TPE2: 'The Grime Archive'
- }
+ 	};
 
+ 	if (albumtitle) {
+ 		tags['TALB'] = titleString;
+ 	}
+ 	else {
+ 		tags['TALB'] = 'The Grime Archive';
+ 	}
 	if (this.year) {
 		tags['TYER'] = this.year.toString();
 	}
 
-	id3_reader.write(filePath, tags, function(success, msg) {
-		if (!success) { 
-			console.log(msg);
-		}
-	});
+ 	if (!preserve) {
+		var albumArtPath = __dirname + "/../public/img/albumart.png";
+		var albumArt = fs.readFileSync(albumArtPath);
+		tags['APICPNG'] = albumArt;
+		id3_reader.write(filePath, tags, function(success, msg) {
+			if (!success) { 
+				console.log(msg);
+			}
+		});
+ 	}
+ 	else {
+ 		var parser = mm(fs.createReadStream(filePath), function (err, metadata) {
+ 			console.log("META");
+ 			console.log(metadata);
+  			var albumArtPath = __dirname + "/../public/img/albumart.png";
+			var albumArt = fs.readFileSync(albumArtPath);
+			//console.log(artBuffer, 'utf8');
+			if (metadata.picture[0].format == 'jpg') {
+				console.log("JPEG PIc");
+				tags['APICJPEG'] = metadata.picture[0].data;
+			}
+			else if (metadata.picture[0].format == 'png') {
+				tags['APICPNG'] = metadata.picture[0].data;
+			}
+			id3_reader.write(filePath, tags, function(success, msg) {
+				if (!success) { 
+					console.log(msg);
+				}
+			});
+		});
+ 	}
+
 }
 
 mixSchema.statics.generateTitle = function(req) {

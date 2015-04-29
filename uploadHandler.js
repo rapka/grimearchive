@@ -81,6 +81,8 @@ exports.onFileUploadData = function (file, data) {
 
 exports.onParseEnd = function (req, next) {
 	console.log(req.body.edit);
+	console.log(req.body.preserve);
+	console.log(req.body.albumtitle);
 	// Server side check for no file selected
 	if (typeof req.files.file === 'undefined' && !req.body.edit) { 
 		console.log("error: no file selected");
@@ -127,7 +129,7 @@ exports.onParseEnd = function (req, next) {
 		if (req.body.description) {
 			mix.description = req.body.description;
 		}
-		mix.updateTags();
+		mix.updateTags(req.body.preserve, req.body.albumtitle);
 	
 		//File written successfully, save the entry in mongo.
 		mix.save(function(err) {
@@ -177,14 +179,23 @@ exports.onParseEnd = function (req, next) {
 			mix.description = req.body.description;
 		}
 
-		console.log(mix);
-		Mix.update({url:req.body.edit}, mix, 
+		Mix.update({url: req.body.edit}, mix, 
 		function(err, count) {
 			if (err) {
 				console.log(err);
 				console.error("Error updating mix.");
 			return;
 			}
+		});
+
+		 Mix.findOne({url: req.body.edit}).exec(function (err, mix) {
+			if (err) {
+				console.log(err);
+				console.error("Error updating mix.");
+			return;
+			}
+
+			mix.updateTags(mix.body.preserve, mix.body.albumtitle);
 		});
 	}
 

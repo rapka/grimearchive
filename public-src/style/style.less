@@ -1,3 +1,5 @@
+@darkPink: #FF31A0;
+
 body {
 	padding: 50px 0 50px 0;
 	background-color: black;
@@ -9,7 +11,7 @@ body {
 
 h3 {
 	font: 20px "Helvetica", Helvetica, Arial, sans-serif;
-	color: #FF31A0;
+	color: @darkPink;
 }
 
 .info {
@@ -198,9 +200,9 @@ tr.mix-row {
 				left: 5px;
 				width: 400px;
 				height: 25px;
-				color: #FF31A0;
+				color: @darkPink;
 				background: black;
-				border: 1px solid #FF31A0;
+				border: 1px solid @darkPink;
 				display: block;
 
 				p {
@@ -238,8 +240,6 @@ tr.mix-row {
 
 			margin: 0px;
 			padding: 3px;
-			//padding: 2px;	
-			//padding: 3px;
 			width: 400px;
 		}
 
@@ -251,9 +251,9 @@ tr.mix-row {
 		}
 
 		input#_submit {
-			color: #FF31A0;
+			color: @darkPink;
 			background: black;
-			border: 1px solid #FF31A0;
+			border: 1px solid @darkPink;
 			display: block;
 
 			&:hover {
@@ -268,7 +268,53 @@ tr.mix-row {
 			color: #888888;
 			height: 0;
 			border: 1px solid;
+		}
 
+		.mp3-option {
+			display: inline;
+		}
+
+		.squaredOne {
+			width: 20px;
+			height: 20px;
+			background: @darkPink;
+			position: relative;
+			display: inline-block;
+		}
+		
+		.squaredOne label {
+			cursor: pointer;
+			position: absolute;
+			width: 16px;
+			height: 16px;
+			left: 2px;
+			top: 2px;
+			background: #000000;
+		}
+		
+		.squaredOne label:after {
+			filter: alpha(opacity=0);
+			opacity: 0;
+			content: '';
+			position: absolute;
+			width: 12px;
+			height: 12px;
+			background: @darkPink;		
+			top: 2px;
+			left: 2px;
+
+		}
+		
+		.squaredOne label:hover::after {
+			opacity: 0.3;
+		}
+		
+		.squaredOne input[type=checkbox]:checked + label:after {
+			opacity: 1;
+		}
+
+		input#squaredOne, input#squaredOne2 {
+			display: none;
 		}
 
 		input {
@@ -303,11 +349,11 @@ tr.mix-row {
 			span.tag {
 				font: 16px "Helvetica", Helvetica, Arial, sans-serif;
 				font-size: 16px;
-				border: 1px solid #FF31A0;
+				border: 1px solid @darkPink;
 				background: #FF86F5;
 
 				a {
-					color: #FF31A0;
+					color: @darkPink;
 				}
 			}
 		}
@@ -379,9 +425,9 @@ tr.mix-row {
 }
 
 .red {
-	color: #FF31A0;
+	color: @darkPink;
 	a {
-		color: #FF31A0;
+		color: @darkPink;
 		&:hover {
 			color: #FF86F5;
 		}
@@ -429,7 +475,7 @@ tr.mix-row {
 	
 	a {
 		text-decoration: none;
-		color: #FF31A0;
+		color: @darkPink;
 		&:hover {
 			color: #FF86F5;
 		}
