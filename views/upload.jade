@@ -4,10 +4,14 @@ block content
 
 	.upload.content 
 		.upload-title.blue
-			p Upload
+			p Upload to Grime Archive
 		.upload-text
-			p No fields are required, but please fill out as many as possible.
-			p Only MP3 files are supported. Tags are automatically updated with mix information.
+			p * No fields are required, but please fill out as many as possible.
+			p * Only MP3 files are supported. 
+			p * Tags are automatically updated with mix information.
+			p * Follow the 
+				a(href='/about/') rules
+				| !
 
 		div.upload-inputs
 			form(id="_form", name="upload", action="/upload", method="post", enctype='multipart/form-data')

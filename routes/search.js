@@ -94,7 +94,7 @@ exports.dj = function(req, res) {
 					hasNext = true;
 				}
 
-				res.render('mixes', {title: req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+				res.render('mixes', {title: 'Mixes by ' + req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
@@ -134,7 +134,7 @@ exports.mc = function(req, res) {
 					hasNext = true;
 				}
 
-				res.render('mixes', {title: req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+				res.render('mixes', {title: 'Mixes featuring ' + req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
@@ -174,7 +174,7 @@ exports.crew = function(req, res) {
 					hasNext = true;
 				}
 
-				res.render('mixes', {title: req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+				res.render('mixes', {title: 'Mixes featuring ' + req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
@@ -222,7 +222,7 @@ exports.uploader = function(req, res) {
 					hasNext = true;
 				}
 
-				res.render('mixes', {title: user, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+				res.render('mixes', {title: 'Mixes uploaded by ' + user, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
@@ -262,7 +262,7 @@ exports.station = function(req, res) {
 					hasNext = true;
 				}
 
-				res.render('mixes', {title: req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+				res.render('mixes', {title: 'Mixes from ' + req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
