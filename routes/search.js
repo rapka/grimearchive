@@ -288,14 +288,16 @@ exports.searchForm = function(req, res) {
 	var trip = searchTerm.split("-")[1];
 
 	var skip = (page - 1) * pageCount;
+	var regexQuery = { $regex : new RegExp(searchTerm, "i") };
+	
 	var query = { $or : [
-		{dj: searchTerm, hidden: false},
-		{title: searchTerm, hidden: false},
-		{title: searchTerm, hidden: false},
-		{mcs: searchTerm, hidden: false},
-		{crews: searchTerm, hidden: false},
-		{station: searchTerm, hidden: false},
-		{uploader: user, tripcode: trip, hidden: false}
+		{dj:  regexQuery, hidden: false},
+		{title: regexQuery, hidden: false},
+		{title: regexQuery, hidden: false},
+		{mcs: regexQuery, hidden: false},
+		{crews: regexQuery, hidden: false},
+		{station: regexQuery, hidden: false},
+		{uploader: regexQuery, hidden: false}
 	]};
 	Mix.count(query).exec(function(err, count) {
 			if (err){
@@ -341,14 +343,16 @@ exports.search = function(req, res) {
 	var trip = searchTerm.split("-")[1];
 
 	var skip = (page - 1) * pageCount;
+	var regexQuery = { $regex : new RegExp(searchTerm, "i") };
+
 	var query = { $or : [
-		{dj: searchTerm, hidden: false},
-		{title: searchTerm, hidden: false},
-		{title: searchTerm, hidden: false},
-		{mcs: searchTerm, hidden: false},
-		{crews: searchTerm, hidden: false},
-		{station: searchTerm, hidden: false},
-		{uploader: user, tripcode: trip, hidden: false}
+		{dj:  regexQuery, hidden: false},
+		{title: regexQuery, hidden: false},
+		{title: regexQuery, hidden: false},
+		{mcs: regexQuery, hidden: false},
+		{crews: regexQuery, hidden: false},
+		{station: regexQuery, hidden: false},
+		{uploader: regexQuery, hidden: false}
 	]};
 	Mix.count(query).exec(function(err, count) {
 			if (err){
