@@ -12,7 +12,8 @@ exports.routes = function(app) {
 	app.get('/mc/:url', exports.mc);
 	app.get('/crew/:url/page/:page', exports.crew);
 	app.get('/crew/:url', exports.crew);
-	app.get('/search/:term', exports.search);
+	app.get('/search', exports.searchForm);
+	app.get('/search/:url/page/:page', exports.search);
 	app.get('/uploader/:url/page/:page', exports.uploader);
 	app.get('/uploader/:url', exports.uploader);
 	app.get('/station/:url', exports.station);
@@ -155,7 +156,7 @@ exports.crew = function(req, res) {
 
 	var skip = (page - 1) * pageCount;
 
-	Mix.count({hidden: false}).exec(function(err, count) {
+	Mix.count({crews: req.params.url, hidden: false}).exec(function(err, count) {
 			if (err){
 				console.log("find error");
 				throw err;
@@ -243,13 +244,13 @@ exports.station = function(req, res) {
 
 	var skip = (page - 1) * pageCount;
 
-	Mix.count({hidden: false}).exec(function(err, count) {
+	Mix.count({station: req.params.url, hidden: false}).exec(function(err, count) {
 			if (err){
 				console.log("find error");
 				throw err;
 			}
 
-		Mix.find({crews: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(pageCount)
+		Mix.find({station: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(pageCount)
 			.exec(function(err, mixes) {
 				if (err){
 					console.log("find error");
@@ -267,8 +268,11 @@ exports.station = function(req, res) {
 	});
 };
 
-exports.search = function(req, res) {
+// Route for initial search. Search form comes as a query
+exports.searchForm = function(req, res) {
 	var page;
+
+	var searchTerm = req.query['title'];
 
 	if (typeof req.params.page !== 'undefined') {
 
@@ -280,29 +284,92 @@ exports.search = function(req, res) {
 	} else {
 		page = 1;
 	}
+	var user = searchTerm.split("-")[0];
+	var trip = searchTerm.split("-")[1];
 
 	var skip = (page - 1) * pageCount;
-
-	Mix.count({hidden: false}).exec(function(err, count) {
+	var query = { $or : [
+		{dj: searchTerm, hidden: false},
+		{title: searchTerm, hidden: false},
+		{title: searchTerm, hidden: false},
+		{mcs: searchTerm, hidden: false},
+		{crews: searchTerm, hidden: false},
+		{station: searchTerm, hidden: false},
+		{uploader: user, tripcode: trip, hidden: false}
+	]};
+	Mix.count(query).exec(function(err, count) {
 			if (err){
 				console.log("find error");
 				throw err;
 			}
 
-		Mix.find({crews: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(pageCount)
+		Mix.find(query).skip(skip).sort({date: -1}).limit(pageCount)
 			.exec(function(err, mixes) {
 				if (err){
 					console.log("find error");
 					throw err;
 				}
-				var currentUrl = '/station/' + req.params.url + '/page/';
+				var currentUrl = '/search/' + searchTerm + '/page/';
 				
 				var hasNext = false;
 				if (count > (skip + pageCount)) {
 					hasNext = true;
 				}
 
-				res.render('mixes', {title: 'Mixes from ' + req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+				res.render('mixes', {title: 'Search results for "' + searchTerm + '"', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+		});
+	});
+};
+
+// Route for search pages > 1. Search term comes through url
+exports.search = function(req, res) {
+	var page;
+
+	var searchTerm = req.params.url;
+
+	if (typeof req.params.page !== 'undefined') {
+
+		page = req.params.page;
+		
+		if (page < 1) {
+			page = 1;
+		}
+	} else {
+		page = 1;
+	}
+	var user = searchTerm.split("-")[0];
+	var trip = searchTerm.split("-")[1];
+
+	var skip = (page - 1) * pageCount;
+	var query = { $or : [
+		{dj: searchTerm, hidden: false},
+		{title: searchTerm, hidden: false},
+		{title: searchTerm, hidden: false},
+		{mcs: searchTerm, hidden: false},
+		{crews: searchTerm, hidden: false},
+		{station: searchTerm, hidden: false},
+		{uploader: user, tripcode: trip, hidden: false}
+	]};
+	Mix.count(query).exec(function(err, count) {
+			if (err){
+				console.log("find error");
+				throw err;
+			}
+
+		Mix.find(query).skip(skip).sort({date: -1}).limit(pageCount)
+			.exec(function(err, mixes) {
+				if (err){
+					console.log("find error");
+					throw err;
+				}
+				var currentUrl = '/search/' + searchTerm + '/page/';
+				
+				var hasNext = false;
+				if (count > (skip + pageCount)) {
+					hasNext = true;
+				}
+
+				res.render('mixes', {title: 'Search results for "' + searchTerm + '"', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
