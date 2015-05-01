@@ -29,15 +29,12 @@ exports.loginForm = function(req, res) {
 };
 
 // Attemps a user login.
-// Success: redirects to /users/dashboard
-// Failure: redirects to /users/login
 exports.login = function(req, res) {
 	console.log(req.body.password);
 	var hashed = crypto.createHash('sha256').update(req.body.password).digest('hex');
 	console.log(hashed);
 	console.log("???", req.body.user);
 	console.log(admins["collige"]);
-	//for (user in admins){
 	console.log("user", admins[req.params.user]);
 		if (admins.hasOwnProperty(req.body.user) && admins[req.body.user] === hashed) {
 			req.session.username = req.body.user;
@@ -49,7 +46,6 @@ exports.login = function(req, res) {
 				console.log(req.session.username);
 				res.redirect("/admin/loggedIn");
 			});
-			//return;
 		}
 		else {
 			res.redirect("/admin/invalid");
