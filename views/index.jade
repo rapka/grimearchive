@@ -3,7 +3,9 @@ extends layout
 block content
 	h2 Welcome to #{title}
 	.nav-bar
-	p The Grime Archive is a digital archive that aims to preserve the history of grime by providing free downloads of live recordings both old and new.
+	.index-about
+		p The Grime Archive is a digital archive that aims to preserve the history of grime by providing free downloads of live recordings both old and new. 
+			a(href='/about') Learn More >>
 	h3 POPULAR MIXES
 
 	table
@@ -103,7 +105,7 @@ block content
 					
 					td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
 	div.mix-cta
-		a(href='mixes') View more >>>
+		a(href='mixes') View More >>>
 
 	h3 RECENT MIXES
 
@@ -203,4 +205,4 @@ block content
 					
 					td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
 	div.mix-cta
-		a(href='mixes') View more >>>
+		a(href='mixes') View More >>>
