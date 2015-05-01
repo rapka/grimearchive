@@ -34,12 +34,10 @@ exports.rename = function (fieldname, filename) {
 	var ts = String(new Date().getTime());
 	var num = ts.substr(ts.length - 7)
 	var path = __dirname  + "/upload/" + num + ".mp3";
-	//var stats = fs.accessSync(path);
 	// Check for duplicates
 	while (existsSync(path)) {
 		num = ts.substr(ts.length - 7)
 		path = __dirname  + "/upload/" + num + ".mp3";
-		//stats = fs.accessSync(path);
 	}
 	return num;
 }
@@ -71,8 +69,7 @@ exports.onFileUploadComplete = function (file) {
 		});
 	});
 
-		var url = file.name.split('.')[0];
-		//res.redirect('/mix/' + url);
+	var url = file.name.split('.')[0];
 }
 
 exports.onFileUploadData = function (file, data) {
@@ -108,7 +105,6 @@ exports.onParseEnd = function (req, next) {
 		}
 	
 		if (req.body.hidden) {
-			console.log(req.body.hidden);
 			mix.hidden = req.body.hidden;
 		}
 		if (req.body.mcs) {

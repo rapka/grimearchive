@@ -22,9 +22,7 @@ exports.index = function(req, res) {
 				
 				res.render('index', { title: 'Grime Archive', popular: popular, recent: recent});
 		});
-	});
-
-	
+	});	
 };
 
 exports.about = function(req, res) {
