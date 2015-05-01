@@ -27,14 +27,17 @@ block content
 							| /
 					if index > 0 && index % 5 == 0
 						br
-
 			br
 		if mix.crews.length != 0
 			div.big.green.mix-element 
+				div.mix-item
+					| feat. 
 				each crew, index in mix.crews	
-					a(href='/crew/' + crew) #{crew}
+					div.mix-item
+						a(href='/mc/' + mc) #{mc}
 					if index != (mix.crews.length - 1)
-						| / 
+						div.mix-item
+							| /
 					if index > 0 && index % 5 == 0
 						br
 			br
