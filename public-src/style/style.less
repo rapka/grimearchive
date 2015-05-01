@@ -54,6 +54,30 @@ p {
 			padding-right: 30px;
 		}
 	}
+
+	.searchbar {
+		input[type="submit"] {
+			background-color: black;
+			color: @darkPink;
+			border: 1px solid @darkPink;
+			//margin-left: 5px;
+			font: 14px "Helvetica", Helvetica, Arial, sans-serif;
+
+		}
+
+		input[type="text"] {
+			width: 200px;
+			height: 15px;
+			font: 14px "Helvetica", Helvetica, Arial, sans-serif;
+			border: 1px solid @darkPink;
+			padding: 3px;
+			background-color: #888888;
+
+			&:focus {
+				outline: #36E0FF  solid 2px;
+			}
+		}
+	}
 }
 
 .header-title {
