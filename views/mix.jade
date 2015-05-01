@@ -14,7 +14,7 @@ block content
 			else
 				| Untitled
 
-
+		br
 		if mix.mcs.length != 0
 			div.big.red.mix-element 
 				div.mix-item
@@ -22,14 +22,18 @@ block content
 				each mc, index in mix.mcs	
 					div.mix-item
 						a(href='/mc/' + mc) #{mc}
+					if index > 0 && index % 5 == 0
+						br
 					if index != (mix.mcs.length - 1)
 						div.mix-item
 							| /
-			
+		br
 		if mix.crews.length != 0
 			div.big.green.mix-element 
 				each crew, index in mix.crews	
 					a(href='/crew/' + crew) #{crew}
+					if index > 0 && index % 5 == 0
+						br
 					if index != (mix.crews.length - 1)
 						| / 
 			
