@@ -219,6 +219,10 @@ tr.mix-row {
 			margin-top: 20px;
 			position: relative;
 
+			.file-button {
+
+			}
+
 			input#_file {
 				position: relative;
 				opacity: 0;
@@ -231,6 +235,7 @@ tr.mix-row {
 			}
 
 			.file-overlay {
+				overflow: hidden;
 				z-index: 1;
 				text-align: center;
 				position: absolute;
@@ -244,8 +249,9 @@ tr.mix-row {
 				display: block;
 
 				p {
-					top: -7px;
+					top: -12px;
 					position: relative;
+					line-height: 30px;
 
 					&:hover {
 						color: #FF86F5;
