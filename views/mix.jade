@@ -13,23 +13,26 @@ block content
 				| #{mix.title}
 			else
 				| Untitled
-		br
-			
+
+
 		if mix.mcs.length != 0
 			div.big.red.mix-element 
-				| feat. 
+				div.mix-item
+					| feat. 
 				each mc, index in mix.mcs	
-					a(href='/mc/' + mc) #{mc}
+					div.mix-item
+						a(href='/mc/' + mc) #{mc}
 					if index != (mix.mcs.length - 1)
-						| /
-			br
+						div.mix-item
+							| /
+			
 		if mix.crews.length != 0
 			div.big.green.mix-element 
 				each crew, index in mix.crews	
 					a(href='/crew/' + crew) #{crew}
 					if index != (mix.crews.length - 1)
-						| /
-			br
+						| / 
+			
 		div.big.yellow.mix-element 
 				if mix.day && mix.month && mix.year
 					| !{mix.day}/#{mix.month}/#{mix.year}
@@ -41,7 +44,7 @@ block content
 					| Unknown Date
 		div.big.blue.mix-element 
 				| @#{mix.station}
-		br
+	
 		div.big.green.mix-element 
 			| #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)} 
 		div.big.blue.mix-element 
