@@ -15,17 +15,12 @@ exports.index = function(req, res) {
 
 exports.checkFfmpeg = function(req, res) {
 	var mix = Mix.findOne({url: req.params.url}).exec(function (err, mix){
-		//if (mix.bitrate && mix.length) {
 			res.send(mix.bitrate.toString());
-		//}
-		//res.send("false");
 	});
 };
 
 exports.add = function(req, res) {
-	console.log("ADDDD");
 	if (typeof req.files.file !== 'undefined') { 
-		console.log(req.files.file.name);
 		var url = req.files.file.name.split('.')[0];
 		res.send('/mix/' + url);
 

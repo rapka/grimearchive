@@ -198,12 +198,8 @@ exports.uploader = function(req, res) {
 
 	var user = req.params.url.split("-")[0];
 	var trip = req.params.url.split("-")[1];
-	console.log("uuuu");
-	console.log(req.params.url);
-	console.log(user);
-	console.log(trip);
+
 	Mix.count({uploader: user, tripcode: trip, hidden: false}).exec(function(err, count) {
-		console.log(count);
 			if (err){
 				console.log("find error");
 				throw err;
