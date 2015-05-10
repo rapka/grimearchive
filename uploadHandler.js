@@ -190,8 +190,7 @@ exports.onParseEnd = function (req, next) {
 				console.error("Error updating mix.");
 			return;
 			}
-
-			mix.updateTags(mix.body.preserve, mix.body.albumtitle);
+			mix.updateTags(true, req.body.albumtitle);
 		});
 	}
 

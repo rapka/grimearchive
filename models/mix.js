@@ -140,9 +140,6 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
  	}
  	else {
  		var parser = mm(fs.createReadStream(filePath), function (err, metadata) {
-  			var albumArtPath = __dirname + "/../public/img/albumart.png";
-			var albumArt = fs.readFileSync(albumArtPath);
-			//console.log(artBuffer, 'utf8');
 			if (metadata.picture[0].format == 'jpg') {
 				tags['APICJPEG'] = metadata.picture[0].data;
 			}
