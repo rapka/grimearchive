@@ -20,7 +20,7 @@ exports.index = function(req, res) {
 					throw err;
 				}
 				
-				res.render('index', { title: 'Grime Archive', popular: popular, recent: recent});
+				res.render('index', { title: 'The Grime Archive', popular: popular, recent: recent});
 		});
 	});	
 };

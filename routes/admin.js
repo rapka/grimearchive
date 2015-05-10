@@ -3,12 +3,14 @@ var Mix = mongoose.model('Mix');
 var ObjectId = require('mongoose').Types.ObjectId;
 var admins = require('../admins');
 var crypto = require('crypto');
+var pageCount = 20;
 
 exports.routes = function(app) {
 	app.get('/admin', exports.loginForm);
 	app.post('/admin/login', exports.login);
 	app.get('/admin/:message', exports.loginForm);
 	app.get('/edit/:url', exports.edit);
+	app.get('/hidden', exports.hidden);
 };
 
 exports.loginForm = function(req, res) {
@@ -56,8 +58,8 @@ exports.login = function(req, res) {
 
 exports.edit = function(req, res) {
 	if (!req.session.username) {
-    	res.status(401).send("401: You don't have access to this page.");
-    	return;
+		res.status(401).send("401: You don't have access to this page.");
+		return;
  	}
 
 	var mix = Mix.findOne({url: req.params.url}).exec(function (err, mix){
@@ -78,6 +80,52 @@ exports.edit = function(req, res) {
 		res.render('edit', {
 			title: title,
 			mix: mix
+		});
+	});
+};
+
+
+exports.hidden = function(req, res) {
+	var page;
+
+	if (!req.session.username) {
+		res.status(401).send("401: You don't have access to this page.");
+		return;
+ 	}
+
+	if (typeof req.params.page !== 'undefined') {
+
+		page = req.params.page;
+
+		if (page < 1) {
+			page = 1;
+		}
+	} else {
+		page = 1;
+	}
+
+	var skip = (page - 1) * pageCount;
+
+	Mix.count({hidden: true}).exec(function(err, count) {
+		if (err){
+			console.log("find error");
+			throw err;
+		}
+
+		Mix.find({hidden: true}).skip(skip).sort({date: -1}).limit(pageCount)
+			.exec(function(err, mixes) {
+				if (err){
+					console.log("find error");
+					throw err;
+				}
+				var currentUrl = '/mixes/page/';
+				
+				var hasNext = false;
+				if (count > (skip + pageCount)) {
+					hasNext = true;
+				}
+
+				res.render('mixes', {title: 'All Mixes', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
