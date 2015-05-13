@@ -42,7 +42,8 @@ block content
 							each mc, index in mix.mcs
 								if index < 3
 									a(href='/mc/' + mc) !{mc}
-									| /
+									if index != (mix.mcs.length - 1)
+										| /
 								else if index == 3
 									a(href='/mix/' + mix.url) more
 						else
@@ -52,7 +53,8 @@ block content
 							each crew, index in mix.crews
 								if index < 3		
 									a(href='/crew/' + crew) !{crew}
-									| /
+									if index != (mix.crews.length - 1)
+										| /
 								else if index == 3
 									a(href='/mix/' + mix.url) more
 						else
@@ -142,7 +144,8 @@ block content
 							each mc, index in mix.mcs
 								if index < 3
 									a(href='/mc/' + mc) !{mc}
-									| /
+									if index != (mix.mcs.length - 1)
+										| /
 								else if index == 3
 									a(href='/mix/' + mix.url) more
 						else
@@ -152,7 +155,8 @@ block content
 							each crew, index in mix.crews
 								if index < 3		
 									a(href='/crew/' + crew) !{crew}
-									| /
+									if index != (mix.crews.length - 1)
+										| /
 								else if index == 3
 									a(href='/mix/' + mix.url) more
 						else
