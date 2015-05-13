@@ -49,10 +49,10 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 	}
 
 	//append date
-	if (this.day && this.month && this.year){
+	if (this.day && this.month && this.year && !this.title){
 		titleString += ", " + this.year.toString() + "-" + this.month.toString() + "-" + this.day.toString();
 	}
-	else if (this.year) {
+	else if (this.year && !this.title) {
 		titleString += ", " + this.year.toString();
 	}
 
