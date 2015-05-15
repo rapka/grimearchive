@@ -18,6 +18,8 @@ exports.routes = function(app) {
 	app.get('/uploader/:url', exports.uploader);
 	app.get('/station/:url', exports.station);
 	app.get('/station/:url/page/:page', exports.station);
+	app.get('/instrumentals', exports.instrumentals);
+	app.get('/instrumentals/page/:page', exports.instrumentals);
 };
 
 exports.mixes = function(req, res) {
@@ -56,6 +58,46 @@ exports.mixes = function(req, res) {
 				}
 
 				res.render('mixes', {title: 'All Mixes', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+		});
+	});
+};
+
+exports.instrumentals = function(req, res) {
+	var page;
+
+	if (typeof req.params.page !== 'undefined') {
+
+		page = req.params.page;
+
+		if (page < 1) {
+			page = 1;
+		}
+	} else {
+		page = 1;
+	}
+
+	var skip = (page - 1) * pageCount;
+
+	Mix.count({hidden: false, mcs: [], crews: []}).exec(function(err, count) {
+			if (err){
+				console.log("find error");
+				throw err;
+			}
+
+		Mix.find({hidden: false, mcs: [], crews: []}).skip(skip).sort({date: -1}).limit(pageCount)
+			.exec(function(err, mixes) {
+				if (err){
+					console.log("find error");
+					throw err;
+				}
+				var currentUrl = '/instrumentals/page/';
+				
+				var hasNext = false;
+				if (count > (skip + pageCount)) {
+					hasNext = true;
+				}
+
+				res.render('mixes', {title: 'Instrumental Only Mixes', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
