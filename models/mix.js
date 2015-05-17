@@ -38,7 +38,7 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 		this.url = this.file.split('.')[0];
  	}
 
-	var titleString = "Invalid Title";
+	var titleString = "Unknown";
 
 	//either use user supplied title or radio station
 	if (this.title) {
