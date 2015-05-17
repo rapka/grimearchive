@@ -18,7 +18,10 @@ exports.download = function(req, res) {
 			};
 
 			mix.save();
-			res.sendFile(req.params.url + '.mp3', options);
+			var path = __dirname + '/../upload/' + req.params.url + '.mp3';
+			//console.log(path);
+			res.download(path, req.params.url + '.mp3');
+			//res.sendFile(req.params.url + '.mp3', options);
 	});
 };
 

@@ -15,7 +15,12 @@ exports.index = function(req, res) {
 
 exports.checkFfmpeg = function(req, res) {
 	var mix = Mix.findOne({url: req.params.url}).exec(function (err, mix){
-			res.send(mix.bitrate.toString());
+			if (mix.bitrate) {
+				res.send(mix.bitrate.toString());
+			}
+			else {
+				res.send("");
+			}
 	});
 };
 
