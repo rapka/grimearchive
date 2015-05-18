@@ -79,7 +79,7 @@ block content
 							else
 								a(id='upload_link' href='/uploader/' + mix.uploader + '-' + mix.tripcode) !{mix.uploader}
 								div.tripcode
-									!{mix.tripcode}
+									| !{mix.tripcode}
 									script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
 									script(type='text/javascript').
 										var updateEmojis = function(event) {
