@@ -5,9 +5,14 @@ block content
 	.nav-bar
 	.index-about
 		p The Grime Archive is a digital archive that aims to preserve the history of grime by providing free downloads of live recordings both old and new. 
-			a(href='/about') Learn More >>
+			
 		p 
-			| We are currently hosting #{count} grime sets.
+			| We are currently hosting 
+			span #{count} 
+			| grime sets totalling over 
+			span #{sum} 
+			| hours of audio. 
+			a(href='/about') Learn More >>
 	h3 POPULAR MIXES
 
 	table
