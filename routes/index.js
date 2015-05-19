@@ -39,7 +39,7 @@ exports.index = function(req, res) {
 						    total: 1
 						  }}, function (err, result) {
 								console.log(result[0].total);
-								res.render('index', { title: 'The Grime Archive', sum: Math.floor(result[0].total / 3600), popular: popular, recent: recent, count: count, instrumentals: instrumentals});
+								res.render('index', { title: 'The Grime Archive', sum: Math.floor(result[0].total / 60), popular: popular, recent: recent, count: count, instrumentals: instrumentals});
 							});
 					
 				}); 
