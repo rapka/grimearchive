@@ -70,7 +70,7 @@ block content
 							td ??/??/#{mix.year}
 						else
 							td ???
-						td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)}
+						td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
 						td= Math.floor(mix.bitrate)
 						td= mix.downloads
 						td
