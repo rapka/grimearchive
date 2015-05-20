@@ -54,7 +54,7 @@ block content
 					| @#{mix.station}
 		br
 		div.big.green.mix-element 
-			| #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60)} 
+			| #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
 		div.big.blue.mix-element 
 			| #{Math.floor(mix.bitrate)}kbps 
 		div.big.yellow.mix-element 
