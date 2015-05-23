@@ -28,6 +28,11 @@ block content
 					if index > 0 && index % 5 == 0
 						br
 			br
+		if mix.crews.length != 0 && mix.mcs.length == 0
+			div.big.red.mix-element
+				div.mix-item
+					| Unknown MCs
+			br
 		if mix.crews.length != 0
 			div.big.green.mix-element 
 				div.mix-item
