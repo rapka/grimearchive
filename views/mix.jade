@@ -1,117 +1,118 @@
 extends layout
 
 block content
-	if mix.hidden == false
-		div.big.yellow.mix-element
-			if mix.dj
-				a(href='/dj/' + mix.dj) #{mix.dj}
-			else
-				| Unknown DJ
-			
-		div.big.blue.mix-element 
-			if mix.title
-				| #{mix.title}
-			else
-				| Untitled
-
-		br
-		if mix.mcs.length != 0
-			div.big.red.mix-element 
-				div.mix-item
-					| feat. 
-				each mc, index in mix.mcs	
-					div.mix-item
-						a(href='/mc/' + mc) #{mc}
-					if index != (mix.mcs.length - 1)
-						div.mix-item
-							| /
-					if index > 0 && index % 5 == 0
-						br
-			br
-		if mix.crews.length != 0 && mix.mcs.length == 0
-			div.big.red.mix-element
-				div.mix-item
-					| Unknown MCs
-			br
-		if mix.crews.length != 0
-			div.big.green.mix-element 
-				div.mix-item
-				each crew, index in mix.crews	
-					div.mix-item
-						a(href='/crew/' + crew) #{crew}
-					if index != (mix.crews.length - 1)
-						div.mix-item
-							| /
-					if index > 0 && index % 5 == 0
-						br
-			br
-		div.big.yellow.mix-element 
-				if mix.day && mix.month && mix.year
-					| !{mix.day}/#{mix.month}/#{mix.year}
-				else if mix.day && mix.month
-					| #{mix.day} / #{mix.month}
-				else if mix.year
-					| Unknown Date, #{mix.year}
+	.mix-container
+		if mix.hidden == false
+			div.big.yellow.mix-element
+				if mix.dj
+					a(href='/dj/' + mix.dj) #{mix.dj}
 				else
-					| Unknown Date
-		if mix.station
+					| Unknown DJ
+				
 			div.big.blue.mix-element 
-					| @#{mix.station}
-		br
-		div.big.green.mix-element 
-			| #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
-		div.big.blue.mix-element 
-			| #{Math.floor(mix.bitrate)}kbps 
-		div.big.yellow.mix-element 
-			| #{mix.downloads} 
-			if mix.downloads == 1
-				| Download
-			else
-				| Downloads
-		div.big.red.mix-element 
-			a(download href='/download/' + mix.url) [Download]
+				if mix.title
+					| #{mix.title}
+				else
+					| Untitled
+
+			br
+			if mix.mcs.length != 0
+				div.big.red.mix-element 
+					div.mix-item
+						| feat. 
+					each mc, index in mix.mcs	
+						div.mix-item
+							a(href='/mc/' + mc) #{mc}
+						if index != (mix.mcs.length - 1)
+							div.mix-item
+								| /
+						if index > 0 && index % 5 == 0
+							br
+				br
+			if mix.crews.length != 0 && mix.mcs.length == 0
+				div.big.red.mix-element
+					div.mix-item
+						| Unknown MCs
+				br
+			if mix.crews.length != 0
+				div.big.green.mix-element 
+					div.mix-item
+					each crew, index in mix.crews	
+						div.mix-item
+							a(href='/crew/' + crew) #{crew}
+						if index != (mix.crews.length - 1)
+							div.mix-item
+								| /
+						if index > 0 && index % 5 == 0
+							br
+				br
+			div.big.yellow.mix-element 
+					if mix.day && mix.month && mix.year
+						| !{mix.day}/#{mix.month}/#{mix.year}
+					else if mix.day && mix.month
+						| #{mix.day} / #{mix.month}
+					else if mix.year
+						| Unknown Date, #{mix.year}
+					else
+						| Unknown Date
+			if mix.station
+				div.big.blue.mix-element 
+						| @#{mix.station}
+			br
+			div.big.green.mix-element 
+				| #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
+			div.big.blue.mix-element 
+				| #{Math.floor(mix.bitrate)}kbps 
+			div.big.yellow.mix-element 
+				| #{mix.downloads} 
+				if mix.downloads == 1
+					| Download
+				else
+					| Downloads
+			div.big.red.mix-element 
+				a(download href='/download/' + mix.url) [Download]
 
 
-		if mix.description
-			div.mix-description
-				p= mix.description
+			if mix.description
+				div.mix-description
+					p= mix.description
 
-		div.mix-uploader
-			p Uploaded #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()} by 
-				if mix.uploader == 'Anonymous'
-					| Anonymous
-				else 
-					a(id="upload_link" href='/uploader/' + mix.uploader + '-' + mix.tripcode) #{mix.uploader}
-					div.tripcode
-						| #{mix.tripcode}
-					script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
-					script(type='text/javascript').
-						var updateEmojis = function(event) {
-							var tripcode = $('.tripcode').text().substring(0, 8);
-							console.log("tripp");
-							console.log(tripcode);
-							$.ajax({
-							url: '/emoji/' + tripcode,
-							type: 'GET',
-							success: function(data){
-								console.log(data);
-								var oldLink = $('#upload_link').attr('href');
+			div.mix-uploader
+				p Uploaded #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()} by 
+					if mix.uploader == 'Anonymous'
+						| Anonymous
+					else 
+						a(id="upload_link" href='/uploader/' + mix.uploader + '-' + mix.tripcode) #{mix.uploader}
+						div.tripcode
+							| #{mix.tripcode}
+						script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+						script(type='text/javascript').
+							var updateEmojis = function(event) {
+								var tripcode = $('.tripcode').text().substring(0, 8);
+								console.log("tripp");
+								console.log(tripcode);
+								$.ajax({
+								url: '/emoji/' + tripcode,
+								type: 'GET',
+								success: function(data){
+									console.log(data);
+									var oldLink = $('#upload_link').attr('href');
 
-								var link = '<a href="' + $('#upload_link').attr('href') + '">';
-								link += data + '</a>';
-								$('.tripcode').html(link);
-			
+									var link = '<a href="' + $('#upload_link').attr('href') + '">';
+									link += data + '</a>';
+									$('.tripcode').html(link);
+				
+								}
+								});
 							}
+							$(function(){
+								updateEmojis();
 							});
-						}
-						$(function(){
-							updateEmojis();
-						});
-				| . 
-				a(href='mailto:thecollegehill@gmail.com?subject=Report%20for%20Grime%20Archive%20Mix%20%23' + mix.url) Report
-				|  | 
-				a(href='mailto:thecollegehill@gmail.com?subject=Correction%20for%20Grime%20Archive%20Mix%20%23' + mix.url) Submit correction
-	else 
+					| . 
+					a(href='mailto:thecollegehill@gmail.com?subject=Report%20for%20Grime%20Archive%20Mix%20%23' + mix.url) Report
+					|  | 
+					a(href='mailto:thecollegehill@gmail.com?subject=Correction%20for%20Grime%20Archive%20Mix%20%23' + mix.url) Submit correction
+		else 
 
-		div.big.red
-			p Mix Unavailable :(
+			div.big.red
+				p Mix Unavailable :(
