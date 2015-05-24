@@ -97,40 +97,48 @@ block content
 				link(rel="stylesheet" type="text/css" href="style/jquery.tagsinput.css")
 				script(type='text/javascript').
 					function uploadFile() {
-						console.log("uploading");
-						//evt.preventDefault();
 						var form = document.getElementById('_form');
 						var fd = new FormData(form);
-
 						var file = document.getElementById('_file');
 							
 						file.onchange = function(e){
-							console.log("onchaaa");
 						    var ext = this.value.match(/\.([^\.]+)$/)[1];
 						    console.log(ext);
-						    if (ext != 'mp3') {
+						    if (ext.toLowerCase() != 'mp3') {
 						    		$('.progress').text("Invalid file type");
 						    	} 
 						};
 						
 						var acceptedTypes = ['mp3'];
-
 						var xhr = new XMLHttpRequest();
 						var filename = document.getElementById('_file').value;
-						//var ext = filename.match(/\.([^\.]+)$/)[1];
-						console.log($('#_file'));
-						if (document.getElementById('_file').value == ''){
-								$('#_submit').prop('value', 'No file selected');
+						var day = $('input[name="day"]')[0].value;
+						var month = $('input[name="month"]')[0].value;
+						var year = $('input[name="year"]')[0].value;
+						
+						// Check for non-numeric date entries
+						if ((day != '' && isNaN(parseInt(day))) || (month != '' && isNaN(parseInt(month))) || (year != '' && isNaN(parseInt(year)))) {
+							$('#_submit').prop('value', 'Invalid date');
+						}
+						// Check for date values <= 0
+						else if ((day != '' && parseInt(day) < 1) || (month != '' && parseInt(month) < 1) || (year != '' && parseInt(year) < 1)) {
+							$('#_submit').prop('value', 'Invalid date');
+						}
+						// Check for nonsensical date values
+						else if ((day != '' && parseInt(day) > 31) || (month != '' && parseInt(month) > 12) || (year != '' && parseInt(year) < 1900) || (year != '' && parseInt(year) > 3000)) {
+							$('#_submit').prop('value', 'Invalid date');
+						}
+						else if (document.getElementById('_file').value == ''){
+							$('#_submit').prop('value', 'No file selected');
 						}
 						else if (acceptedTypes.indexOf(filename.match(/\.([^\.]+)$/)[1]) == -1 ) {
 							$('#_submit').prop('value', 'Invalid file type');
 						}
+
 						else {
 							xhr.upload.addEventListener("progress", function (evt) {
 									if (evt.lengthComputable) {
-										console.log("progreesss");
 										var percentage = Math.floor((evt.loaded / evt.total) * 100);
-										console.log(percentage);
 										$('#_submit').prop('value', 'Uploading - ' + percentage + '%');
 									}
 								}, false);
@@ -147,11 +155,10 @@ block content
 												}
 											}); 
 										}, 200);
-									
 								}
 							};
+
 							xhr.open('post', '/upload', true);
-							
 							xhr.send(fd);	
 						}
 					}
