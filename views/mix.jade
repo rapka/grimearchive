@@ -23,11 +23,11 @@ block content
 					each mc, index in mix.mcs	
 						div.mix-item
 							a(href='/mc/' + mc) #{mc}
-						if index > 0 && index % 4 == 0
-							br
-						else if index != (mix.mcs.length - 1)
+						if index != (mix.mcs.length - 1)
 							div.mix-item
 								| /
+						if index > 0 && index % 4 == 0
+							br
 				br
 			if mix.crews.length != 0 && mix.mcs.length == 0
 				div.big.red.mix-element
@@ -40,12 +40,11 @@ block content
 					each crew, index in mix.crews	
 						div.mix-item
 							a(href='/crew/' + crew) #{crew}
-						if index > 0 && index % 3 == 0
-							br
-						else if index != (mix.crews.length - 1)
+						if index != (mix.crews.length - 1)
 							div.mix-item
 								| /
-
+						if index > 0 && index % 3 == 0
+							br
 				br
 			div.big.yellow.mix-element 
 					if mix.day && mix.month && mix.year
