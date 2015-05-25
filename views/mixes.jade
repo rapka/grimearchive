@@ -14,7 +14,6 @@ block content
 					td.header-station Station / Rave
 					td.header-date Air date
 					td.header-duration Duration
-					td.header-bitrate Bitrate
 					td.header-downloads Downloads
 					td.header-uploader Uploader
 					td.header-uploaded Uploaded
@@ -71,7 +70,6 @@ block content
 						else
 							td ???
 						td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
-						td= Math.floor(mix.bitrate)
 						td= mix.downloads
 						td
 							if mix.uploader == 'Anonymous'
