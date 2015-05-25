@@ -3,11 +3,7 @@ var Mix = mongoose.model('Mix');
 var ObjectId = require('mongoose').Types.ObjectId;
 
 exports.routes = function(app) {
-
 	app.get('/mix/:url', exports.view);
-	
-
-
 };
 
 exports.view = function(req, res) {
