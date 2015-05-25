@@ -23,11 +23,12 @@ block content
 					each mc, index in mix.mcs	
 						div.mix-item
 							a(href='/mc/' + mc) #{mc}
+						if index > 0 && index % 4 == 0
+							br
 						if index != (mix.mcs.length - 1)
 							div.mix-item
 								| /
-						if index > 0 && index % 4 == 0
-							br
+						
 				br
 			if mix.crews.length != 0 && mix.mcs.length == 0
 				div.big.red.mix-element
