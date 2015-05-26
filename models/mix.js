@@ -137,9 +137,13 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 			}
 		});
  	}
- 	
+
  	else {
  		var parser = mm(fs.createReadStream(filePath), function (err, metadata) {
+ 			if (err) {
+ 				console.log(err);
+ 			}
+ 			
 			if (metadata.picture[0].format == 'jpg') {
 				tags['APICJPEG'] = metadata.picture[0].data;
 			}

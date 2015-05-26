@@ -12,7 +12,7 @@ exports.download = function(req, res) {
 				console.log("find error");
 				throw err;
 			}
-			mix.downloads++;
+			
 			var options = {
 				root: __dirname + '/../upload'
 			};
@@ -20,7 +20,14 @@ exports.download = function(req, res) {
 			mix.save();
 			var path = __dirname + '/../upload/' + req.params.url + '.mp3';
 			//console.log(path);
-			res.download(path, req.params.url + '.mp3');
+			res.download(path, req.params.url + '.mp3', function (err) {
+				if (err) {
+					console.log(err);
+				}
+				else {
+					mix.downloads++;
+				}
+			});
 			//res.sendFile(req.params.url + '.mp3', options);
 	});
 };
