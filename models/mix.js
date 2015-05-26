@@ -3,7 +3,6 @@ var fs = require('fs');
 var Buffer = require('buffer').Buffer;
 var mm = require('musicmetadata');
 
-
 var mongoose = require('mongoose')
 	, Schema = mongoose.Schema
 	, ObjectId = Schema.ObjectId;
@@ -138,6 +137,7 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 			}
 		});
  	}
+ 	
  	else {
  		var parser = mm(fs.createReadStream(filePath), function (err, metadata) {
 			if (metadata.picture[0].format == 'jpg') {
@@ -153,7 +153,6 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 			});
 		});
  	}
-
 }
 
 mixSchema.statics.generateTitle = function(req) {

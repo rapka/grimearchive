@@ -148,13 +148,22 @@ block content
 	
 								if (xhr.readyState == 4) {
 									var split = xhr.responseText.split("/")[2];
-									setInterval(function() { 
+									var tries = 0;
+									var interval = setInterval(function() { 
 										$.get("upload/" + split, function (data) {
 											if (parseInt(data) > 0) {
 													window.location = xhr.responseText; 
 												}
+											else {
+													tries++;
+												}
+
+												if (tries >= 20) {
+													$('#_submit').prop('value', 'Error uploading mix :( Please refresh');
+													clearInterval(interval);
+												} 
 											}); 
-										}, 200);
+										}, 500);
 								}
 							};
 
@@ -184,6 +193,7 @@ block content
 						 'height':'20px',
 						 'width':'506px'
 						});
+
 					$('#crews').tagsInput({
 						 'defaultText':'',
 						 'height':'20px',
