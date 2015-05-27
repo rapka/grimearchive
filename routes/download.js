@@ -9,7 +9,7 @@ exports.routes = function(app) {
 exports.download = function(req, res) {
 	Mix.findOne({url: req.params.url}).exec(function(err, mix) {
 			if (err){
-				console.log("find error");
+				console.error("find error");
 				throw err;
 			}
 			
@@ -19,16 +19,14 @@ exports.download = function(req, res) {
 
 			mix.save();
 			var path = __dirname + '/../upload/' + req.params.url + '.mp3';
-			//console.log(path);
 			res.download(path, req.params.url + '.mp3', function (err) {
 				if (err) {
-					console.log(err);
+					console.error(err);
 				}
 				else {
 					mix.downloads++;
 				}
 			});
-			//res.sendFile(req.params.url + '.mp3', options);
 	});
 };
 

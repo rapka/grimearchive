@@ -17,14 +17,12 @@ exports.loginForm = function(req, res) {
 	console.log(req.session);
 	console.log(req.session.username);
 	if (req.session.username && req.params.message == 'loggedIn') {
-		console.log("meees111");
 		res.render('login', { message: req.params.message});
 	}
 	else if (req.params.message == 'loggedIn') {
 		res.render('login');
 	}
 	else {
-		console.log("meees");
 		res.render('login', { message: req.params.message});
 	}
 	
@@ -32,28 +30,17 @@ exports.loginForm = function(req, res) {
 
 // Attemps a user login.
 exports.login = function(req, res) {
-	console.log(req.body.password);
 	var hashed = crypto.createHash('sha256').update(req.body.password).digest('hex');
-	console.log(hashed);
-	console.log("???", req.body.user);
-	console.log(admins["collige"]);
-	console.log("user", admins[req.params.user]);
 		if (admins.hasOwnProperty(req.body.user) && admins[req.body.user] === hashed) {
 			req.session.username = req.body.user;
-			console.log('1');
-			console.log(req.session);
-			console.log(req.session.username);
+
 			req.session.save(function (err) {
-				console.log(req.session);
-				console.log(req.session.username);
 				res.redirect("/admin/loggedIn");
 			});
 		}
 		else {
 			res.redirect("/admin/invalid");
 		}
-	//}
-	
 };
 
 exports.edit = function(req, res) {
@@ -108,14 +95,14 @@ exports.hidden = function(req, res) {
 
 	Mix.count({hidden: true}).exec(function(err, count) {
 		if (err){
-			console.log("find error");
+			console.error("find error");
 			throw err;
 		}
 
 		Mix.find({hidden: true}).skip(skip).sort({date: -1}).limit(pageCount)
 			.exec(function(err, mixes) {
 				if (err){
-					console.log("find error");
+					console.error("find error");
 					throw err;
 				}
 				var currentUrl = '/mixes/page/';
