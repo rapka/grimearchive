@@ -29,7 +29,7 @@ exports.view = function(req, res) {
 			});
 		}
 		else {
-			res.status(401).send("401: You don't have access to this page.");
+			res.status(401).render('404.jade', {title: 'Not Found'});
 		}
 	});
 };
