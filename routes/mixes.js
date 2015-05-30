@@ -8,23 +8,28 @@ exports.routes = function(app) {
 
 exports.view = function(req, res) {
 	var mix = Mix.findOne({url: req.params.url}).exec(function (err, mix){
-		var title;
-		if (mix.dj) {
-			title = mix.dj + " - "; 
+		if (!mix.hidden || req.session.username) {
+			var title;
+			if (mix.dj) {
+				title = mix.dj + " - "; 
+			}
+			else {
+				title = "Unknown DJ - ";
+			}
+	
+			if (mix.title) {
+				title += mix.title;
+			}
+			else {
+				title += "Untitled";
+			}
+			res.render('mix', {
+				title: title,
+				mix: mix
+			});
 		}
 		else {
-			title = "Unknown DJ - ";
+			res.status(401).send("401: You don't have access to this page.");
 		}
-
-		if (mix.title) {
-			title += mix.title;
-		}
-		else {
-			title += "Untitled";
-		}
-		res.render('mix', {
-			title: title,
-			mix: mix
-		});
 	});
 };

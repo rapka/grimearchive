@@ -3,6 +3,7 @@ var Mix = mongoose.model('Mix');
 var ObjectId = require('mongoose').Types.ObjectId;
 var admins = require('../admins');
 var crypto = require('crypto');
+var fs = require('fs');
 var pageCount = 20;
 
 exports.routes = function(app) {
@@ -11,6 +12,7 @@ exports.routes = function(app) {
 	app.get('/admin/:message', exports.loginForm);
 	app.get('/edit/:url', exports.edit);
 	app.get('/hidden', exports.hidden);
+	app.get('/delete/:url', exports.remove);
 };
 
 exports.loginForm = function(req, res) {
@@ -71,6 +73,24 @@ exports.edit = function(req, res) {
 	});
 };
 
+exports.remove = function(req, res) {
+	if (!req.session.username) {
+		res.status(401).send("401: You don't have access to this page.");
+		return;
+ 	}
+
+	var mix = Mix.findOne({url: req.params.url, hidden: true}).exec(function (err, mix){
+		if (err) {
+			console.error(err);
+		}
+		else {
+			fs.unlinkSync(__dirname + '/../upload/' + mix.file);
+			mix.remove();
+		}
+		res.render('upload');
+	});
+};
+
 
 exports.hidden = function(req, res) {
 	var page;
@@ -112,7 +132,7 @@ exports.hidden = function(req, res) {
 					hasNext = true;
 				}
 
-				res.render('mixes', {title: 'All Mixes', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+				res.render('mixes', {title: 'Hidden Mixes', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
