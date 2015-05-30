@@ -11,18 +11,21 @@ exports.view = function(req, res) {
 		if (!mix.hidden || req.session.username) {
 			var title;
 			if (mix.dj) {
-				title = mix.dj + " - "; 
+				title = mix.dj + ' - '; 
 			}
 			else {
-				title = "Unknown DJ - ";
+				title = 'Unknown DJ - ';
 			}
 	
 			if (mix.title) {
 				title += mix.title;
 			}
 			else {
-				title += "Untitled";
+				title += 'Untitled';
 			}
+
+			title += ' | Grime Archive';
+
 			res.render('mix', {
 				title: title,
 				mix: mix
