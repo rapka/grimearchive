@@ -8,6 +8,12 @@ exports.routes = function(app) {
 
 exports.view = function(req, res) {
 	var mix = Mix.findOne({url: req.params.url}).exec(function (err, mix){
+
+		if (err) {
+			console.error(err);
+			res.status(401).render('404.jade', {title: 'Not Found'});
+		}
+
 		if (!mix.hidden || req.session.username) {
 			var title;
 			if (mix.dj) {
