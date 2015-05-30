@@ -109,7 +109,6 @@ block content
 						    	} 
 						};
 						
-						var acceptedTypes = ['mp3'];
 						var xhr = new XMLHttpRequest();
 						var filename = document.getElementById('_file').value;
 						var day = $('input[name="day"]')[0].value;
@@ -130,9 +129,6 @@ block content
 						}
 						else if (document.getElementById('_file').value == ''){
 							$('#_submit').prop('value', 'No file selected');
-						}
-						else if (acceptedTypes.indexOf(filename.match(/\.([^\.]+)$/)[1]) == -1 ) {
-							$('#_submit').prop('value', 'Invalid file type');
 						}
 
 						else {

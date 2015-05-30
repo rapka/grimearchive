@@ -2,18 +2,19 @@ extends layout
 
 block content
 	if message == "loggedIn"
-		p YOURE LOGGED IN
+		p You're logged in!
 	else if message == "invalid"
-		p INVALID
-	if !message || message == "invalid"
+		p Invalid login!
+	else if !message || message == "invalid"
+		p Super Secret Admin Login! If you're not with us then GET OUT!
 		form(name="admin", action="/admin/login", method="post")
 			div.upload-label
-				| User name
+				| Username
 			input(type="text", name="user")
 			div.upload-label
-				| PW
+				| Password
 			input(type="password", name="password")
 			input(type='submit', value='Login', id='_submit')
 
 	else
-		p LOL
+		p Error!
