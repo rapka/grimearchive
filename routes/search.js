@@ -40,14 +40,14 @@ exports.mixes = function(req, res) {
 
 	Mix.count({hidden: false}).exec(function(err, count) {
 			if (err){
-				console.log("find error");
+				console.error("find error");
 				throw err;
 			}
 
 		Mix.find({hidden: false}).skip(skip).sort({date: -1}).limit(pageCount)
 			.exec(function(err, mixes) {
 				if (err){
-					console.log("find error");
+					console.error("find error");
 					throw err;
 				}
 				var currentUrl = '/mixes/page/';
@@ -80,14 +80,14 @@ exports.instrumentals = function(req, res) {
 
 	Mix.count({hidden: false, mcs: [], crews: []}).exec(function(err, count) {
 			if (err){
-				console.log("find error");
+				console.error("find error");
 				throw err;
 			}
 
 		Mix.find({hidden: false, mcs: [], crews: []}).skip(skip).sort({date: -1}).limit(pageCount)
 			.exec(function(err, mixes) {
 				if (err){
-					console.log("find error");
+					console.error("find error");
 					throw err;
 				}
 				var currentUrl = '/instrumentals/page/';
@@ -120,14 +120,14 @@ exports.dj = function(req, res) {
 
 	Mix.count({dj: req.params.url, hidden: false}).exec(function(err, count) {
 			if (err){
-				console.log("find error");
+				console.error("find error");
 				throw err;
 			}
 
 		Mix.find({dj: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(pageCount)
 			.exec(function(err, mixes) {
 				if (err){
-					console.log("find error");
+					console.error("find error");
 					throw err;
 				}
 				var currentUrl = '/dj/' + req.params.url + '/page/';
@@ -160,14 +160,14 @@ exports.mc = function(req, res) {
 
 	Mix.count({mcs: req.params.url, hidden: false}).exec(function(err, count) {
 			if (err){
-				console.log("find error");
+				console.error("find error");
 				throw err;
 			}
 
 		Mix.find({mcs: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(pageCount)
 			.exec(function(err, mixes) {
 				if (err){
-					console.log("find error");
+					console.error("find error");
 					throw err;
 				}
 				var currentUrl = '/mc/' + req.params.url + '/page/';
@@ -200,14 +200,14 @@ exports.crew = function(req, res) {
 
 	Mix.count({crews: req.params.url, hidden: false}).exec(function(err, count) {
 			if (err){
-				console.log("find error");
+				console.error("find error");
 				throw err;
 			}
 
 		Mix.find({crews: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(pageCount)
 			.exec(function(err, mixes) {
 				if (err){
-					console.log("find error");
+					console.error("find error");
 					throw err;
 				}
 				var currentUrl = '/crew/' + req.params.url + '/page/';
@@ -243,7 +243,7 @@ exports.uploader = function(req, res) {
 
 	Mix.count({uploader: user, tripcode: trip, hidden: false}).exec(function(err, count) {
 			if (err){
-				console.log("find error");
+				console.error("find error");
 				throw err;
 			}
 
@@ -251,7 +251,7 @@ exports.uploader = function(req, res) {
 		Mix.find({uploader: user, tripcode: trip, hidden: false}).skip(skip).sort({date: -1}).limit(pageCount)
 			.exec(function(err, mixes) {
 				if (err){
-					console.log("find error");
+					console.error("find error");
 					throw err;
 				}
 				var currentUrl = '/uploader/' + req.params.url + '/page/';
@@ -284,14 +284,14 @@ exports.station = function(req, res) {
 
 	Mix.count({station: req.params.url, hidden: false}).exec(function(err, count) {
 			if (err){
-				console.log("find error");
+				console.error("find error");
 				throw err;
 			}
 
 		Mix.find({station: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(pageCount)
 			.exec(function(err, mixes) {
 				if (err){
-					console.log("find error");
+					console.error("find error");
 					throw err;
 				}
 				var currentUrl = '/station/' + req.params.url + '/page/';
@@ -339,14 +339,14 @@ exports.searchForm = function(req, res) {
 	]};
 	Mix.count(query).exec(function(err, count) {
 			if (err){
-				console.log("find error");
+				console.error("find error");
 				throw err;
 			}
 
 		Mix.find(query).skip(skip).sort({date: -1}).limit(pageCount)
 			.exec(function(err, mixes) {
 				if (err){
-					console.log("find error");
+					console.error("find error");
 					throw err;
 				}
 				var currentUrl = '/search/' + searchTerm + '/page/';
@@ -394,14 +394,14 @@ exports.search = function(req, res) {
 	]};
 	Mix.count(query).exec(function(err, count) {
 			if (err){
-				console.log("find error");
+				console.error("find error");
 				throw err;
 			}
 
 		Mix.find(query).skip(skip).sort({date: -1}).limit(pageCount)
 			.exec(function(err, mixes) {
 				if (err){
-					console.log("find error");
+					console.error("find error");
 					throw err;
 				}
 				var currentUrl = '/search/' + searchTerm + '/page/';
@@ -411,7 +411,7 @@ exports.search = function(req, res) {
 					hasNext = true;
 				}
 
-				res.render('mixes', {title: 'Search results for "' + searchTerm + '" | Grime Archive', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+				res.render('mixes', {title: 'Search results for "' + searchTerm + '"', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
