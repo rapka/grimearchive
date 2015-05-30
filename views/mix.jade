@@ -49,14 +49,15 @@ block content
 				if mix.day && mix.month && mix.year
 					| !{mix.day}/#{mix.month}/#{mix.year}
 				else if mix.day && mix.month
-					| #{mix.day}/#{mix.month}
+					| #{mix.day}/#{mix.month}/????
 				else if mix.year
 					| Unknown Date, #{mix.year}
 				else
 					| Unknown Date
 		if mix.station
 			div.big.blue.mix-element 
-					| @#{mix.station}
+					| @
+					a(href='/station/' + mix.station) #{mix.station}
 		br
 		div.big.green.mix-element 
 			| #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
