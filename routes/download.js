@@ -17,7 +17,7 @@ exports.download = function(req, res) {
 				root: __dirname + '/../upload'
 			};
 
-			mix.save();
+			
 			var path = __dirname + '/../upload/' + req.params.url + '.mp3';
 			res.download(path, generateFilename(mix) + '.mp3', function (err) {
 				if (err) {
@@ -25,6 +25,7 @@ exports.download = function(req, res) {
 				}
 				else {
 					mix.downloads++;
+					mix.save();
 				}
 			});
 	});
