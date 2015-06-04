@@ -30,16 +30,21 @@ exports.index = function(req, res) {
 						  $group: {
 						    _id: null,
 						    total: {
-						      $sum: "$duration"
+						      $sum: "$duration",
+						    },
+						    downloads: {
+						    	$sum: "$downloads"
 						    }
 						  }
 						}, {
 						  $project: {
 						    _id: 0,
-						    total: 1
+						    total: 1,
+						    downloads: 2
 						  }}, function (err, result) {
 								console.log(result[0].total);
-								res.render('index', { title: 'The Grime Archive', sum: Math.floor(result[0].total / 60), popular: popular, recent: recent, count: count, instrumentals: instrumentals});
+								console.log(result);
+								res.render('index', { title: 'The Grime Archive', sum: Math.floor(result[0].total / 60), downloads: result[0].downloads, popular: popular, recent: recent, count: count, instrumentals: instrumentals});
 							});
 					
 				}); 

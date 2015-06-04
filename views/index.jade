@@ -7,313 +7,317 @@ block content
 		p The Grime Archive is a digital archive that aims to preserve the history of grime by providing free downloads of live recordings both old and new. 
 		p 
 			| We are currently hosting 
-			span #{count} 
+			span.index-count #{count} 
 			| grime sets totalling over 
-			span #{sum} 
-			| minutes of audio. 
+			span.index-count #{sum} 
+			| minutes of audio with 
+			span.index-count #{downloads}
+			|  downloads so far.
+		p
 			a(href='/about') Learn More >>
-	h3 Popular Mixes
-	table
-		thead
-			tr.mix-header
-				td.header-title Title
-				td.header-dj DJ
-				td.header-mc Mcs
-				td.header-crew Crews
-				td.header-station Station/Rave
-				td.header-date Air date
-				td.header-duration Duration
-				td.header-downloads Downloads
-				td.header-uploader Uploader
-				td.header-uploaded Uploaded
-
-		tbody
-			each mix in popular
-				tr.mix-row 		
-					td 
-						if mix.title
-							a(href='/mix/' + mix.url) #{mix.title}
+	.index-content
+		h3 Popular Mixes
+		table
+			thead
+				tr.mix-header
+					td.header-title Title
+					td.header-dj DJ
+					td.header-mc Mcs
+					td.header-crew Crews
+					td.header-station Station/Rave
+					td.header-date Air date
+					td.header-duration Duration
+					td.header-downloads Downloads
+					td.header-uploader Uploader
+					td.header-uploaded Uploaded
+	
+			tbody
+				each mix in popular
+					tr.mix-row 		
+						td 
+							if mix.title
+								a(href='/mix/' + mix.url) #{mix.title}
+							else
+								a(href='/mix/' + mix.url) Untitled
+						td
+							if mix.dj
+								a(href='/dj/' + mix.dj) !{mix.dj}
+							else
+								| Unknown DJ
+	
+						td
+							if mix.mcs.length
+								each mc, index in mix.mcs
+									if index < 3
+										a(href='/mc/' + mc) !{mc}
+										if index != (mix.mcs.length - 1)
+											| /
+									else if index == 3
+										a(href='/mix/' + mix.url) more
+							else if mix.crews.length
+								| ???
+							else
+								| -
+						td
+							if mix.crews.length
+								each crew, index in mix.crews
+									if index < 3		
+										a(href='/crew/' + crew) !{crew}
+										if index != (mix.crews.length - 1)
+											| /
+									else if index == 3
+										a(href='/mix/' + mix.url) more
+							else
+								| -
+						td
+							if mix.station
+								a(href='/station/' + mix.station) #{mix.station}
+							else
+								| ???
+						if mix.day && mix.month && mix.year
+							td  #{mix.day}/#{mix.month}/#{mix.year}
+						else if mix.day && mix.month
+							td #{mix.day}/#{mix.month}/????
+						else if mix.year
+							td ??/??/#{mix.year}
 						else
-							a(href='/mix/' + mix.url) Untitled
-					td
-						if mix.dj
-							a(href='/dj/' + mix.dj) !{mix.dj}
-						else
-							| Unknown DJ
-
-					td
-						if mix.mcs.length
-							each mc, index in mix.mcs
-								if index < 3
-									a(href='/mc/' + mc) !{mc}
-									if index != (mix.mcs.length - 1)
-										| /
-								else if index == 3
-									a(href='/mix/' + mix.url) more
-						else if mix.crews.length
-							| ???
-						else
-							| -
-					td
-						if mix.crews.length
-							each crew, index in mix.crews
-								if index < 3		
-									a(href='/crew/' + crew) !{crew}
-									if index != (mix.crews.length - 1)
-										| /
-								else if index == 3
-									a(href='/mix/' + mix.url) more
-						else
-							| -
-					td
-						if mix.station
-							a(href='/station/' + mix.station) #{mix.station}
-						else
-							| ???
-					if mix.day && mix.month && mix.year
-						td  #{mix.day}/#{mix.month}/#{mix.year}
-					else if mix.day && mix.month
-						td #{mix.day}/#{mix.month}/????
-					else if mix.year
-						td ??/??/#{mix.year}
-					else
-						td ???
-					td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
-					td= mix.downloads
-					td
-						if mix.uploader == 'Anonymous'
-							| Anonymous
-						else if !mix.tripcode
-							a(id='upload_link' href='/uploader/' + mix.uploader) !{mix.uploader}
-						else
-							a(id='upload_link' href='/uploader/' + mix.uploader + '-' + mix.tripcode) !{mix.uploader}
-							div.tripcode
-								| !{mix.tripcode}
-								script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
-								script(type='text/javascript').
-									var updateEmojis = function(event) {
-										var tripcode = $('.tripcode').text().substring(0, 8);
-										$.ajax({
-											url: '/emoji/' + tripcode,
-											type: 'GET',
-											success: function(data){
-												var oldLink = $('#upload_link').attr('href');
-				
-												var link = '<a href="' + $('#upload_link').attr('href') + '">';
-												link += data + '</a>';
-												$('.tripcode').html(link);
-							
-											}
-										});
-									}
-									$(function(){
-										updateEmojis();
-									});
+							td ???
+						td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
+						td= mix.downloads
+						td
+							if mix.uploader == 'Anonymous'
+								| Anonymous
+							else if !mix.tripcode
+								a(id='upload_link' href='/uploader/' + mix.uploader) !{mix.uploader}
+							else
+								a(id='upload_link' href='/uploader/' + mix.uploader + '-' + mix.tripcode) !{mix.uploader}
+								div.tripcode
+									| !{mix.tripcode}
+									script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+									script(type='text/javascript').
+										var updateEmojis = function(event) {
+											var tripcode = $('.tripcode').text().substring(0, 8);
+											$.ajax({
+												url: '/emoji/' + tripcode,
+												type: 'GET',
+												success: function(data){
+													var oldLink = $('#upload_link').attr('href');
 					
-					td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
-	div.mix-cta
-		a(href='mixes') View More >>
-
-	h3 Recent Uploads
-
-	table
-		thead
-			tr.mix-header
-				td.header-title Title
-				td.header-dj DJ
-				td.header-mc Mcs
-				td.header-crew Crews
-				td.header-station Station/Rave
-				td.header-date Air date
-				td.header-duration Duration
-				td.header-downloads Downloads
-				td.header-uploader Uploader
-				td.header-uploaded Uploaded
-
-		tbody
-			each mix in recent
-				tr.mix-row 		
-					td 
-						if mix.title
-							a(href='/mix/' + mix.url) #{mix.title}
-						else
-							a(href='/mix/' + mix.url) Untitled
-					td
-						if mix.dj
-							a(href='/dj/' + mix.dj) !{mix.dj}
-						else
-							| Unknown DJ
-					td
-						if mix.mcs.length
-							each mc, index in mix.mcs
-								if index < 3
-									a(href='/mc/' + mc) !{mc}
-									if index != (mix.mcs.length - 1)
-										| /
-								else if index == 3
-									a(href='/mix/' + mix.url) more
-						else if mix.crews.length
-							| ???
-						else
-							| -
-					td
-						if mix.crews.length
-							each crew, index in mix.crews
-								if index < 3		
-									a(href='/crew/' + crew) !{crew}
-									if index != (mix.crews.length - 1)
-										| /
-								else if index == 3
-									a(href='/mix/' + mix.url) more
-						else
-							| -
-					td
-						if mix.station
-							a(href='/station/' + mix.station) #{mix.station}
-						else
-							| ???
-					if mix.day && mix.month && mix.year
-						td  #{mix.day}/#{mix.month}/#{mix.year}
-					else if mix.day && mix.month
-						td #{mix.day}/#{mix.month}/????
-					else if mix.year
-						td ??/??/#{mix.year}
-					else
-						td ???
-					td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
-					td= mix.downloads
-					td
-						if mix.uploader == 'Anonymous'
-							| Anonymous
-						else if !mix.tripcode
-							a(id='upload_link' href='/uploader/' + mix.uploader) !{mix.uploader}
-						else
-							a(id='upload_link' href='/uploader/' + mix.uploader + '-' + mix.tripcode) !{mix.uploader}
-							div.tripcode
-								| !{mix.tripcode}
-								script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
-								script(type='text/javascript').
-									var updateEmojis = function(event) {
-										var tripcode = $('.tripcode').text().substring(0, 8);
-										$.ajax({
-											url: '/emoji/' + tripcode,
-											type: 'GET',
-											success: function(data){
-												var oldLink = $('#upload_link').attr('href');
-				
-												var link = '<a href="' + $('#upload_link').attr('href') + '">';
-												link += data + '</a>';
-												$('.tripcode').html(link);
-							
-											}
+													var link = '<a href="' + $('#upload_link').attr('href') + '">';
+													link += data + '</a>';
+													$('.tripcode').html(link);
+								
+												}
+											});
+										}
+										$(function(){
+											updateEmojis();
 										});
-									}
-									$(function(){
-										updateEmojis();
-									});
+						
+						td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
+		div.mix-cta
+			a(href='mixes') View More >>
+	
+		h3 Recent Uploads
+	
+		table
+			thead
+				tr.mix-header
+					td.header-title Title
+					td.header-dj DJ
+					td.header-mc Mcs
+					td.header-crew Crews
+					td.header-station Station/Rave
+					td.header-date Air date
+					td.header-duration Duration
+					td.header-downloads Downloads
+					td.header-uploader Uploader
+					td.header-uploaded Uploaded
+	
+			tbody
+				each mix in recent
+					tr.mix-row 		
+						td 
+							if mix.title
+								a(href='/mix/' + mix.url) #{mix.title}
+							else
+								a(href='/mix/' + mix.url) Untitled
+						td
+							if mix.dj
+								a(href='/dj/' + mix.dj) !{mix.dj}
+							else
+								| Unknown DJ
+						td
+							if mix.mcs.length
+								each mc, index in mix.mcs
+									if index < 3
+										a(href='/mc/' + mc) !{mc}
+										if index != (mix.mcs.length - 1)
+											| /
+									else if index == 3
+										a(href='/mix/' + mix.url) more
+							else if mix.crews.length
+								| ???
+							else
+								| -
+						td
+							if mix.crews.length
+								each crew, index in mix.crews
+									if index < 3		
+										a(href='/crew/' + crew) !{crew}
+										if index != (mix.crews.length - 1)
+											| /
+									else if index == 3
+										a(href='/mix/' + mix.url) more
+							else
+								| -
+						td
+							if mix.station
+								a(href='/station/' + mix.station) #{mix.station}
+							else
+								| ???
+						if mix.day && mix.month && mix.year
+							td  #{mix.day}/#{mix.month}/#{mix.year}
+						else if mix.day && mix.month
+							td #{mix.day}/#{mix.month}/????
+						else if mix.year
+							td ??/??/#{mix.year}
+						else
+							td ???
+						td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
+						td= mix.downloads
+						td
+							if mix.uploader == 'Anonymous'
+								| Anonymous
+							else if !mix.tripcode
+								a(id='upload_link' href='/uploader/' + mix.uploader) !{mix.uploader}
+							else
+								a(id='upload_link' href='/uploader/' + mix.uploader + '-' + mix.tripcode) !{mix.uploader}
+								div.tripcode
+									| !{mix.tripcode}
+									script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+									script(type='text/javascript').
+										var updateEmojis = function(event) {
+											var tripcode = $('.tripcode').text().substring(0, 8);
+											$.ajax({
+												url: '/emoji/' + tripcode,
+												type: 'GET',
+												success: function(data){
+													var oldLink = $('#upload_link').attr('href');
 					
-					td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
-	div.mix-cta
-		a(href='mixes') View More >>
-
-	h3 Recent Instrumental Mixes
-
-	table
-		thead
-			tr.mix-header
-				td.header-title Title
-				td.header-dj DJ
-				td.header-mc Mcs
-				td.header-crew Crews
-				td.header-station Station/Rave
-				td.header-date Air date
-				td.header-duration Duration
-				td.header-downloads Downloads
-				td.header-uploader Uploader
-				td.header-uploaded Uploaded
-
-		tbody
-			each mix in instrumentals
-				tr.mix-row 		
-					td 
-						if mix.title
-							a(href='/mix/' + mix.url) #{mix.title}
-						else
-							a(href='/mix/' + mix.url) Untitled
-					td
-						if mix.dj
-							a(href='/dj/' + mix.dj) !{mix.dj}
-						else
-							| Unknown DJ
-					td
-						if mix.mcs.length
-							each mc, index in mix.mcs
-								if index < 3
-									a(href='/mc/' + mc) !{mc}
-									if index != (mix.mcs.length - 1)
-										| /
-								else if index == 3
-									a(href='/mix/' + mix.url) more
-						else if mix.crews.length
-							| ???
-						else
-							| -
-					td
-						if mix.crews.length
-							each crew, index in mix.crews
-								if index < 3		
-									a(href='/crew/' + crew) !{crew}
-									if index != (mix.crews.length - 1)
-										| /
-								else if index == 3
-									a(href='/mix/' + mix.url) more
-						else
-							| -
-					td
-						if mix.station
-							a(href='/station/' + mix.station) #{mix.station}
-						else
-							| ???
-					if mix.day && mix.month && mix.year
-						td  #{mix.day}/#{mix.month}/#{mix.year}
-					else if mix.day && mix.month
-						td #{mix.day}/#{mix.month}/????
-					else if mix.year
-						td ??/??/#{mix.year}
-					else
-						td ???
-					td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
-					td= mix.downloads
-					td
-						if mix.uploader == 'Anonymous'
-							| Anonymous
-						else if !mix.tripcode
-							a(id='upload_link' href='/uploader/' + mix.uploader) !{mix.uploader}
-						else
-							a(id='upload_link' href='/uploader/' + mix.uploader + '-' + mix.tripcode) !{mix.uploader}
-							div.tripcode
-								| !{mix.tripcode}
-								script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
-								script(type='text/javascript').
-									var updateEmojis = function(event) {
-										var tripcode = $('.tripcode').text().substring(0, 8);
-										$.ajax({
-											url: '/emoji/' + tripcode,
-											type: 'GET',
-											success: function(data){
-												var oldLink = $('#upload_link').attr('href');
-				
-												var link = '<a href="' + $('#upload_link').attr('href') + '">';
-												link += data + '</a>';
-												$('.tripcode').html(link);
-							
-											}
+													var link = '<a href="' + $('#upload_link').attr('href') + '">';
+													link += data + '</a>';
+													$('.tripcode').html(link);
+								
+												}
+											});
+										}
+										$(function(){
+											updateEmojis();
 										});
-									}
-									$(function(){
-										updateEmojis();
-									});
+						
+						td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
+		div.mix-cta
+			a(href='mixes') View More >>
+	
+		h3 Recent Instrumental Mixes
+	
+		table
+			thead
+				tr.mix-header
+					td.header-title Title
+					td.header-dj DJ
+					td.header-mc Mcs
+					td.header-crew Crews
+					td.header-station Station/Rave
+					td.header-date Air date
+					td.header-duration Duration
+					td.header-downloads Downloads
+					td.header-uploader Uploader
+					td.header-uploaded Uploaded
+	
+			tbody
+				each mix in instrumentals
+					tr.mix-row 		
+						td 
+							if mix.title
+								a(href='/mix/' + mix.url) #{mix.title}
+							else
+								a(href='/mix/' + mix.url) Untitled
+						td
+							if mix.dj
+								a(href='/dj/' + mix.dj) !{mix.dj}
+							else
+								| Unknown DJ
+						td
+							if mix.mcs.length
+								each mc, index in mix.mcs
+									if index < 3
+										a(href='/mc/' + mc) !{mc}
+										if index != (mix.mcs.length - 1)
+											| /
+									else if index == 3
+										a(href='/mix/' + mix.url) more
+							else if mix.crews.length
+								| ???
+							else
+								| -
+						td
+							if mix.crews.length
+								each crew, index in mix.crews
+									if index < 3		
+										a(href='/crew/' + crew) !{crew}
+										if index != (mix.crews.length - 1)
+											| /
+									else if index == 3
+										a(href='/mix/' + mix.url) more
+							else
+								| -
+						td
+							if mix.station
+								a(href='/station/' + mix.station) #{mix.station}
+							else
+								| ???
+						if mix.day && mix.month && mix.year
+							td  #{mix.day}/#{mix.month}/#{mix.year}
+						else if mix.day && mix.month
+							td #{mix.day}/#{mix.month}/????
+						else if mix.year
+							td ??/??/#{mix.year}
+						else
+							td ???
+						td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
+						td= mix.downloads
+						td
+							if mix.uploader == 'Anonymous'
+								| Anonymous
+							else if !mix.tripcode
+								a(id='upload_link' href='/uploader/' + mix.uploader) !{mix.uploader}
+							else
+								a(id='upload_link' href='/uploader/' + mix.uploader + '-' + mix.tripcode) !{mix.uploader}
+								div.tripcode
+									| !{mix.tripcode}
+									script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+									script(type='text/javascript').
+										var updateEmojis = function(event) {
+											var tripcode = $('.tripcode').text().substring(0, 8);
+											$.ajax({
+												url: '/emoji/' + tripcode,
+												type: 'GET',
+												success: function(data){
+													var oldLink = $('#upload_link').attr('href');
 					
-					td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
-	div.mix-cta
-		a(href='instrumentals') View More >>
+													var link = '<a href="' + $('#upload_link').attr('href') + '">';
+													link += data + '</a>';
+													$('.tripcode').html(link);
+								
+												}
+											});
+										}
+										$(function(){
+											updateEmojis();
+										});
+						
+						td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
+		div.mix-cta
+			a(href='instrumentals') View More >>	

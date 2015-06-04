@@ -60,6 +60,7 @@ p {
 .index-about {
 	span {
 		color: @darkPink;
+		font-size: 20px
 	}
 
 	a {
@@ -176,6 +177,12 @@ tr.mix-row {
 		}
 }
 
+.index-content {
+	h3 {
+		text-align: center;
+	}
+}
+
 .content {
 	margin: 0 auto;
 	width: 520px;
@@ -236,6 +243,24 @@ tr.mix-row {
 	}
 
 	.upload-inputs {
+
+		.labels-overlay {
+
+			position: absolute;
+			height: 839px;
+			width: 514px;
+			z-index: -10;
+			background-color: black;
+			opacity: 0;
+			transition: opacity .25s ease-in-out;
+			-moz-transition: opacity .25s ease-in-out;
+			-webkit-transition: opacity .25s ease-in-out;
+
+			&.visible {
+				z-index: 10;
+				opacity: 0.7;
+			}
+		}
 		
 		margin: 5px 0px 0px 0px;
 
@@ -325,11 +350,54 @@ tr.mix-row {
 			display: block;
 			width: 502px;
 
+			&:focus {
+				outline: none;
+			}
+
 			&:hover {
 				color: #FF86F5;
 				cursor: pointer;
 			}
+
+			&.progress {
+				cursor: default;
+
+				&:hover {
+				color: @darkPink;
+				cursor: default;
+				}
+			}
 		}
+
+		input#_cancel {
+			color: @darkPink;
+			background: black;
+			border: 1px solid @darkPink;
+			opacity: 0;
+			display: block;
+			width: 502px;
+			height: 25px;
+			z-index: -50;
+			transition: opacity .35s ease-in-out;
+			-moz-transition: opacity .35s ease-in-out;
+			-webkit-transition: opacity .35s ease-in-out;
+
+			&:focus {
+				outline: none;
+			}
+
+			&.visible {
+				z-index: 10;
+				height: 25px;
+				opacity: 1;
+				display: block;
+				&:hover {
+					color: #FF86F5;
+					cursor: pointer;
+				}				
+			}
+		}
+
 
 		.upload-divider{
 			margin: 5px;

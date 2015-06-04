@@ -15,6 +15,7 @@ block content
 
 		div.upload-inputs
 			form(id="_form", name="upload", action="/upload", method="post", enctype='multipart/form-data')
+				div.labels-overlay
 				div.upload-label
 					| Title
 				input(type="text", name="title")
@@ -91,25 +92,57 @@ block content
 					input(type="file", name="file" id='_file' accept='audio/mpeg3,audio/mpeg,audio/mp3')
 					.file-overlay
 						p.file-button Select a File
-				input(type='button',  onclick="uploadFile()", value='Upload', id='_submit')
+				input(type='button',  onclick="submitFile()", value='Upload', id='_submit')
+				input(type='button', value='Cancel', id='_cancel')
 				script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
 				script(src="/js/jquery.tagsinput.js")
 				link(rel="stylesheet" type="text/css" href="style/jquery.tagsinput.css")
 				script(type='text/javascript').
-					function uploadFile() {
+					function upload(fd) {
+						var xhr = new XMLHttpRequest();
+						xhr.upload.addEventListener("progress", function (evt) {
+								if (evt.lengthComputable) {
+									var percentage = Math.floor((evt.loaded / evt.total) * 100);
+									$('#_submit').prop('value', 'Uploading...' + percentage + '%');
+								}
+							}, false);
+						xhr.onreadystatechange = function() {
+							var result;
+							console.log(xhr);
+
+							if (xhr.readyState == 4) {
+								var split = xhr.responseText.split("/")[2];
+								var tries = 0;
+								var interval = setInterval(function() { 
+									$.get("upload/" + split, function (data) {
+										if (parseInt(data) > 0) {
+												window.location = xhr.responseText; 
+										}
+										else {
+												tries++;
+										}
+										if (tries >= 20) {
+											$('#_submit').prop('value', 'Error uploading mix :( Please refresh');
+											clearInterval(interval);
+										} 
+									}); 
+								}, 500);
+							}
+						};
+						xhr.open('post', '/upload', true);
+
+						xhr.send(fd);	
+
+						return xhr;
+					}
+
+					function submitFile() {
+						console.log("in subimt");
 						var form = document.getElementById('_form');
 						var fd = new FormData(form);
 						var file = document.getElementById('_file');
-							
-						file.onchange = function(e){
-						    var ext = this.value.match(/\.([^\.]+)$/)[1];
-						    console.log(ext);
-						    if (ext.toLowerCase() != 'mp3') {
-						    		$('.progress').text("Invalid file type");
-						    	} 
-						};
 						
-						var xhr = new XMLHttpRequest();
+						var acceptedTypes = ['mp3'];
 						var filename = document.getElementById('_file').value;
 						var day = $('input[name="day"]')[0].value;
 						var month = $('input[name="month"]')[0].value;
@@ -130,41 +163,33 @@ block content
 						else if (document.getElementById('_file').value == ''){
 							$('#_submit').prop('value', 'No file selected');
 						}
+						else if (acceptedTypes.indexOf(filename.match(/\.([^\.]+)$/)[1].toLowerCase()) == -1 ) {
+							$('#_submit').prop('value', 'Invalid file type');
+						}
 
 						else {
-							xhr.upload.addEventListener("progress", function (evt) {
-									if (evt.lengthComputable) {
-										var percentage = Math.floor((evt.loaded / evt.total) * 100);
-										$('#_submit').prop('value', 'Uploading - ' + percentage + '%');
-									}
-								}, false);
-							xhr.onreadystatechange = function() {
-								var result;
-								console.log(xhr);
-	
-								if (xhr.readyState == 4) {
-									var split = xhr.responseText.split("/")[2];
-									var tries = 0;
-									var interval = setInterval(function() { 
-										$.get("upload/" + split, function (data) {
-											if (parseInt(data) > 0) {
-													window.location = xhr.responseText; 
-												}
-											else {
-													tries++;
-												}
+							console.log("tests passed");
+							
+							$('#_submit').addClass('progress');
+							$('.labels-overlay').addClass('visible');
+							$('#_submit').prop('value', 'Uploading...');
+							document.getElementById('_submit').onclick = null;
+							var xhr = upload(fd);
+							
+							setTimeout (function () {
+								$('#_cancel').addClass('visible');
+								document.getElementById('_cancel').addEventListener('click', function() {
+									console.log('cancc');
+									$('#_submit').slideDown();
+									$('.labels-overlay').removeClass('visible');
+									$('#_cancel').removeClass('visible');
+									document.getElementById('_submit').onclick = submitFile;
+									$('#_submit').removeClass('progress');
+									$('#_submit').prop('value', 'Upload');
 
-												if (tries >= 20) {
-													$('#_submit').prop('value', 'Error uploading mix :( Please refresh');
-													clearInterval(interval);
-												} 
-											}); 
-										}, 500);
-								}
-							};
-
-							xhr.open('post', '/upload', true);
-							xhr.send(fd);	
+									xhr.abort();
+								});
+							}, 350);
 						}
 					}
 
