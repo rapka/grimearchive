@@ -1,0 +1,64 @@
+extends layout
+
+block content
+
+	.upload.content 
+		.upload-title.blue
+			p Advanced Search
+
+		div.upload-inputs
+			form(name="search", action="/advancedsearch", method="get", enctype='multipart/form-data')
+				div.labels-overlay
+				div.upload-label
+					| Title:
+				input(type="text", name="title")
+				div.upload-label
+					| DJ:
+				input(type="text", name="dj")
+				br
+				div.upload-label.tag-input
+					| MCs:
+				input(type="text", name="mcs" id="mcs")
+				div.upload-label.tag-input
+					| Crews:
+				input(type="text", name="crews" id="crews")
+				div.upload-divider
+				div.upload-label.tag-input
+					| Refine by:
+				input(type="text", name="startyear" placeholder="Start Year" class="date")
+				input(type="text", name="endyear" placeholder="End Year" class="date")
+				input(type="text", name="bitrate" placeholder="Minimum Bitrate" class="date")
+
+				div.upload-label.tag-input
+					| Sort by:
+				div.select-wrapper
+					select(name="sortby")
+						option(value="uploaddate") Upload date
+						option(value="airdate") Air date
+						option(value="downloads") Downloads
+						option(value="title") Title
+						option(value="dj") DJ
+						option(value="station") Station
+						option(value="duration") Duration
+
+					select(name="ascending")
+						option(value="-1") Descending
+						option(value="1") Ascending
+					input(type="hidden" name="page" value="1")
+				div.upload-divider
+				input(type='submit', value='Search >> ')
+				script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+				script(src="/js/jquery.tagsinput.js")
+				link(rel="stylesheet" type="text/css" href="style/jquery.tagsinput.css")
+				script(type='text/javascript').
+					$('#mcs').tagsInput({
+						 'defaultText':'',
+						 'height':'20px',
+						 'width':'506px'
+						})
+					$('#crews').tagsInput({
+						 'defaultText':'',
+						 'height':'20px',
+						 'width':'506px'
+						});
+

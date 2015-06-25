@@ -102,22 +102,40 @@ block content
 										});
 						
 						td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
-		.page-selection
-			if page > 1
-				a(href= url + (parseInt(page) - 1)) Last Page
-				| 
-			else
-				| Last Page
-	
-			|  - 
-	
-			if hasNext
-				if !isNaN(page) 
-					a(href= url + (parseInt(page) + 1)) Next Page
+		if advanced
+			.page-selection
+				if page > 1
+					a(href= '/advancedsearch?title=' + query.title + '&dj=' + query.dj + '&mcs='+ query.mcs + '&crews=' + query.crews + '&sortby=' + query.sortby + '&ascending=' + query.ascending + '&page=' + (parseInt(page) - 1)) Last Page
+					| 
+				else
+					| Last Page
+		
+				|  - 
+		
+				if hasNext
+					if !isNaN(page) 
+						a(href= '/advancedsearch?title=' + query.title + '&dj=' + query.dj + '&mcs='+ query.mcs + '&crews=' + query.crews + '&sortby=' + query.sortby + '&ascending=' + query.ascending + '&page=' + (parseInt(page) + 1)) Next Page
+					else 
+						a(href= '/advancedsearch?title=' + query.title + '&dj=' + query.dj + '&mcs='+ query.mcs + '&crews=' + query.crews + '&sortby=' + query.sortby + '&ascending=' + query.ascending + '&page=2') Next Page
 				else 
-					a(href= url + ('2')) Next Page
-			else 
-				| Next Page	
+					| Next Page	
+		else
+			.page-selection
+				if page > 1
+					a(href= url + (parseInt(page) - 1)) Last Page
+					| 
+				else
+					| Last Page
+		
+				|  - 
+		
+				if hasNext
+					if !isNaN(page) 
+						a(href= url + (parseInt(page) + 1)) Next Page
+					else 
+						a(href= url + ('2')) Next Page
+				else 
+					| Next Page	
 	else
 		h2= title
 		div.big.red
