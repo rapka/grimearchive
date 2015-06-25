@@ -105,7 +105,7 @@ block content
 		if advanced
 			.page-selection
 				if page > 1
-					a(href= '/advancedsearch?title=' + query.title + '&dj=' + query.dj + '&mcs='+ query.mcs + '&crews=' + query.crews + '&sortby=' + query.sortby + '&ascending=' + query.ascending + '&page=' + (parseInt(page) - 1)) Last Page
+					a(href= '/advancedsearch?title=' + query.title + '&dj=' + query.dj + '&mcs='+ query.mcs + '&crews=' + query.crews + '&startyear=' + query.startyear + '&endyear=' + query.endyear + '&bitrate=' + query.bitrate + '&sortby=' + query.sortby + '&ascending=' + query.ascending + '&page=' + (parseInt(page) - 1)) Last Page
 					| 
 				else
 					| Last Page
@@ -114,9 +114,9 @@ block content
 		
 				if hasNext
 					if !isNaN(page) 
-						a(href= '/advancedsearch?title=' + query.title + '&dj=' + query.dj + '&mcs='+ query.mcs + '&crews=' + query.crews + '&sortby=' + query.sortby + '&ascending=' + query.ascending + '&page=' + (parseInt(page) + 1)) Next Page
+						a(href= '/advancedsearch?title=' + query.title + '&dj=' + query.dj + '&mcs='+ query.mcs + '&crews=' + query.crews + '&startyear=' + query.startyear + '&endyear=' + query.endyear + '&bitrate=' + query.bitrate + '&sortby=' + query.sortby + '&ascending=' + query.ascending + '&page=' + (parseInt(page) + 1)) Next Page
 					else 
-						a(href= '/advancedsearch?title=' + query.title + '&dj=' + query.dj + '&mcs='+ query.mcs + '&crews=' + query.crews + '&sortby=' + query.sortby + '&ascending=' + query.ascending + '&page=2') Next Page
+						a(href= '/advancedsearch?title=' + query.title + '&dj=' + query.dj + '&mcs='+ query.mcs + '&crews=' + query.crews + '&startyear=' + query.startyear + '&endyear=' + query.endyear + '&bitrate=' + query.bitrate + '&sortby=' + query.sortby + '&ascending=' + query.ascending + '&page=2') Next Page
 				else 
 					| Next Page	
 		else
