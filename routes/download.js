@@ -4,8 +4,9 @@ var ObjectId = require('mongoose').Types.ObjectId;
 var config = require('../config');
 var AWS = require('aws-sdk');
 var request = require('request');
+var fs = require('fs');
 
-AWS.config.update({region: 'eu-west-1'});
+AWS.config.loadFromPath(__dirname + '/../aws.json');
 
 var s3 = new AWS.S3();
 
@@ -20,19 +21,19 @@ exports.download = function(req, res) {
 				throw err;
 			}
 
-			var options = {
-				root:config.uploadDirectory
-			};
+			var attachment = 'attachment; filename="' + generateFilename(mix) + '.mp3"';
 
-			res.setHeader("content-disposition", "attachment; filename=" + generateFilename(mix) + ".mp3");
+			res.setHeader("content-disposition", attachment);
 
-			var params = {Bucket: config.bucket, Key: req.params.url + '.mp3'};
-			var signedUrl = s3.getSignedUrl('getObject', params);
+			var params = {Bucket: config.bucket, Key: '0028710.mp3'};
+			var signedUrl = s3.getSignedUrl('getObject', params, function (err, url) {
 
-			mix.downloads++;
-			mix.save();
+				mix.downloads++;
+				mix.save();
 
-			request(signedUrl).pipe(res);
+				request(url).pipe(res);
+			});
+
 	});
 };
 
