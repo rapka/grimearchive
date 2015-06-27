@@ -36,6 +36,7 @@
     "express-session": "^1.7.6",
     "uuid": "^2.0.1",
     "session-file-store": "^0.0.3",
-    "musicmetadata": "^1.0.1"
+    "musicmetadata": "^1.0.1",
+    "aws-sdk": "^2.1.36"
   }
 }

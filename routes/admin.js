@@ -4,6 +4,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 var admins = require('../admins');
 var crypto = require('crypto');
 var fs = require('fs');
+var config = require('../config');
 var pageCount = 20;
 
 exports.routes = function(app) {
@@ -84,7 +85,7 @@ exports.remove = function(req, res) {
 			console.error(err);
 		}
 		else {
-			fs.unlinkSync(__dirname + '/../upload/' + mix.file);
+			fs.unlinkSync(config.uploadDirectory + mix.file);
 			mix.remove();
 		}
 		res.render('upload');

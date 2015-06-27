@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Mix = mongoose.model('Mix');
 var ObjectId = require('mongoose').Types.ObjectId;
+var config = require('../config');
+
 
 exports.routes = function(app) {
 	app.get('/download/:url', exports.download);
@@ -14,11 +16,11 @@ exports.download = function(req, res) {
 			}
 			
 			var options = {
-				root: __dirname + '/../upload'
+				root:config.uploadDirectory
 			};
 
 			
-			var path = __dirname + '/../upload/' + req.params.url + '.mp3';
+			var path = config.uploadDirectory + req.params.url + '.mp3';
 			res.download(path, generateFilename(mix) + '.mp3', function (err) {
 				if (err) {
 					console.error(err);
@@ -42,19 +44,19 @@ var generateFilename = function (mix) {
 		titleString = mix.year.toString();
 	}
 	else {
-		titleString = "Unknown Date"
+		titleString = "Unknown Date";
 	}
 
 	if (mix.dj) {
 		titleString +=  ", " + mix.dj;
 	}
+	else {
+		titleString += ", Unknown DJ";
+	}
 
 	//either use user supplied title or radio station
-	if (mix.title && mix.dj) {
+	if (mix.title) {
 		titleString +=  " - " + mix.title;
-	}
-	else if (mix.title) {
-		titleString +=  ", " + mix.title;
 	}
 	else if (mix.station) {
 		titleString += ", " + mix.station;

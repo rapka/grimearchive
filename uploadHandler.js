@@ -2,6 +2,8 @@ var fs = require('fs');
 var probe = require('node-ffprobe');
 var jquery = require('jquery');
 var crypto = require('crypto');
+var config = require('./config');
+
 
 // Load models.
 var models_path = __dirname + '/models';
@@ -33,11 +35,11 @@ exports.rename = function (fieldname, filename) {
 	
 	var ts = String(new Date().getTime());
 	var num = ts.substr(ts.length - 7)
-	var path = __dirname  + "/upload/" + num + ".mp3";
+	var path = config.uploadDirectory + num + ".mp3";
 	// Check for duplicates
 	while (existsSync(path)) {
 		num = ts.substr(ts.length - 7)
-		path = __dirname  + "/upload/" + num + ".mp3";
+		path = config.uploadDirectory + num + ".mp3";
 	}
 	return num;
 }

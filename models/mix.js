@@ -2,6 +2,7 @@ var id3_reader = require('id3_reader');
 var fs = require('fs');
 var Buffer = require('buffer').Buffer;
 var mm = require('musicmetadata');
+var config = require('../config');
 
 var mongoose = require('mongoose')
 	, Schema = mongoose.Schema
@@ -95,7 +96,7 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 	//update mp3 artist tiltle
 	var artistString = "";
 
-	var filePath = __dirname + '/../upload/' + this.file;
+	var filePath = uploadDirectory + this.file;
 
 	if (this.dj) {
 		artistString = this.dj;
