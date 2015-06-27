@@ -26,7 +26,7 @@ exports.download = function(req, res) {
 			res.setHeader("content-disposition", "attachment; filename=" + generateFilename(mix) + ".mp3");
 
 			var params = {Bucket: config.bucket, Key: req.params.url + '.mp3'};
-			var signedUrl = s3.getSignedUrl('getObject', params);
+			var signedUrl = AWS.S3.getSignedUrl('getObject', params);
 
 			mix.downloads++;
 			mix.save();
