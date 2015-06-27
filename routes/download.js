@@ -2,6 +2,10 @@ var mongoose = require('mongoose');
 var Mix = mongoose.model('Mix');
 var ObjectId = require('mongoose').Types.ObjectId;
 var config = require('../config');
+var AWS = require('aws-sdk');
+var request = require('request');
+AWS.config.update({region: 'eu-west-1'});
+
 
 
 exports.routes = function(app) {
@@ -14,22 +18,20 @@ exports.download = function(req, res) {
 				console.error("find error");
 				throw err;
 			}
-			
+
 			var options = {
 				root:config.uploadDirectory
 			};
 
-			
-			var path = config.uploadDirectory + req.params.url + '.mp3';
-			res.download(path, generateFilename(mix) + '.mp3', function (err) {
-				if (err) {
-					console.error(err);
-				}
-				else {
-					mix.downloads++;
-					mix.save();
-				}
-			});
+			res.setHeader("content-disposition", "attachment; filename=" + generateFilename(mix) + ".mp3");
+
+			var params = {Bucket: config.bucket, Key: req.params.url + '.mp3'};
+			var signedUrl = s3.getSignedUrl('getObject', params);
+
+			mix.downloads++;
+			mix.save();
+
+			request(signedUrl).pipe(res);
 	});
 };
 

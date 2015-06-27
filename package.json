@@ -37,6 +37,7 @@
     "uuid": "^2.0.1",
     "session-file-store": "^0.0.3",
     "musicmetadata": "^1.0.1",
-    "aws-sdk": "^2.1.36"
+    "aws-sdk": "^2.1.36",
+    "request": "^2.58.0"
   }
 }
