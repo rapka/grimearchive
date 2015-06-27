@@ -4,9 +4,10 @@ var ObjectId = require('mongoose').Types.ObjectId;
 var config = require('../config');
 var AWS = require('aws-sdk');
 var request = require('request');
+
 AWS.config.update({region: 'eu-west-1'});
 
-
+var s3 = new AWS.S3();
 
 exports.routes = function(app) {
 	app.get('/download/:url', exports.download);
@@ -26,7 +27,7 @@ exports.download = function(req, res) {
 			res.setHeader("content-disposition", "attachment; filename=" + generateFilename(mix) + ".mp3");
 
 			var params = {Bucket: config.bucket, Key: req.params.url + '.mp3'};
-			var signedUrl = AWS.S3.getSignedUrl('getObject', params);
+			var signedUrl = s3.getSignedUrl('getObject', params);
 
 			mix.downloads++;
 			mix.save();
