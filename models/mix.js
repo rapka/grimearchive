@@ -3,10 +3,15 @@ var fs = require('fs');
 var Buffer = require('buffer').Buffer;
 var mm = require('musicmetadata');
 var config = require('../config');
+var AWS = require('aws-sdk');
 
-var mongoose = require('mongoose')
-	, Schema = mongoose.Schema
-	, ObjectId = Schema.ObjectId;
+AWS.config.loadFromPath(__dirname + '/../aws.json');
+
+var s3 = new AWS.S3();
+
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
 
 // Define the model.
 var mixSchema = new Schema({
@@ -34,9 +39,14 @@ var mixSchema = new Schema({
 
 mixSchema.methods.updateTags = function(preserve, albumtitle) {
 
- 	if (this.file) {
+
+	if (this.file) {
 		this.url = this.file.split('.')[0];
- 	}
+	}
+	else {
+		console.log("NO FILE FOUND");
+		return;
+	}
 
 	var titleString = "Unknown";
 
@@ -63,7 +73,7 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 	else if (this.mcs.length >= 1){
 		titleString += " feat. ";
 		for (var i = 0; i < this.mcs.length; i++){
-			if (i == 0) {
+			if (i === 0) {
 				titleString += this.mcs[i];
 			}
 			else if (i == (this.mcs.length - 1)) {
@@ -81,7 +91,7 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 	else if (this.crews.length >= 1){
 		titleString += " feat. ";
 		for (var i = 0; i < this.crews.length; i++){
-			if (i == 0) {
+			if (i === 0) {
 				titleString += this.crews[i];
 			}
 			else if (i == (this.crews.length - 1)) {
@@ -98,6 +108,7 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 
 	var filePath = uploadDirectory + this.file;
 
+
 	if (this.dj) {
 		artistString = this.dj;
 	}
@@ -106,72 +117,108 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 	}
 
 	//create id3 tags
-	var tags = { 
-		
+	var tags = {
+
 		TIT2: titleString,
 		TPE1: artistString,
 		TALB: 'The Grime Archive',
 		TCON: 'Grime',
 		TPE2: 'The Grime Archive'
- 	};
+	};
 
- 	if (albumtitle && this.title) {
- 		tags['TALB'] = this.title;
- 	}
- 	else if (albumtitle) {
- 		tags['TALB'] = titleString;
- 	}
- 	else {
- 		tags['TALB'] = 'The Grime Archive';
- 	}
+	if (albumtitle && this.title) {
+		tags['TALB'] = this.title;
+	}
+	else if (albumtitle) {
+		tags['TALB'] = titleString;
+	}
+	else {
+		tags['TALB'] = 'The Grime Archive';
+	}
 	if (this.year) {
 		tags['TYER'] = this.year.toString();
 	}
 
- 	if (!preserve) {
-		var albumArtPath = __dirname + "/../public/img/albumart.png";
-		var albumArt = fs.readFileSync(albumArtPath);
-		tags['APICPNG'] = albumArt;
-		id3_reader.write(filePath, tags, function(success, msg) {
-			if (!success) { 
-				console.log(msg);
+	// Pull file from s3 if it doesn't exist
+	if (!fs.lstatSync(filepath).isFile()) {
+		var params = {
+			Bucket: "grimearchive",
+			Key: this.file
+		};
+
+		s3.getObject(params, function(err, data) {
+			if (err) {
+				console.log(err);
+			}
+
+			fs.writeFileSync(filePath, data);
+
+			if (!preserve) {
+				var albumArtPath = __dirname + "/../public/img/albumart.png";
+				var albumArt = fs.readFileSync(albumArtPath);
+				tags['APICPNG'] = albumArt;
+				id3_reader.write(filePath, tags, function(success, msg) {
+					if (!success) {
+						console.log(msg);
+					}
+				});
+			}
+			else {
+				var parser = mm(fs.createReadStream(filePath), function (err, metadata) {
+					if (err) {
+						console.log(err);
+					}
+					
+					if (metadata.picture[0].format == 'jpg') {
+						tags['APICJPEG'] = metadata.picture[0].data;
+					}
+					else if (metadata.picture[0].format == 'png') {
+						tags['APICPNG'] = metadata.picture[0].data;
+					}
+					id3_reader.write(filePath, tags, function(success, msg) {
+						if (!success) {
+							console.log(msg);
+						}
+					});
+				});
 			}
 		});
- 	}
+	}
 
- 	else {
- 		var parser = mm(fs.createReadStream(filePath), function (err, metadata) {
- 			if (err) {
- 				console.log(err);
- 			}
- 			
-			if (metadata.picture[0].format == 'jpg') {
-				tags['APICJPEG'] = metadata.picture[0].data;
-			}
-			else if (metadata.picture[0].format == 'png') {
-				tags['APICPNG'] = metadata.picture[0].data;
-			}
+	//File already exists
+	else {
+		if (!preserve) {
+			var albumArtPath = __dirname + "/../public/img/albumart.png";
+			var albumArt = fs.readFileSync(albumArtPath);
+			tags['APICPNG'] = albumArt;
 			id3_reader.write(filePath, tags, function(success, msg) {
-				if (!success) { 
+				if (!success) {
 					console.log(msg);
 				}
 			});
-		});
- 	}
-}
-
-mixSchema.statics.generateTitle = function(req) {
-	var artistString = "";
-
-	if (this.dj) {
-		artistString = this.dj;
+		}
+		else {
+			var parser = mm(fs.createReadStream(filePath), function (err, metadata) {
+				if (err) {
+					console.log(err);
+				}
+				
+				if (metadata.picture[0].format == 'jpg') {
+					tags['APICJPEG'] = metadata.picture[0].data;
+				}
+				else if (metadata.picture[0].format == 'png') {
+					tags['APICPNG'] = metadata.picture[0].data;
+				}
+				id3_reader.write(filePath, tags, function(success, msg) {
+					if (!success) {
+						console.log(msg);
+					}
+				});
+			});
+		}
 	}
-	else {
-		artistString = "Unknown DJ";
-	}
+};
 
-	return artistString;
-}
 
 // Export model.
 module.exports = mongoose.model('Mix', mixSchema);
