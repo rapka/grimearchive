@@ -112,21 +112,27 @@ block content
 
 							if (xhr.readyState == 4) {
 								var split = xhr.responseText.split("/")[2];
+								console.log("xhr", xhr.responseText);
 								var tries = 0;
 								var interval = setInterval(function() { 
+									$('#_submit').prop('value', 'Processing...');
+									$('#_cancel').removeClass('visible');
+									console.log("calling uploar");
 									$.get("upload/" + split, function (data) {
+										console.log("rrrrr", data);
 										if (parseInt(data) > 0) {
+												console.log("redd");
 												window.location = xhr.responseText; 
 										}
 										else {
 												tries++;
 										}
-										if (tries >= 20) {
+										if (tries >= 200) {
 											$('#_submit').prop('value', 'Error uploading mix :( Please refresh');
 											clearInterval(interval);
 										} 
 									}); 
-								}, 500);
+								}, 1000);
 							}
 						};
 						xhr.open('post', '/upload', true);

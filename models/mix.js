@@ -50,6 +50,8 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 
 	var titleString = "Unknown";
 
+	var filename = this.file;
+
 	//either use user supplied title or radio station
 	if (this.title) {
 		titleString = this.title;
@@ -106,7 +108,7 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 	//update mp3 artist tiltle
 	var artistString = "";
 
-	var filePath = uploadDirectory + this.file;
+	var filePath = config.uploadDirectory + this.file;
 
 
 	if (this.dj) {
@@ -140,13 +142,14 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 	}
 
 	// Pull file from s3 if it doesn't exist
-	if (!fs.lstatSync(filepath).isFile()) {
+	if (!fs.lstatSync(filePath).isFile()) {
 		var params = {
 			Bucket: "grimearchive",
 			Key: this.file
 		};
 
 		s3.getObject(params, function(err, data) {
+			console.log("DOWNLOADING");
 			if (err) {
 				console.log(err);
 			}
@@ -160,7 +163,9 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 				id3_reader.write(filePath, tags, function(success, msg) {
 					if (!success) {
 						console.log(msg);
+						return;
 					}
+					uploadToS3(filePath, filename);
 				});
 			}
 			else {
@@ -178,7 +183,9 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 					id3_reader.write(filePath, tags, function(success, msg) {
 						if (!success) {
 							console.log(msg);
+							return;
 						}
+						uploadToS3(filePath, filename);
 					});
 				});
 			}
@@ -187,6 +194,7 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 
 	//File already exists
 	else {
+		console.log("NOT DOWNLOADING");
 		if (!preserve) {
 			var albumArtPath = __dirname + "/../public/img/albumart.png";
 			var albumArt = fs.readFileSync(albumArtPath);
@@ -194,7 +202,10 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 			id3_reader.write(filePath, tags, function(success, msg) {
 				if (!success) {
 					console.log(msg);
+					return;
 				}
+				console.log("fill", filename);
+				uploadToS3(filePath, filename);
 			});
 		}
 		else {
@@ -212,13 +223,39 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 				id3_reader.write(filePath, tags, function(success, msg) {
 					if (!success) {
 						console.log(msg);
+						return;
 					}
+					console.log("fill2", filename);
+					uploadToS3(filePath, filename);
 				});
 			});
 		}
 	}
+
+
 };
 
+var uploadToS3 = function (filePath, filename) {
+	console.log("UPLOADING");
+	console.log(filename);
+	console.log(filePath);
+	var stream = fs.readFileSync(filePath);
+	console.log('uploading', filename);
+
+	var s3params = {
+		Bucket: "grimearchive",
+		Key: filename,
+		Body: stream
+	};
+
+	console.log("pamar", s3params);
+
+	s3.upload(s3params, function(err, data) {
+		console.log("upload complete");
+		//console.log(err, data);
+		//fs.unlink(filePath);
+	});
+}
 
 // Export model.
 module.exports = mongoose.model('Mix', mixSchema);

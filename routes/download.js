@@ -25,7 +25,7 @@ exports.download = function(req, res) {
 
 			res.setHeader("content-disposition", attachment);
 
-			var params = {Bucket: config.bucket, Key: '0028710.mp3'};
+			var params = {Bucket: config.bucket, Key: req.params.url + '.mp3'};
 			var signedUrl = s3.getSignedUrl('getObject', params, function (err, url) {
 
 				mix.downloads++;
