@@ -9,7 +9,7 @@ var s3 = new AWS.S3();
 exports.routes = function(app) {
 	app.get('/upload', exports.index);
 	app.post('/upload', exports.add);
-	app.get('/upload/:url', exports.checkFfmpeg)
+	app.get('/upload/:url', exports.checkFfmpeg);
 };
 
 exports.index = function(req, res) {
@@ -23,17 +23,13 @@ exports.checkFfmpeg = function(req, res) {
 		Bucket: "grimearchive",
 		Key: req.params.url + '.mp3'
 	};
-	console.log("checking");
-	console.log(params);
+
 	s3.headObject(params, function (err, head) {
 		if (err) {
-			console.log(err);
 			res.send("-1");
 		}
 		else {
-			console.log("REDIRECT TIME");
-			console.log(req.params.url);
-			res.send(req.params.url);		
+			res.send(req.params.url);
 		}
 	});
 };

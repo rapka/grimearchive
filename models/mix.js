@@ -39,7 +39,6 @@ var mixSchema = new Schema({
 
 mixSchema.methods.updateTags = function(preserve, albumtitle) {
 
-
 	if (this.file) {
 		this.url = this.file.split('.')[0];
 	}
@@ -204,7 +203,6 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 					console.log(msg);
 					return;
 				}
-				console.log("fill", filename);
 				uploadToS3(filePath, filename);
 			});
 		}
@@ -225,7 +223,6 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 						console.log(msg);
 						return;
 					}
-					console.log("fill2", filename);
 					uploadToS3(filePath, filename);
 				});
 			});
@@ -236,9 +233,6 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 };
 
 var uploadToS3 = function (filePath, filename) {
-	console.log("UPLOADING");
-	console.log(filename);
-	console.log(filePath);
 	var stream = fs.readFileSync(filePath);
 	console.log('uploading', filename);
 
@@ -248,14 +242,11 @@ var uploadToS3 = function (filePath, filename) {
 		Body: stream
 	};
 
-	console.log("pamar", s3params);
-
 	s3.upload(s3params, function(err, data) {
 		console.log("upload complete");
-		//console.log(err, data);
-		//fs.unlink(filePath);
+		fs.unlinkSync(filePath);
 	});
-}
+};
 
 // Export model.
 module.exports = mongoose.model('Mix', mixSchema);

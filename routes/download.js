@@ -88,4 +88,4 @@ var generateFilename = function (mix) {
 
 	return titleString.replace(/[\.\/\\$%\^\*;:{}=`~]/g, "_");
 
-}
+};
