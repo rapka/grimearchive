@@ -57,7 +57,7 @@ exports.advancedSearch = function(req, res) {
 	}
 	else if (sortBy == 'station') {
 		sortQuery = {station: direction};
-	}	
+	}
 	else if (sortBy == 'duration') {
 		sortQuery = {duration: direction};
 	}
@@ -85,12 +85,12 @@ exports.advancedSearch = function(req, res) {
 	
 
 	if (req.query['title']) {
-		query.title = req.query['title']; 
+		query.title = req.query['title'];
 	}
 	console.log(query);
 
 	if (req.query['dj']) {
-		query.dj = req.query['dj']; 
+		query.dj = req.query['dj'];
 	}
 
 	Mix.count(query).exec(function(err, count) {
@@ -116,5 +116,3 @@ exports.advancedSearch = function(req, res) {
 		});
 	});
 };
-
-
