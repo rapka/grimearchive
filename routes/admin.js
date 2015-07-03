@@ -76,7 +76,7 @@ exports.edit = function(req, res) {
 
 exports.remove = function(req, res) {
 	if (!req.session.username) {
-		res.status(401).render('404.jade', {title: 'Not Found | Grime Archive'});
+		res.status(401).render('404.jade', {title: 'Not Found'});
 		return;
  	}
 
