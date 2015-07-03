@@ -23,7 +23,7 @@ app.use(logger('dev'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(busboy());
-app.use(favicon(__dirname + '/public/img/favicon.ico')); 
+app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
 var uploadHandler = require('./uploadHandler.js');
 app.use(multer({ dest: './upload/',
@@ -41,8 +41,8 @@ app.use(expressSession({
 	resave: true,
 	secret: config.secret,
 	cookie: {
-  		secure: false
- 	}
+		secure: false
+	}
 }));
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -80,7 +80,7 @@ app.use(function(err, req, res, next) {
 // Load models.
 var models_path = __dirname + '/models';
 fs.readdirSync(models_path).forEach(function (file) {
-		if (~file.indexOf('.js')) require(models_path + '/' + file)
+		if (~file.indexOf('.js')) require(models_path + '/' + file);
 });
 
 // Load routes.

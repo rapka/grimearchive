@@ -16,7 +16,7 @@ exports.view = function(req, res) {
 		if (!mix.hidden || req.session.username) {
 			var title;
 			if (mix.dj) {
-				title = mix.dj + ' - '; 
+				title = mix.dj + ' - ';
 			}
 			else {
 				title = 'Unknown DJ - ';

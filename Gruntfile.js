@@ -165,4 +165,4 @@ grunt.registerTask('work', 'Build and run app for development', [
 	'watch'
 	]);
 
-}
+};

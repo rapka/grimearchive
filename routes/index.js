@@ -27,28 +27,26 @@ exports.index = function(req, res) {
 				}
 				Mix.count({hidden: false}, function (err, count) {
 					Mix.aggregate({
-						  $group: {
-						    _id: null,
-						    total: {
-						      $sum: "$duration",
-						    },
-						    downloads: {
-						    	$sum: "$downloads"
-						    }
-						  }
-						}, {
-						  $project: {
-						    _id: 0,
-						    total: 1,
-						    downloads: 2
-						  }}, function (err, result) {
-								console.log(result[0].total);
-								console.log(result);
-								res.render('index', { title: 'The Grime Archive', sum: Math.floor(result[0].total / 60), downloads: result[0].downloads, popular: popular, recent: recent, count: count, instrumentals: instrumentals});
-							});
-					
-				}); 
-				
+						$group: {
+							_id: null,
+							total: {
+								$sum: "$duration",
+							},
+							downloads: {
+								$sum: "$downloads"
+							}
+						}
+					}, {
+					$project: {
+						_id: 0,
+						total: 1,
+						downloads: 2
+					}}, function (err, result) {
+						console.log(result[0].total);
+						console.log(result);
+						res.render('index', { title: 'The Grime Archive', sum: Math.floor(result[0].total / 60), downloads: result[0].downloads, popular: popular, recent: recent, count: count, instrumentals: instrumentals});
+					});
+				});
 			});
 		});
 	});

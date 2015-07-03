@@ -8,7 +8,9 @@ var config = require('./config');
 // Load models.
 var models_path = __dirname + '/models';
 fs.readdirSync(models_path).forEach(function (file) {
-	if (~file.indexOf('.js')) require(models_path + '/' + file)
+	if (~file.indexOf('.js')) {
+		require(models_path + '/' + file);
+	}
 });
 
 var mongoose = require('mongoose');
@@ -34,15 +36,15 @@ var existsSync = function(filePath){
 exports.rename = function (fieldname, filename) {
 	
 	var ts = String(new Date().getTime());
-	var num = ts.substr(ts.length - 7)
+	var num = ts.substr(ts.length - 7);
 	var path = config.uploadDirectory + num + ".mp3";
 	// Check for duplicates
 	while (existsSync(path)) {
-		num = ts.substr(ts.length - 7)
+		num = ts.substr(ts.length - 7);
 		path = config.uploadDirectory + num + ".mp3";
 	}
 	return num;
-}
+};
 
 exports.onFileUploadStart = function (file) {
 	//Only allow files with a type in the allowedTypes array.
@@ -50,7 +52,7 @@ exports.onFileUploadStart = function (file) {
 		console.log("415: Disallowed file type: " + file.mimetype);
 		return false;
 	}
-}
+};
 
 exports.onFileUploadComplete = function (file) {
 	probe(file.path, function(err, probeData) {
@@ -59,7 +61,7 @@ exports.onFileUploadComplete = function (file) {
 			return;
 		}
 		console.log(probeData['streams'][0]['duration']);
-		Mix.update({file:file.name}, 
+		Mix.update({file:file.name},
 		{
 			bitrate: probeData['streams'][0]['bit_rate'] / 1000,
 			duration: probeData['streams'][0]['duration']
@@ -72,18 +74,18 @@ exports.onFileUploadComplete = function (file) {
 	});
 
 	var url = file.name.split('.')[0];
-}
+};
 
 exports.onFileUploadData = function (file, data) {
 	//unused for now
-}
+};
 
 exports.onParseEnd = function (req, next) {
 	console.log(req.body.edit);
 	console.log(req.body.preserve);
 	console.log(req.body.albumtitle);
 	// Server side check for no file selected
-	if (typeof req.files.file === 'undefined' && !req.body.edit) { 
+	if (typeof req.files.file === 'undefined' && !req.body.edit) {
 		console.log("error: no file selected");
 		return;
 	}
@@ -137,7 +139,7 @@ exports.onParseEnd = function (req, next) {
 				return;
 			}
 		});
-	} 
+	}
 	else {
 		var mix = {};
 
@@ -177,7 +179,7 @@ exports.onParseEnd = function (req, next) {
 			mix.description = req.body.description;
 		}
 
-		Mix.update({url: req.body.edit}, mix, 
+		Mix.update({url: req.body.edit}, mix,
 		function(err, count) {
 			if (err) {
 				console.log(err);
@@ -186,7 +188,7 @@ exports.onParseEnd = function (req, next) {
 			}
 		});
 
-		 Mix.findOne({url: req.body.edit}).exec(function (err, mix) {
+		Mix.findOne({url: req.body.edit}).exec(function (err, mix) {
 			if (err) {
 				console.log(err);
 				console.error("Error updating mix.");
@@ -198,4 +200,4 @@ exports.onParseEnd = function (req, next) {
 
 	// call the next middleware
 	next();
-}
+};

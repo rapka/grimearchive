@@ -50,12 +50,12 @@ exports.edit = function(req, res) {
 	if (!req.session.username) {
 		res.status(401).render('404.jade', {title: 'Not Found'});
 		return;
- 	}
+	}
 
 	var mix = Mix.findOne({url: req.params.url}).exec(function (err, mix){
 		var title;
 		if (mix.dj) {
-			title = mix.dj + " - "; 
+			title = mix.dj + " - ";
 		}
 		else {
 			title = "Unknown DJ - ";
@@ -78,7 +78,7 @@ exports.remove = function(req, res) {
 	if (!req.session.username) {
 		res.status(401).render('404.jade', {title: 'Not Found'});
 		return;
- 	}
+	}
 
 	var mix = Mix.findOne({url: req.params.url, hidden: true}).exec(function (err, mix){
 		if (err) {
@@ -99,7 +99,7 @@ exports.hidden = function(req, res) {
 	if (!req.session.username) {
 		res.status(401).render('404.jade', {title: 'Not Found'});
 		return;
- 	}
+	}
 
 	if (typeof req.params.page !== 'undefined') {
 

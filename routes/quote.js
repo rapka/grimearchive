@@ -6,7 +6,7 @@ exports.routes = function(app) {
 
 exports.index = function(req, res) {
 	var quotes = fs.readFileSync(__dirname + '/../quotes.txt', {encoding: 'utf8'}).split('\n');
-	var rng = Math.floor(Math.random() * quotes.length); 
+	var rng = Math.floor(Math.random() * quotes.length);
 	var quote = quotes[rng];
 	res.end(quote);
 };
