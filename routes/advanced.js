@@ -47,7 +47,7 @@ exports.advancedSearch = function(req, res) {
 		sortQuery = {year: direction, month: direction, day: direction};
 	}
 	else if (sortBy == 'downloads') {
-		sortQuery = {date: direction};
+		sortQuery = {downloads: direction};
 	}
 	else if (sortBy == 'title') {
 		sortQuery = {title: direction};
