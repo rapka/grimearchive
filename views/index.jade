@@ -201,13 +201,14 @@ block content
 											$('.tripcode').each(function( index ) {
 												var tripcode = $(this).text().substring(0, 8);
 												var oldLink = $(this).prev().attr('href');
+												var current = $(this);
 												$.ajax({
 													url: '/emoji/' + tripcode,
 													type: 'GET',
 													success: function(data){
 														var link = '<a href="' + oldLink + '">';
 														link += data + '</a>';
-														$(this).html(link);
+														current.html(link);
 													}
 												});
 											});
@@ -303,13 +304,14 @@ block content
 											$('.tripcode').each(function( index ) {
 												var tripcode = $(this).text().substring(0, 8);
 												var oldLink = $(this).prev().attr('href');
+												var current = $(this);
 												$.ajax({
 													url: '/emoji/' + tripcode,
 													type: 'GET',
 													success: function(data){
 														var link = '<a href="' + oldLink + '">';
 														link += data + '</a>';
-														$(this).html(link);
+														current.html(link);
 													}
 												});
 											});
