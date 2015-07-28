@@ -1,3 +1,11 @@
+var pmx = require('pmx').init({
+	http: true,
+	errors: true,
+	custom_probes: true,
+	network: true,
+	ports: true
+});
+
 var express = require('express');
 var mongoose = require('mongoose');
 var path = require('path');
@@ -97,5 +105,7 @@ app.use(function(req, res, next) {
   res.status(404).render('404.jade', {title: 'Not Found'});
   next();
 });
+
+app.use(pmx.expressErrorHandler());
 
 module.exports = app;
