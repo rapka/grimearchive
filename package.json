@@ -39,6 +39,7 @@
     "musicmetadata": "^1.0.1",
     "aws-sdk": "^2.1.36",
     "request": "^2.58.0",
-    "pmx": "0.3.24"
+    "pmx": "0.3.24",
+    "pkgcloud": "~1.2.0-alpha.0"
   }
 }
