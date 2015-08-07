@@ -2,10 +2,13 @@ var mongoose = require('mongoose');
 var Mix = mongoose.model('Mix');
 var ObjectId = require('mongoose').Types.ObjectId;
 var config = require('../config');
+var AWS = require('aws-sdk');
 var request = require('request');
 var fs = require('fs');
 
-var AWS = require(__dirname + '/../aws.json');
+AWS.config.loadFromPath(__dirname + '/../aws.json');
+
+var s3 = new AWS.S3();
 
 exports.routes = function(app) {
 	app.get('/download/:url', exports.download);
@@ -20,23 +23,14 @@ exports.download = function(req, res) {
 
 			var attachment = 'attachment; filename="' + generateFilename(mix) + '.mp3"';
 
-			res.setHeader("content-disposition", attachment);
+			var params = {Bucket: config.bucket, Key: req.params.url + '.mp3', ResponseContentDisposition: attachment};
+			var signedUrl = s3.getSignedUrl('getObject', params, function (err, url) {
 
-			var client = require('pkgcloud').storage.createClient({
-				provider: 'amazon',
-				keyId: AWS.accessKeyId, // access key id
-				key: AWS.secretAccessKey, // secret key
-				region: AWS.region // region
+				mix.downloads++;
+				mix.save();
+
+				res.redirect(url);
 			});
-
-			mix.downloads++;
-			mix.save();
-			var keyName = req.params.url + '.mp3';
-
-			return client.download({
-				container: config.bucket,
-				remote: keyName
-			}).pipe(res);
 
 	});
 };
@@ -78,7 +72,7 @@ var generateFilename = function (mix) {
 	else if (mix.crews.length >= 1){
 		titleString += " feat ";
 		for (var i = 0; i < mix.crews.length; i++){
-			if (i === 0) {
+			if (i == 0) {
 				titleString += mix.crews[i];
 			}
 			else if (i == (mix.crews.length - 1)) {
