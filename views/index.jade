@@ -44,7 +44,6 @@ block content
 								a(href='/dj/' + mix.dj) !{mix.dj}
 							else
 								| Unknown DJ
-	
 						td
 							if mix.mcs.length
 								each mc, index in mix.mcs
@@ -55,9 +54,15 @@ block content
 									else if index == 3
 										a(href='/mix/' + mix.url) more
 							else if mix.crews.length
-								| ???
+								.desktop-listing
+									| ???
+								.mobile-listing
+									| Unknown MCs
 							else
-								| -
+								.desktop-listing
+									| -
+								.mobile-listing
+									| No MCs
 						td
 							if mix.crews.length
 								each crew, index in mix.crews
@@ -68,12 +73,18 @@ block content
 									else if index == 3
 										a(href='/mix/' + mix.url) more
 							else
-								| -
+								.desktop-listing
+									| -
+								.mobile-listing
+									| No Crews
 						td
 							if mix.station
 								a(href='/station/' + mix.station) #{mix.station}
 							else
-								| ???
+								.desktop-listing
+									| ???
+								.mobile-listing
+									| Unknown Station
 						if mix.day && mix.month && mix.year
 							td  #{mix.day}/#{mix.month}/#{mix.year}
 						else if mix.day && mix.month
@@ -157,9 +168,15 @@ block content
 									else if index == 3
 										a(href='/mix/' + mix.url) more
 							else if mix.crews.length
-								| ???
+								.desktop-listing
+									| ???
+								.mobile-listing
+									| Unknown MCs
 							else
-								| -
+								.desktop-listing
+									| -
+								.mobile-listing
+									| No MCs
 						td
 							if mix.crews.length
 								each crew, index in mix.crews
@@ -170,12 +187,18 @@ block content
 									else if index == 3
 										a(href='/mix/' + mix.url) more
 							else
-								| -
+								.desktop-listing
+									| -
+								.mobile-listing
+									| No Crews
 						td
 							if mix.station
 								a(href='/station/' + mix.station) #{mix.station}
 							else
-								| ???
+								.desktop-listing
+									| ???
+								.mobile-listing
+									| Unknown Station
 						if mix.day && mix.month && mix.year
 							td  #{mix.day}/#{mix.month}/#{mix.year}
 						else if mix.day && mix.month
@@ -261,8 +284,13 @@ block content
 										a(href='/mix/' + mix.url) more
 							else if mix.crews.length
 								| ???
+								.mobile-listing
+									| Unknown MCs
 							else
-								| -
+								.desktop-listing
+									| -
+								.mobile-listing
+									| No MCs
 						td
 							if mix.crews.length
 								each crew, index in mix.crews
@@ -273,12 +301,18 @@ block content
 									else if index == 3
 										a(href='/mix/' + mix.url) more
 							else
-								| -
+								.desktop-listing
+									| -
+								.mobile-listing
+									| No Crews
 						td
 							if mix.station
 								a(href='/station/' + mix.station) #{mix.station}
 							else
-								| ???
+								.desktop-listing
+									| ???
+								.mobile-listing
+									| Unknown Station
 						if mix.day && mix.month && mix.year
 							td  #{mix.day}/#{mix.month}/#{mix.year}
 						else if mix.day && mix.month

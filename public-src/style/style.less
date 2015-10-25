@@ -703,6 +703,14 @@ tr.mix-row {
 	display: none;
 }
 
+.desktop-listing {
+	display: block;
+}
+
+.mobile-listing {
+	display: none;
+}
+
 // Mobile
 @media screen and (max-device-width: 480px) {
 
@@ -815,6 +823,10 @@ tr.mix-row {
 		display: block; 
 	}
 
+	td {
+		text-align: center;
+	}
+
 	.mix-cta {
 		text-align: center;
 	}
@@ -878,6 +890,7 @@ tr.mix-row {
 
 		input {
 			width: 100% !important;
+			margin: 5px 0 5px 0 !important;
 			max-width: calc(~'100% - 10px');
 		}
 
@@ -888,5 +901,13 @@ tr.mix-row {
 		.labels-overlay {
 			display: none;
 		}
+	}
+
+	.desktop-listing {
+		display: none;
+	}
+	
+	.mobile-listing {
+		display: block;
 	}
 }
