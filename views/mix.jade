@@ -108,7 +108,8 @@ block content
 						$(function(){
 							updateEmojis();
 						});
-				| . 
-				a(href='mailto:thecollegehill@gmail.com?subject=Report%20for%20Grime%20Archive%20Mix%20%23' + mix.url) Report
-				|  | 
-				a(href='mailto:thecollegehill@gmail.com?subject=Correction%20for%20Grime%20Archive%20Mix%20%23' + mix.url) Submit correction
+				| .
+				.report-button 
+					a(href='mailto:thecollegehill@gmail.com?subject=Report%20for%20Grime%20Archive%20Mix%20%23' + mix.url) Report
+					|  | 
+					a(href='mailto:thecollegehill@gmail.com?subject=Correction%20for%20Grime%20Archive%20Mix%20%23' + mix.url) Submit correction

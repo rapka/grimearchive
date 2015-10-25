@@ -2,7 +2,7 @@ extends layout
 
 block content
 	if mixes.length >= 1
-		h2= title
+		h2.search-results-title= title
 	
 		table
 			thead
@@ -23,9 +23,9 @@ block content
 					tr.mix-row 		
 						td
 							if mix.title
-								a(href='/mix/' + mix.url) #{mix.title}
+								a.mix-link(href='/mix/' + mix.url) #{mix.title}
 							else
-								a(href='/mix/' + mix.url) Untitled
+								a.mix-link(href='/mix/' + mix.url) Untitled
 						td
 							if mix.dj
 								a(href='/dj/' + mix.dj) !{mix.dj}

@@ -10,19 +10,20 @@ body {
 	max-width: 1850px;
 	margin-right: auto;
 	margin-left: auto;
+
 }
 
 h3 {
-	font: 20px "Helvetica", Helvetica, Arial, sans-serif;
+	font: 1.66em "Helvetica", Helvetica, Arial, sans-serif;
 	color: @darkPink;
 }
 
 h2 {
-	font: 28px "Helvetica", Helvetica, Arial, sans-serif;
+	font: 2.33em "Helvetica", Helvetica, Arial, sans-serif;
 }
 
 .not-found {
-	font: 108px "Helvetica", Helvetica, Arial, sans-serif;
+	font: 9em "Helvetica", Helvetica, Arial, sans-serif;
 	text-align: center;
 }
 
@@ -169,20 +170,32 @@ td {
 }
 
 tr.mix-row { 
-		font: 16px "Helvetica", Helvetica, Arial, sans-serif;
-		padding-left: 30px;
-		padding-right: 30px;
-		.tripcode {
-			display: inline-block;
-		}
+	font: 16px "Helvetica", Helvetica, Arial, sans-serif;
+	padding-left: 30px;
+	padding-right: 30px;
 
-		a {
-			text-decoration: none;
-			color: @darkBlue;	
-			&:hover {
-				color: #57F2FF;
-			}
+	.tripcode {
+		display: inline-block;
+	}
+
+	a {
+		text-decoration: none;
+		color: @darkBlue;	
+		&:hover {
+			color: #57F2FF;
 		}
+	}
+
+
+	// a.mix-link {
+	// 	color: @darkPink;
+	// 	a {
+	// 		color: @darkPink;
+	// 		&:hover {
+	// 			color: #FF86F5;
+	// 		}
+	// 	}
+	// }
 }
 
 .index-content {
@@ -573,7 +586,7 @@ tr.mix-row {
 }
 
 .big {
-	font: 50px "Helvetica", Helvetica, Arial, sans-serif;
+	font: 4.16em "Helvetica", Helvetica, Arial, sans-serif;
 	display: inline-block;
 
 	a {
@@ -629,6 +642,11 @@ tr.mix-row {
 	}
 }
 
+
+.report-button {
+	display: inline;
+}
+
 .mix-cta {
 	padding-top: 10px;
 	font: 16px "Helvetica", Helvetica, Arial, sans-serif;
@@ -677,6 +695,198 @@ tr.mix-row {
 		color: @darkPink;
 		&:hover {
 			color: #FF86F5;
+		}
+	}
+}
+
+.mobile-search {
+	display: none;
+}
+
+// Mobile
+@media screen and (max-device-width: 480px) {
+
+	.footer, {
+		width: auto;
+
+		.quote {
+			width: auto;
+		}
+	}
+
+	.quote, .disclaimer {
+		//font-size: 200%;
+	}
+
+	.big {
+		font-size: 2em;
+	}
+
+	.quote {
+		max-width: 480px;
+		padding-bottom: 10px;
+		margin-right: 5px;
+		margin-left: 5px;
+	}
+
+
+	.disclaimer {	
+		p {
+			font-size: 0.8em;
+			margin-right: 5px;
+			margin-left: 5px;
+		}
+		margin: auto;
+	}
+
+	body {
+		padding-top: 10px;
+		max-width: 100vw;
+	}
+
+	.title-pic {
+		padding-left: 5px;
+		font-size: 3em;
+	}
+
+	.report-button {
+		display: block;
+	}
+
+
+	.nav-bar {
+		text-align: center;
+		font-size: 1em;
+		margin: auto;
+		width: 95%;
+		border-bottom: 1px solid #333;
+
+		ul li {
+			padding-left: 6px;
+			padding-right: 6px;
+		}
+
+		ul {
+			padding: 0;
+		}
+
+		ul li.advanced-layout {
+			display: none;
+		}
+
+		ul li.searchbar {
+			display: none;
+		}
+	}
+
+	.mix-container {
+		border: none;
+
+		.mix-element {
+			text-align: center;
+			display: block;
+			//font-size: 120px;
+		}
+
+		br {
+			display: none;
+		}
+	}
+
+	.page-selection {
+		text-align: center;
+	}
+
+	.mobile-search {
+		display: block;
+	}
+
+	.more-cta{
+		display: block;
+		text-align: center;
+	}
+
+	.searchbar {
+		display: none;
+	}
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+
+	.mix-cta {
+		text-align: center;
+	}
+
+	table {
+		padding: 0;
+		margin-left: 5px;
+		margin-right: 5px;
+		max-width: calc(~'100% - 10px');
+		min-width: 0;
+	}
+
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+
+	.mix-link {
+		font-size: 1.4em;
+		display: block;
+		text-align: center;
+	}
+
+	.mix-uploader {
+		text-align: center;
+	}
+
+	.search-results-title {
+		margin-left: 5px;
+		margin-right: 5px;
+		font-size: 2em;
+		text-align: center;
+	}
+
+	tr { border: 1px solid #333; }
+
+	table tr > *:nth-child(6),
+	table tr > *:nth-child(7),
+	table tr > *:nth-child(8),
+	table tr > *:nth-child(9),
+	table tr > *:nth-child(10) {
+   	 display: none;
+	}
+
+	li.upload-nav {
+		display: none !important;
+	}
+
+	.upload {
+		width: auto;
+
+		.upload-label {
+			width: auto;
+		}
+
+		.tagsinput {
+			width: auto !important;
+		}
+
+		input {
+			width: 100% !important;
+			max-width: calc(~'100% - 10px');
+		}
+
+		.upload-divider {
+			width: auto !important;
+		}
+
+		.labels-overlay {
+			display: none;
 		}
 	}
 }

@@ -3,6 +3,7 @@ html
 	head
 		title= title
 		meta(charset='utf-8')
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
 		link(rel='stylesheet', href='/style/style.css')
 		link(rel='shortcut icon', href='/img/favicon.ico')
 	body
@@ -27,20 +28,22 @@ html
 				li
 					.yellow
 						a(href='/mixes/page/1') Mixes
-				li
+				li.upload-nav
 					.red
 						a(href='/upload') Upload
 				li
 					.green
 						a(href='/about') About
-				li
-					.searchbar
-						form(name="search", action="/search", method="get", enctype='multipart/form-data')
-							input(type="text", name="title")
-							input(type='submit', value='Search >> ')
+				li.searchbar
+					form(name="search", action="/search", method="get", enctype='multipart/form-data')
+						input(type="text", name="title")
+						input(type='submit', value='Search >> ')
 				li.advanced-layout
 					.blue
 						a(href='/advanced') [Advanced]
+				li.mobile-search
+					.red
+						a(href='/advanced') Search
 	
 	block content
 
@@ -71,4 +74,5 @@ html
 				$('.quote').on('click', updateQuote);
 			});
 		div.quote
-		p Site © 2015 College Hill. Mixes are hosted for non-profit archival use only. Contact thecollegehill@gmail.com with any questions or concerns. 
+		div.disclaimer
+			p Site © 2015 College Hill. Mixes are hosted for non-profit archival use only. Contact thecollegehill@gmail.com with any questions or concerns. 

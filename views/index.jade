@@ -14,10 +14,10 @@ block content
 			span.index-count #{downloads}
 			|  downloads so far.
 		p
-			a(href='/about') Learn More >>
+			a.more-cta(href='/about') Learn More >>
 	.index-content
 		h3 Popular Mixes
-		table
+		table.front-table
 			thead
 				tr.mix-header
 					td.header-title Title
@@ -36,9 +36,9 @@ block content
 					tr.mix-row 		
 						td 
 							if mix.title
-								a(href='/mix/' + mix.url) #{mix.title}
+								a.mix-link(href='/mix/' + mix.url) #{mix.title}
 							else
-								a(href='/mix/' + mix.url) Untitled
+								a.mix-link(href='/mix/' + mix.url) Untitled
 						td
 							if mix.dj
 								a(href='/dj/' + mix.dj) !{mix.dj}
@@ -120,7 +120,7 @@ block content
 	
 		h3 Recent Uploads
 	
-		table
+		table.front-table
 			thead
 				tr.mix-header
 					td.header-title Title
@@ -139,9 +139,9 @@ block content
 					tr.mix-row 		
 						td 
 							if mix.title
-								a(href='/mix/' + mix.url) #{mix.title}
+								a.mix-link(href='/mix/' + mix.url) #{mix.title}
 							else
-								a(href='/mix/' + mix.url) Untitled
+								a.mix-link(href='/mix/' + mix.url) Untitled
 						td
 							if mix.dj
 								a(href='/dj/' + mix.dj) !{mix.dj}
@@ -223,7 +223,7 @@ block content
 	
 		h3 Recent Instrumental Mixes
 	
-		table
+		table.front-table
 			thead
 				tr.mix-header
 					td.header-title Title
@@ -242,9 +242,9 @@ block content
 					tr.mix-row 		
 						td 
 							if mix.title
-								a(href='/mix/' + mix.url) #{mix.title}
+								a.mix-link(href='/mix/' + mix.url) #{mix.title}
 							else
-								a(href='/mix/' + mix.url) Untitled
+								a.mix-link(href='/mix/' + mix.url) Untitled
 						td
 							if mix.dj
 								a(href='/dj/' + mix.dj) !{mix.dj}
