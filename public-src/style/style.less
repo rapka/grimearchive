@@ -75,12 +75,17 @@ p {
 
 .nav-bar { 
 	ul {
+
+
+
 		li {
 			display: inline-block;
 			padding-left: 30px;
 			padding-right: 30px;
+		}
 
-
+		li.mobile-search {
+			display: none;
 		}
 
 		li.advanced-layout {
@@ -688,10 +693,6 @@ tr.mix-row {
 	}
 }
 
-.mobile-search {
-	display: none;
-}
-
 .desktop-listing {
 	display: block;
 }
@@ -765,6 +766,10 @@ tr.mix-row {
 
 		ul {
 			padding: 0;
+		}
+
+		ul li.mobile-search {
+			display: inline-block;
 		}
 
 		ul li.advanced-layout {
