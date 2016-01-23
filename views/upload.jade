@@ -119,9 +119,7 @@ block content
 									$('#_cancel').removeClass('visible');
 									console.log("calling uploar");
 									$.get("upload/" + split, function (data) {
-										console.log("rrrrr", data);
 										if (parseInt(data) > 0) {
-												console.log("redd");
 												window.location = xhr.responseText; 
 										}
 										else {
