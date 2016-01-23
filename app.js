@@ -53,8 +53,8 @@ app.use(expressSession({
 	}
 }));
 
-app.use(bodyParser.urlencoded({limit: '500mb', extended: true }));
-app.use(bodyParser.json({limit: '500mb'}));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
