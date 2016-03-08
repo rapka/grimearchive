@@ -173,10 +173,10 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 						console.log(err);
 					}
 					
-					if (metadata.picture[0].format == 'jpg') {
+					if (metadata.picture && metadata.picture[0].format == 'jpg') {
 						tags['APICJPEG'] = metadata.picture[0].data;
 					}
-					else if (metadata.picture[0].format == 'png') {
+					else if (metadata.picture && metadata.picture[0].format == 'png') {
 						tags['APICPNG'] = metadata.picture[0].data;
 					}
 					id3_reader.write(filePath, tags, function(success, msg) {
@@ -212,10 +212,10 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 					console.log(err);
 				}
 				
-				if (metadata.picture[0].format == 'jpg') {
+				if (metadata.picture && metadata.picture[0].format == 'jpg') {
 					tags['APICJPEG'] = metadata.picture[0].data;
 				}
-				else if (metadata.picture[0].format == 'png') {
+				else if (metadata.picture && metadata.picture[0].format == 'png') {
 					tags['APICPNG'] = metadata.picture[0].data;
 				}
 				id3_reader.write(filePath, tags, function(success, msg) {
