@@ -139,51 +139,9 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 		tags['TYER'] = this.year.toString();
 	}
 
-	// File already exists
-	try {
-
-		fs.accessSync(filePath, fs.F_OK);
-
-		console.log("NOT DOWNLOADING");
-		if (!preserve) {
-			var albumArtPath = __dirname + "/../public/img/albumart.png";
-			var albumArt = fs.readFileSync(albumArtPath);
-			tags['APICPNG'] = albumArt;
-			id3_reader.write(filePath, tags, function(success, msg) {
-				if (!success) {
-					console.log(msg);
-					return;
-				}
-				uploadToS3(filePath, filename);
-			});
-		}
-		else {
-			var parser = mm(fs.createReadStream(filePath), function (err, metadata) {
-				if (err) {
-					console.log(err);
-				}
-				
-				if (metadata.picture[0].format == 'jpg') {
-					tags['APICJPEG'] = metadata.picture[0].data;
-				}
-				else if (metadata.picture[0].format == 'png') {
-					tags['APICPNG'] = metadata.picture[0].data;
-				}
-				id3_reader.write(filePath, tags, function(success, msg) {
-					if (!success) {
-						console.log(msg);
-						return;
-					}
-					uploadToS3(filePath, filename);
-				});
-			});
-		}
-	}
 
 	// Pull file from s3 if it doesn't exist
-	catch (e) {
-
-
+	if (!fs.lstatSync(filePath).isFile()) {
 		var params = {
 			Bucket: "grimearchive",
 			Key: this.file
@@ -231,7 +189,44 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 				});
 			}
 		});
+	}
 
+	//File already exists
+	else {
+		console.log("NOT DOWNLOADING");
+		if (!preserve) {
+			var albumArtPath = __dirname + "/../public/img/albumart.png";
+			var albumArt = fs.readFileSync(albumArtPath);
+			tags['APICPNG'] = albumArt;
+			id3_reader.write(filePath, tags, function(success, msg) {
+				if (!success) {
+					console.log(msg);
+					return;
+				}
+				uploadToS3(filePath, filename);
+			});
+		}
+		else {
+			var parser = mm(fs.createReadStream(filePath), function (err, metadata) {
+				if (err) {
+					console.log(err);
+				}
+				
+				if (metadata.picture[0].format == 'jpg') {
+					tags['APICJPEG'] = metadata.picture[0].data;
+				}
+				else if (metadata.picture[0].format == 'png') {
+					tags['APICPNG'] = metadata.picture[0].data;
+				}
+				id3_reader.write(filePath, tags, function(success, msg) {
+					if (!success) {
+						console.log(msg);
+						return;
+					}
+					uploadToS3(filePath, filename);
+				});
+			});
+		}
 	}
 };
 
