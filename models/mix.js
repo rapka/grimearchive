@@ -38,12 +38,10 @@ var mixSchema = new Schema({
 });
 
 mixSchema.methods.updateTags = function(preserve, albumtitle) {
-
 	if (this.file) {
 		this.url = this.file.split('.')[0];
 	}
 	else {
-		console.log("NO FILE FOUND");
 		return;
 	}
 
@@ -139,22 +137,12 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 		tags['TYER'] = this.year.toString();
 	}
 
+	var s3key = this.file;
 
-	// Pull file from s3 if it doesn't exist
-	if (!fs.lstatSync(filePath).isFile()) {
-		var params = {
-			Bucket: "grimearchive",
-			Key: this.file
-		};
-
-		s3.getObject(params, function(err, data) {
-			console.log("DOWNLOADING");
-			if (err) {
-				console.log(err);
-			}
-
-			fs.writeFileSync(filePath, data);
-
+	fs.access(filePath, fs.F_OK, function(err) {
+		if (!err) {
+			// Do something
+			console.log("NOT DOWNLOADING");
 			if (!preserve) {
 				var albumArtPath = __dirname + "/../public/img/albumart.png";
 				var albumArt = fs.readFileSync(albumArtPath);
@@ -188,46 +176,57 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 					});
 				});
 			}
-		});
-	}
+		} else {
+			// It isn't accessible
+			var params = {
+				Bucket: "grimearchive",
+				Key: s3key
+			};
 
-	//File already exists
-	else {
-		console.log("NOT DOWNLOADING");
-		if (!preserve) {
-			var albumArtPath = __dirname + "/../public/img/albumart.png";
-			var albumArt = fs.readFileSync(albumArtPath);
-			tags['APICPNG'] = albumArt;
-			id3_reader.write(filePath, tags, function(success, msg) {
-				if (!success) {
-					console.log(msg);
-					return;
-				}
-				uploadToS3(filePath, filename);
-			});
-		}
-		else {
-			var parser = mm(fs.createReadStream(filePath), function (err, metadata) {
+			s3.getObject(params, function(err, data) {
 				if (err) {
 					console.log(err);
 				}
-				
-				if (metadata.picture && metadata.picture[0].format == 'jpg') {
-					tags['APICJPEG'] = metadata.picture[0].data;
+
+				fs.writeFileSync(filePath, data.Body);
+
+				console.log('file saved at', filePath);
+				if (!preserve) {
+					var albumArtPath = __dirname + "/../public/img/albumart.png";
+					var albumArt = fs.readFileSync(albumArtPath);
+					tags['APICPNG'] = albumArt;
+					id3_reader.write(filePath, tags, function(success, msg) {
+						if (!success) {
+							console.log(msg);
+							return;
+						}
+						uploadToS3(filePath, filename);
+					});
 				}
-				else if (metadata.picture && metadata.picture[0].format == 'png') {
-					tags['APICPNG'] = metadata.picture[0].data;
+				else {
+					var parser = mm(fs.createReadStream(filePath), function (err, metadata) {
+						if (err) {
+							console.log(err);
+						}
+						
+						if (metadata.picture && metadata.picture[0].format == 'jpg') {
+							tags['APICJPEG'] = metadata.picture[0].data;
+						}
+						else if (metadata.picture && metadata.picture[0].format == 'png') {
+							tags['APICPNG'] = metadata.picture[0].data;
+						}
+						id3_reader.write(filePath, tags, function(success, msg) {
+							if (!success) {
+								console.log(msg);
+								return;
+							}
+							uploadToS3(filePath, filename);
+						});
+					});
 				}
-				id3_reader.write(filePath, tags, function(success, msg) {
-					if (!success) {
-						console.log(msg);
-						return;
-					}
-					uploadToS3(filePath, filename);
-				});
 			});
 		}
-	}
+	});
 };
 
 var uploadToS3 = function (filePath, filename) {
