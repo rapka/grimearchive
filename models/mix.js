@@ -1,6 +1,5 @@
-var id3_reader = require('id3_reader');
+var id3Reader = require('id3_reader');
 var fs = require('fs');
-var Buffer = require('buffer').Buffer;
 var mm = require('musicmetadata');
 var config = require('../config');
 var AWS = require('aws-sdk');
@@ -11,15 +10,14 @@ var s3 = new AWS.S3();
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
 
 // Define the model.
 var mixSchema = new Schema({
 	url: String,
 	title: String,
-	uploader: { type: "String", default: "Anonymous"},
+	uploader: {type: 'String', default: 'Anonymous'},
 	tripcode: String,
-	date: { type: Date, default: Date.now },
+	date: {type: Date, default: Date.now},
 	length: Number,
 	dj: String,
 	crews: [],
@@ -32,89 +30,77 @@ var mixSchema = new Schema({
 	downloads: {type: Number, default: 0},
 	bitrate: Number,
 	file: String,
-	hidden: { type: Boolean, default: false},
+	hidden: {type: Boolean, default: false},
 	description: String
-	 
+
 });
 
 mixSchema.methods.updateTags = function(preserve, albumtitle) {
 	if (this.file) {
 		this.url = this.file.split('.')[0];
-	}
-	else {
+	} else {
 		return;
 	}
 
-	var titleString = "Unknown";
+	var titleString = 'Unknown';
 
 	var filename = this.file;
 
-	//either use user supplied title or radio station
+	// Either use user supplied title or radio station
 	if (this.title) {
 		titleString = this.title;
-	}
-	else if (this.station) {
+	} else if (this.station) {
 		titleString = this.station;
 	}
 
-	//append date
-	if (this.day && this.month && this.year && !this.title){
-		titleString += ", " + this.year.toString() + "-" + this.month.toString() + "-" + this.day.toString();
-	}
-	else if (this.year && !this.title) {
-		titleString += ", " + this.year.toString();
+	// Append date
+	if (this.day && this.month && this.year && !this.title) {
+		titleString += ', ' + this.year.toString() + '-' + this.month.toString() + '-' + this.day.toString();
+	} else if (this.year && !this.title) {
+		titleString += ', ' + this.year.toString();
 	}
 
-	//append mcs
-	if (this.mcs.length == 1){
-		titleString += " feat. " + this.mcs[0];
-	}
-	else if (this.mcs.length >= 1){
-		titleString += " feat. ";
-		for (var i = 0; i < this.mcs.length; i++){
+	// Append mcs
+	if (this.mcs.length == 1) {
+		titleString += ' feat. ' + this.mcs[0];
+	} else if (this.mcs.length >= 1) {
+		titleString += ' feat. ';
+		for (var i = 0; i < this.mcs.length; i++) {
 			if (i === 0) {
 				titleString += this.mcs[i];
-			}
-			else if (i == (this.mcs.length - 1)) {
-				titleString += " & " + this.mcs[i];
-			}
-			else {
-				titleString += ", " + this.mcs[i];
+			} else if (i == (this.mcs.length - 1)) {
+				titleString += ' & ' + this.mcs[i];
+			} else {
+				titleString += ', ' + this.mcs[i];
 			}
 		}
-	}
-	//append crews if no mcs
-	else if (this.crews.length == 1){
-		titleString += " feat. " + this.crews[0];
-	}
-	else if (this.crews.length >= 1){
-		titleString += " feat. ";
-		for (var i = 0; i < this.crews.length; i++){
-			if (i === 0) {
-				titleString += this.crews[i];
-			}
-			else if (i == (this.crews.length - 1)) {
-				titleString += " & " + this.crews[i];
-			}
-			else {
-				titleString += ", " + this.crews[i];
+	} else if (this.crews.length == 1) { // Append crews if no mcs
+		titleString += ' feat. ' + this.crews[0];
+	} else if (this.crews.length >= 1) {
+		titleString += ' feat. ';
+		for (var k = 0; k < this.crews.length; k++) {
+			if (k === 0) {
+				titleString += this.crews[k];
+			} else if (k == (this.crews.length - 1)) {
+				titleString += ' & ' + this.crews[k];
+			} else {
+				titleString += ', ' + this.crews[k];
 			}
 		}
 	}
 
-	//update mp3 artist tiltle
-	var artistString = "";
+	// Update mp3 artist title
+	var artistString = '';
 
 	var filePath = config.uploadDirectory + this.file;
 
 	if (this.dj) {
 		artistString = this.dj;
-	}
-	else {
-		artistString = "Unknown DJ";
+	} else {
+		artistString = 'Unknown DJ';
 	}
 
-	//create id3 tags
+	// Create id3 tags
 	var tags = {
 
 		TIT2: titleString,
@@ -126,13 +112,12 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 
 	if (albumtitle && this.title) {
 		tags['TALB'] = this.title;
-	}
-	else if (albumtitle) {
+	} else if (albumtitle) {
 		tags['TALB'] = titleString;
-	}
-	else {
+	} else {
 		tags['TALB'] = 'The Grime Archive';
 	}
+
 	if (this.year) {
 		tags['TYER'] = this.year.toString();
 	}
@@ -142,32 +127,31 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 	fs.access(filePath, fs.F_OK, function(err) {
 		if (!err) {
 			// Do something
-			console.log("NOT DOWNLOADING");
+			console.log('NOT DOWNLOADING');
 			if (!preserve) {
-				var albumArtPath = __dirname + "/../public/img/albumart.png";
+				var albumArtPath = __dirname + '/../public/img/albumart.png';
 				var albumArt = fs.readFileSync(albumArtPath);
 				tags['APICPNG'] = albumArt;
-				id3_reader.write(filePath, tags, function(success, msg) {
+				id3Reader.write(filePath, tags, function(success, msg) {
 					if (!success) {
 						console.log(msg);
 						return;
 					}
 					uploadToS3(filePath, filename);
 				});
-			}
-			else {
-				var parser = mm(fs.createReadStream(filePath), function (err, metadata) {
+			} else {
+				mm(fs.createReadStream(filePath), function(err, metadata) {
 					if (err) {
 						console.log(err);
 					}
-					
+
 					if (metadata.picture && metadata.picture[0].format == 'jpg') {
 						tags['APICJPEG'] = metadata.picture[0].data;
-					}
-					else if (metadata.picture && metadata.picture[0].format == 'png') {
+					} else if (metadata.picture && metadata.picture[0].format == 'png') {
 						tags['APICPNG'] = metadata.picture[0].data;
 					}
-					id3_reader.write(filePath, tags, function(success, msg) {
+
+					id3Reader.write(filePath, tags, function(success, msg) {
 						if (!success) {
 							console.log(msg);
 							return;
@@ -179,7 +163,7 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 		} else {
 			// It isn't accessible
 			var params = {
-				Bucket: "grimearchive",
+				Bucket: 'grimearchive',
 				Key: s3key
 			};
 
@@ -192,30 +176,29 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 
 				console.log('file saved at', filePath);
 				if (!preserve) {
-					var albumArtPath = __dirname + "/../public/img/albumart.png";
+					var albumArtPath = __dirname + '/../public/img/albumart.png';
 					var albumArt = fs.readFileSync(albumArtPath);
 					tags['APICPNG'] = albumArt;
-					id3_reader.write(filePath, tags, function(success, msg) {
+					id3Reader.write(filePath, tags, function(success, msg) {
 						if (!success) {
 							console.log(msg);
 							return;
 						}
 						uploadToS3(filePath, filename);
 					});
-				}
-				else {
-					var parser = mm(fs.createReadStream(filePath), function (err, metadata) {
+				} else {
+					mm(fs.createReadStream(filePath), function(err, metadata) {
 						if (err) {
 							console.log(err);
 						}
-						
+
 						if (metadata.picture && metadata.picture[0].format == 'jpg') {
 							tags['APICJPEG'] = metadata.picture[0].data;
-						}
-						else if (metadata.picture && metadata.picture[0].format == 'png') {
+						} else if (metadata.picture && metadata.picture[0].format == 'png') {
 							tags['APICPNG'] = metadata.picture[0].data;
 						}
-						id3_reader.write(filePath, tags, function(success, msg) {
+
+						id3Reader.write(filePath, tags, function(success, msg) {
 							if (!success) {
 								console.log(msg);
 								return;
@@ -229,18 +212,21 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 	});
 };
 
-var uploadToS3 = function (filePath, filename) {
+var uploadToS3 = function(filePath, filename) {
 	var stream = fs.readFileSync(filePath);
 	console.log('uploading', filename);
 
 	var s3params = {
-		Bucket: "grimearchive",
+		Bucket: 'grimearchive',
 		Key: filename,
 		Body: stream
 	};
 
-	s3.upload(s3params, function(err, data) {
-		console.log("upload complete");
+	s3.upload(s3params, function(err) {
+		if (err) {
+			console.log(err);
+		}
+
 		fs.unlinkSync(filePath);
 	});
 };

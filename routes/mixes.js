@@ -1,13 +1,12 @@
 var mongoose = require('mongoose');
 var Mix = mongoose.model('Mix');
-var ObjectId = require('mongoose').Types.ObjectId;
 
 exports.routes = function(app) {
 	app.get('/mix/:url', exports.view);
 };
 
 exports.view = function(req, res) {
-	var mix = Mix.findOne({url: req.params.url}).exec(function (err, mix){
+	Mix.findOne({url: req.params.url}).exec(function(err, mix) {
 
 		if (err || !mix) {
 			res.status(401).render('404.jade', {title: 'Not Found'});
@@ -17,15 +16,13 @@ exports.view = function(req, res) {
 			var title;
 			if (mix.dj) {
 				title = mix.dj + ' - ';
-			}
-			else {
+			} else {
 				title = 'Unknown DJ - ';
 			}
-	
+
 			if (mix.title) {
 				title += mix.title;
-			}
-			else {
+			} else {
 				title += 'Untitled';
 			}
 
@@ -35,8 +32,7 @@ exports.view = function(req, res) {
 				title: title,
 				mix: mix
 			});
-		}
-		else {
+		} else {
 			res.status(401).render('404.jade', {title: 'Not Found'});
 		}
 	});

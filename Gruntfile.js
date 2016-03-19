@@ -1,16 +1,16 @@
-//install scripts:
-//npm install --save grunt load-grunt-tasks grunt-shell grunt-contrib-watch grunt-autoprefixer grunt-contrib-less grunt-express-server grunt-contrib-clean grunt-contrib-uglify grunt-contrib-copy
-
 module.exports = function(grunt) {
-
 	require('load-grunt-tasks')(grunt);
 
 	grunt.initConfig({
+		eslint: {
+			target: ['./'],
+			options: {
+				extensions: ['.js']
+			}
+		},
 
 		autoprefixer: {
-
 			options: {
-
 			},
 
 			grimelist: {
@@ -21,7 +21,6 @@ module.exports = function(grunt) {
 		},
 
 		less: {
-
 			development: {
 				options: {
 					paths: ['public-src/style']
@@ -48,16 +47,15 @@ module.exports = function(grunt) {
 					ext: '.css'
 				}]
 			}
-
 		},
 
 		clean: {
 			all: [
-			'public/style',
-			'public/js',
-			'public/img/*.png',
-			'public/img/*.webm',
-			'public/favicon.ico'
+				'public/style',
+				'public/js',
+				'public/img/*.png',
+				'public/img/*.webm',
+				'public/favicon.ico'
 			]
 		},
 
@@ -87,13 +85,12 @@ module.exports = function(grunt) {
 					dot: true,
 					cwd: 'public-src',
 					src: [
-					'style/**/*.css',
-					'js/**/*.js',
-					'img/**/*'
+						'style/**/*.css',
+						'js/**/*.js',
+						'img/**/*'
 					],
 					dest: 'public'
-				}
-				]
+				}]
 			},
 			production: {
 				files: [{
@@ -101,22 +98,20 @@ module.exports = function(grunt) {
 					dot: true,
 					cwd: 'public-src',
 					src: [
-					'style/**/*.css',
-					'js/**/*.js',
-					'img/**/*'
+						'style/**/*.css',
+						'js/**/*.js',
+						'img/**/*'
 					],
 					dest: 'public'
-				}
-				]
+				}]
 			}
 		},
 
 		watch: {
-
 			express: {
 				files: [
 					'bin/www',
-					'app.js',
+					'app.js'
 				],
 				tasks: ['express:dev'],
 				options: {
@@ -139,30 +134,32 @@ module.exports = function(grunt) {
 
 	});
 
-grunt.registerTask('buildstyles', 'Compile and autoprefix LESS to CSS', [
-	'less:development',
-	'autoprefixer'
+	grunt.registerTask('checkcode', 'Checks code for quality', ['eslint']);
+
+	grunt.registerTask('buildstyles', 'Compile and autoprefix LESS to CSS', [
+		'less:development',
+		'autoprefixer'
 	]);
 
-grunt.registerTask('buildprod', 'Builds all files for prod deploys', [
-	'clean',
-	'less:production',
-	'autoprefixer',
-	'uglify',
-	'copy:production'
+	grunt.registerTask('buildprod', 'Builds all files for prod deploys', [
+		'clean',
+		'less:production',
+		'autoprefixer',
+		'uglify',
+		'copy:production'
 	]);
 
-grunt.registerTask('builddev', 'Builds all files for dev testing', [
-	'clean',
-	'buildstyles',
-	'copy'
+	grunt.registerTask('builddev', 'Builds all files for dev testing', [
+		'clean',
+		'buildstyles',
+		'copy'
 	]);
 
-grunt.registerTask('work', 'Build and run app for development', [
-	'clean',
-	'builddev',
-	'express:dev',
-	'watch'
+	grunt.registerTask('work', 'Build and run app for development', [
+		'clean',
+		'builddev',
+		'checkcode',
+		'express:dev',
+		'watch'
 	]);
-
 };

@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var Mix = mongoose.model('Mix');
-var ObjectId = require('mongoose').Types.ObjectId;
 var pageCount = 20;
 
 exports.routes = function(app) {
@@ -25,40 +24,27 @@ exports.advancedSearch = function(req, res) {
 		page = 1;
 	}
 
-	var user = searchTerm.split("-")[0];
-	var trip = searchTerm.split("-")[1];
-
 	var skip = (page - 1) * pageCount;
-	var regexQuery = { $regex : new RegExp(searchTerm, "i") };
 
-	var startYear = req.query['startyear'] ? req.query['startyear'] : 1;
-	var endYear = req.query['endyear'] ? req.query['endyear'] : 3000;
 	var minBitrate = req.query['bitrate'] ? req.query['bitrate'] : 0;
-
 
 	var sortQuery;
 
-	var direction = parseInt(req.query['ascending']); 
+	var direction = parseInt(req.query['ascending']);
 
 	if (sortBy == 'uploaddate') {
 		sortQuery = {date: direction};
-	}
-	else if (sortBy == 'airdate') {
+	} else if (sortBy == 'airdate') {
 		sortQuery = {year: direction, month: direction, day: direction};
-	}
-	else if (sortBy == 'downloads') {
+	} else if (sortBy == 'downloads') {
 		sortQuery = {downloads: direction};
-	}
-	else if (sortBy == 'title') {
+	} else if (sortBy == 'title') {
 		sortQuery = {title: direction};
-	}
-	else if (sortBy == 'dj') {
+	} else if (sortBy == 'dj') {
 		sortQuery = {dj: direction};
-	}
-	else if (sortBy == 'station') {
+	} else if (sortBy == 'station') {
 		sortQuery = {station: direction};
-	}
-	else if (sortBy == 'duration') {
+	} else if (sortBy == 'duration') {
 		sortQuery = {duration: direction};
 	}
 	var query = {};
@@ -70,49 +56,43 @@ exports.advancedSearch = function(req, res) {
 		query.crews = req.query['crews'].split(',');
 	}
 
-
 	if (req.query['startyear'] && req.query['endyear']) {
 		query.year = {$gte: req.query['startyear'], $lte: req.query['endyear']};
-	}
-	else if (req.query['startyear']) {
+	} else if (req.query['startyear']) {
 		query.year = {$gte: req.query['startyear']};
-	}
-	else if (req.query['endyear']) {
+	} else if (req.query['endyear']) {
 		query.year = {$lte: req.query['endyear']};
 	}
 
 	query.bitrate = {$gte: minBitrate};
-	
 
 	if (req.query['title']) {
 		query.title = req.query['title'];
 	}
-	console.log(query);
 
 	if (req.query['dj']) {
 		query.dj = req.query['dj'];
 	}
 
 	Mix.count(query).exec(function(err, count) {
-			if (err){
-				console.error("find error");
+		if (err) {
+			console.error('find error');
+			throw err;
+		}
+
+		Mix.find(query).skip(skip).sort(sortQuery).limit(pageCount).exec(function(err, mixes) {
+			if (err) {
+				console.error('find error');
 				throw err;
 			}
+			var currentUrl = '/search/' + searchTerm + '/page/';
 
-		Mix.find(query).skip(skip).sort(sortQuery).limit(pageCount)
-			.exec(function(err, mixes) {
-				if (err){
-					console.error("find error");
-					throw err;
-				}
-				var currentUrl = '/search/' + searchTerm + '/page/';
-				
-				var hasNext = false;
-				if (count > (skip + pageCount)) {
-					hasNext = true;
-				}
+			var hasNext = false;
+			if (count > (skip + pageCount)) {
+				hasNext = true;
+			}
 
-				res.render('mixes', {title: 'Advanced search results', query: req.query, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext, advanced: true});
+			res.render('mixes', {title: 'Advanced search results', query: req.query, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext, advanced: true});
 		});
 	});
 };

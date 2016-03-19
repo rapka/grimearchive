@@ -1,5 +1,3 @@
-var mongoose = require('mongoose');
-var Mix = mongoose.model('Mix');
 var AWS = require('aws-sdk');
 
 AWS.config.loadFromPath(__dirname + '/../aws.json');
@@ -20,15 +18,14 @@ exports.index = function(req, res) {
 
 exports.checkFfmpeg = function(req, res) {
 	var params = {
-		Bucket: "grimearchive",
+		Bucket: 'grimearchive',
 		Key: req.params.url + '.mp3'
 	};
 
-	s3.headObject(params, function (err, head) {
+	s3.headObject(params, function(err) {
 		if (err) {
-			res.send("-1");
-		}
-		else {
+			res.send('-1');
+		} else {
 			res.send(req.params.url);
 		}
 	});
@@ -39,9 +36,8 @@ exports.add = function(req, res) {
 		var url = req.files.file.name.split('.')[0];
 		res.send('/mix/' + url);
 
-	}
-	else {
-		console.log("no file");
+	} else {
+		console.log('no file');
 		res.redirect('/upload');
 	}
 };

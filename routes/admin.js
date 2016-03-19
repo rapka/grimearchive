@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var Mix = mongoose.model('Mix');
-var ObjectId = require('mongoose').Types.ObjectId;
 var admins = require('../admins');
 var crypto = require('crypto');
 var fs = require('fs');
@@ -20,30 +19,26 @@ exports.loginForm = function(req, res) {
 	console.log(req.session);
 	console.log(req.session.username);
 	if (req.session.username && req.params.message == 'loggedIn') {
-		res.render('login', { message: req.params.message});
-	}
-	else if (req.params.message == 'loggedIn') {
+		res.render('login', {message: req.params.message});
+	} else if (req.params.message == 'loggedIn') {
 		res.render('login');
+	} else {
+		res.render('login', {message: req.params.message});
 	}
-	else {
-		res.render('login', { message: req.params.message});
-	}
-	
 };
 
 // Attemps a user login.
 exports.login = function(req, res) {
 	var hashed = crypto.createHash('sha256').update(req.body.password).digest('hex');
-		if (admins.hasOwnProperty(req.body.user) && admins[req.body.user] === hashed) {
-			req.session.username = req.body.user;
+	if (admins.hasOwnProperty(req.body.user) && admins[req.body.user] === hashed) {
+		req.session.username = req.body.user;
 
-			req.session.save(function (err) {
-				res.redirect("/admin/loggedIn");
-			});
-		}
-		else {
-			res.redirect("/admin/invalid");
-		}
+		req.session.save(function() {
+			res.redirect('/admin/loggedIn');
+		});
+	} else {
+		res.redirect('/admin/invalid');
+	}
 };
 
 exports.edit = function(req, res) {
@@ -52,21 +47,20 @@ exports.edit = function(req, res) {
 		return;
 	}
 
-	var mix = Mix.findOne({url: req.params.url}).exec(function (err, mix){
+	Mix.findOne({url: req.params.url}).exec(function(err, mix) {
 		var title;
 		if (mix.dj) {
-			title = mix.dj + " - ";
-		}
-		else {
-			title = "Unknown DJ - ";
+			title = mix.dj + ' - ';
+		} else {
+			title = 'Unknown DJ - ';
 		}
 
 		if (mix.title) {
 			title += mix.title;
+		} else {
+			title += 'Untitled';
 		}
-		else {
-			title += "Untitled";
-		}
+
 		res.render('edit', {
 			title: title,
 			mix: mix
@@ -80,18 +74,16 @@ exports.remove = function(req, res) {
 		return;
 	}
 
-	var mix = Mix.findOne({url: req.params.url, hidden: true}).exec(function (err, mix){
+	var mix = Mix.findOne({url: req.params.url, hidden: true}).exec(function(err) {
 		if (err) {
 			console.error(err);
-		}
-		else {
+		} else {
 			fs.unlinkSync(config.uploadDirectory + mix.file);
 			mix.remove();
 		}
 		res.render('upload');
 	});
 };
-
 
 exports.hidden = function(req, res) {
 	var page;
@@ -115,25 +107,24 @@ exports.hidden = function(req, res) {
 	var skip = (page - 1) * pageCount;
 
 	Mix.count({hidden: true}).exec(function(err, count) {
-		if (err){
-			console.error("find error");
+		if (err) {
+			console.error('find error');
 			throw err;
 		}
 
-		Mix.find({hidden: true}).skip(skip).sort({date: -1}).limit(pageCount)
-			.exec(function(err, mixes) {
-				if (err){
-					console.error("find error");
-					throw err;
-				}
-				var currentUrl = '/mixes/page/';
-				
-				var hasNext = false;
-				if (count > (skip + pageCount)) {
-					hasNext = true;
-				}
+		Mix.find({hidden: true}).skip(skip).sort({date: -1}).limit(pageCount) .exec(function(err, mixes) {
+			if (err) {
+				console.error('find error');
+				throw err;
+			}
+			var currentUrl = '/mixes/page/';
 
-				res.render('mixes', {title: 'Hidden Mixes', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+			var hasNext = false;
+			if (count > (skip + pageCount)) {
+				hasNext = true;
+			}
+
+			res.render('mixes', {title: 'Hidden Mixes', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
