@@ -12,7 +12,7 @@ exports.routes = function(app) {
 
 exports.index = function(req, res) {
 	res.render('upload', {
-		title: 'Upload to Grime Archive'
+		title: 'Upload'
 	});
 };
 

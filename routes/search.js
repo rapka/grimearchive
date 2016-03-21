@@ -55,7 +55,7 @@ exports.mixes = function(req, res) {
 				hasNext = true;
 			}
 
-			res.render('mixes', {title: 'All Mixes | Grime Archive', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+			res.render('mixes', {title: 'All Mixes', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
@@ -94,7 +94,7 @@ exports.instrumentals = function(req, res) {
 				hasNext = true;
 			}
 
-			res.render('mixes', {title: 'Instrumental Only Mixes | Grime Archive', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+			res.render('mixes', {title: 'Instrumental Only Mixes', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
@@ -133,7 +133,7 @@ exports.dj = function(req, res) {
 				hasNext = true;
 			}
 
-			res.render('mixes', {title: 'Mixes by ' + req.params.url + ' | Grime Archive', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+			res.render('mixes', {title: 'Mixes by ' + req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
@@ -172,7 +172,7 @@ exports.mc = function(req, res) {
 				hasNext = true;
 			}
 
-			res.render('mixes', {title: 'Mixes featuring ' + req.params.url + ' | Grime Archive', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+			res.render('mixes', {title: 'Mixes featuring ' + req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
@@ -211,7 +211,7 @@ exports.crew = function(req, res) {
 				hasNext = true;
 			}
 
-			res.render('mixes', {title: 'Mixes featuring ' + req.params.url + ' | Grime Archive', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+			res.render('mixes', {title: 'Mixes featuring ' + req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
@@ -253,7 +253,7 @@ exports.uploader = function(req, res) {
 				hasNext = true;
 			}
 
-			res.render('mixes', {title: 'Mixes uploaded by ' + user + ' | Grime Archive', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+			res.render('mixes', {title: 'Mixes uploaded by ' + user, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };
@@ -292,7 +292,7 @@ exports.station = function(req, res) {
 				hasNext = true;
 			}
 
-			res.render('mixes', {title: 'Mixes from ' + req.params.url + ' | Grime Archive', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
+			res.render('mixes', {title: 'Mixes from ' + req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
 		});
 	});
 };

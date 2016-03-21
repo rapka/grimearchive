@@ -1,7 +1,7 @@
 doctype html
 html
 	head
-		title= title
+		title= (title? title + ' | The Grime Archive' : 'The Grime Archive')
 		meta(charset='utf-8')
 		meta(name="viewport" content="width=device-width, initial-scale=1.0")
 		link(rel='stylesheet', href='/style/style.css')
@@ -20,6 +20,10 @@ html
 
 		.title-pic.big.red
 			a(href='/') The Grime Archive.
+			.blurred-1
+				a(href='/') The Grime Archive.
+			.blurred-2
+				a(href='/') The Grime Archive.
 		div.nav-bar.medium
 			ul
 				li

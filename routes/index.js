@@ -39,9 +39,7 @@ exports.index = function(req, res) {
 							downloads: 2
 						}
 					}, function(err, result) {
-						console.log(result[0].total);
-						console.log(result);
-						res.render('index', {title: 'The Grime Archive', sum: Math.floor(result[0].total / 60), downloads: result[0].downloads, popular: popular, recent: recent, count: count, instrumentals: instrumentals});
+						res.render('index', {sum: Math.floor(result[0].total / 60), downloads: result[0].downloads, popular: popular, recent: recent, count: count, instrumentals: instrumentals});
 					});
 				});
 			});
@@ -50,6 +48,6 @@ exports.index = function(req, res) {
 };
 
 exports.about = function(req, res) {
-	res.render('about', {title: 'About Grime Archive'});
+	res.render('about', {title: 'About'});
 };
 
