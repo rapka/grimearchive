@@ -224,9 +224,9 @@ var uploadToS3 = function(filePath, filename) {
 
 	s3.upload(s3params, function(err) {
 		if (err) {
-			console.log(err);
+			console.log('file upload error', err);
 		}
-
+		console.log('file uploaded');
 		fs.unlinkSync(filePath);
 	});
 };
