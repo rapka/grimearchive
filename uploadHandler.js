@@ -137,11 +137,16 @@ exports.onParseEnd = function(req, next) {
 				return;
 			}
 		});
-	} else {
+	} else { // Edit mix
 		mix = {};
 
 		if (req.body.title) {
-			mix.title = req.body.title;
+			if (req.body.title === '0xDEADBEEF') {
+				mix.title = '';
+			} else {
+				mix.title = req.body.title;
+			}
+
 		}
 		if (req.body.dj) {
 			mix.dj = req.body.dj;

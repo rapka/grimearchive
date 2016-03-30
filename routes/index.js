@@ -39,7 +39,18 @@ exports.index = function(req, res) {
 							downloads: 2
 						}
 					}, function(err, result) {
-						res.render('index', {sum: Math.floor(result[0].total / 60), downloads: result[0].downloads, popular: popular, recent: recent, count: count, instrumentals: instrumentals});
+						var sum;
+						var downloads;
+
+						if (err || result.length === 0) {
+							sum = 0;
+							downloads = 0;
+						} else {
+							sum = Math.floor(result[0].total / 60);
+							downloads = result[0].downloads;
+						}
+
+						res.render('index', {sum: sum, downloads: downloads, popular: popular, recent: recent, count: count, instrumentals: instrumentals});
 					});
 				});
 			});
