@@ -70,18 +70,20 @@ h2 {
 	display: inline;
 	filter: blur(5px);
 	-webkit-filter: blur(5px);
-	-moz-filter: blur(5px); 
-	-o-filter: blur(5px); 
-	-ms-filter: blur(5px); 
+	-moz-filter: blur(5px);
+	-o-filter: blur(5px);
+	-ms-filter: blur(5px);
+	user-select: none;
 }
 
 .blurred-2 {
 	display: inline;
 	filter: blur(10px);
 	-webkit-filter: blur(10px);
-	-moz-filter: blur(10px); 
-	-o-filter: blur(10px); 
-	-ms-filter: blur(10px); 
+	-moz-filter: blur(10px);
+	-o-filter: blur(10px);
+	-ms-filter: blur(10px);
+	user-select: none;
 }
 
 p {
@@ -249,6 +251,7 @@ tr.mix-row {
 		margin-left: auto;
 		margin-right: auto;
 		user-select: none;
+
 		&:hover {
 			cursor: pointer;
 			color: #BBBBBB;
@@ -735,7 +738,7 @@ tr.mix-row {
 // Mobile
 @media screen and (max-device-width: 480px) {
 
-	.footer, {
+	.footer {
 		width: auto;
 
 		.quote {
@@ -758,7 +761,6 @@ tr.mix-row {
 		margin-left: 5px;
 	}
 
-
 	.disclaimer {	
 		p {
 			font-size: 0.8em;
@@ -774,8 +776,13 @@ tr.mix-row {
 	}
 
 	.title-pic {
-		padding-left: 5px;
 		font-size: 3em;
+		white-space: normal;
+
+		a {
+			display: block;
+			margin-left: 10px;
+		}
 	}
 
 	.report-button {
@@ -870,7 +877,7 @@ tr.mix-row {
 		left: -9999px;
 	}
 
-	.blurred-1 {
+	.blurred-1, .blurred-2 {
 		display: none;
 	}
 
