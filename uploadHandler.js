@@ -79,7 +79,7 @@ exports.onFileUploadComplete = function(file) {
 // };
 
 exports.onParseEnd = function(req, next) {
-	console.log('File parsing complete.')''
+	console.log('File parsing complete.');
 
 	var mix;
 
