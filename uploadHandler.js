@@ -50,6 +50,7 @@ exports.onFileUploadStart = function(file) {
 		console.log('415: Disallowed file type: ' + file.mimetype);
 		return false;
 	}
+	console.log('file uploading');
 
 	return true;
 };
@@ -78,9 +79,7 @@ exports.onFileUploadComplete = function(file) {
 // };
 
 exports.onParseEnd = function(req, next) {
-	console.log(req.body.edit);
-	console.log(req.body.preserve);
-	console.log(req.body.albumtitle);
+	console.log('File parsing complete.')''
 
 	var mix;
 
