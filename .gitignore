@@ -43,3 +43,6 @@ aws.json
 
 #sessions directory
 sessions
+
+*.sublime-workspace
+*.sublime-project
