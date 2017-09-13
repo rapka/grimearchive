@@ -27,3 +27,5 @@ Linting:
 ```shell
 grunt checkcode
 ```
+
+Mix files are uploaded to AWS S3. A configuration file called `aws.json` in the root of the project with your AWS credentials. See: http://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-json-file.html
