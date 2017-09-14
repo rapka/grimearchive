@@ -1,8 +1,8 @@
-var id3Reader = require('id3_reader');
-var fs = require('fs');
-var mm = require('musicmetadata');
-var config = require('../config');
-var AWS = require('aws-sdk');
+const id3Reader = require('id3_reader');
+const fs = require('fs');
+const mm = require('musicmetadata');
+const config = require('../config');
+const AWS = require('aws-sdk');
 
 AWS.config.loadFromPath(__dirname + '/../aws.json');
 
@@ -212,17 +212,17 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 	});
 };
 
-var uploadToS3 = function(filePath, filename) {
-	var stream = fs.readFileSync(filePath);
+const uploadToS3 = (filePath, filename) => {
+	const stream = fs.readFileSync(filePath);
 	console.log('uploading', filename);
 
-	var s3params = {
+	const s3params = {
 		Bucket: 'grimearchive',
 		Key: filename,
 		Body: stream
 	};
 
-	s3.upload(s3params, function(err) {
+	s3.upload(s3params, (err) => {
 		if (err) {
 			console.log('file upload error', err);
 		}

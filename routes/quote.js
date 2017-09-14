@@ -1,12 +1,12 @@
-var fs = require('fs');
+const fs = require('fs');
 
-exports.routes = function(app) {
+exports.routes = (app) => {
 	app.get('/quote', exports.index);
 };
 
-exports.index = function(req, res) {
-	var quotes = fs.readFileSync(__dirname + '/../quotes.txt', {encoding: 'utf8'}).split('\n');
-	var rng = Math.floor(Math.random() * quotes.length);
-	var quote = quotes[rng];
+exports.index = (req, res) => {
+	const quotes = fs.readFileSync(__dirname + '/../quotes.txt', {encoding: 'utf8'}).split('\n');
+	const rng = Math.floor(Math.random() * quotes.length);
+	const quote = quotes[rng];
 	res.end(quote);
 };

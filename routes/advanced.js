@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
-var Mix = mongoose.model('Mix');
-var pageCount = 20;
+const mongoose = require('mongoose');
+
+const Mix = mongoose.model('Mix');
+const pageCount = 20;
 
 exports.routes = function(app) {
 	app.get('/advanced', exports.advanced);
@@ -14,40 +15,36 @@ exports.advanced = function(req, res) {
 
 // Route for initial search. Search form comes as a query
 exports.advancedSearch = function(req, res) {
-
-	var page = parseInt(req.query['page']);
-
-	var searchTerm = req.query['title'];
-	var sortBy = req.query['sortby'];
+	const searchTerm = req.query['title'];
+	const sortBy = req.query['sortby'];
+	const page = parseInt(req.query['page']);
 
 	if (page < 1 || !page) {
 		page = 1;
 	}
 
-	var skip = (page - 1) * pageCount;
+	const skip = (page - 1) * pageCount;
+	const minBitrate = req.query['bitrate'] ? req.query['bitrate'] : 0;
+	const direction = parseInt(req.query['ascending']);
+	let sortQuery;
 
-	var minBitrate = req.query['bitrate'] ? req.query['bitrate'] : 0;
-
-	var sortQuery;
-
-	var direction = parseInt(req.query['ascending']);
-
-	if (sortBy == 'uploaddate') {
+	if (sortBy === 'uploaddate') {
 		sortQuery = {date: direction};
-	} else if (sortBy == 'airdate') {
+	} else if (sortBy === 'airdate') {
 		sortQuery = {year: direction, month: direction, day: direction};
-	} else if (sortBy == 'downloads') {
+	} else if (sortBy === 'downloads') {
 		sortQuery = {downloads: direction};
-	} else if (sortBy == 'title') {
+	} else if (sortBy === 'title') {
 		sortQuery = {title: direction};
-	} else if (sortBy == 'dj') {
+	} else if (sortBy === 'dj') {
 		sortQuery = {dj: direction};
-	} else if (sortBy == 'station') {
+	} else if (sortBy === 'station') {
 		sortQuery = {station: direction};
-	} else if (sortBy == 'duration') {
+	} else if (sortBy === 'duration') {
 		sortQuery = {duration: direction};
 	}
-	var query = {};
+
+	const query = {};
 	if (req.query['mcs']) {
 		query.mcs = req.query['mcs'].split(',');
 	}
@@ -66,12 +63,12 @@ exports.advancedSearch = function(req, res) {
 
 	query.bitrate = {$gte: minBitrate};
 
-	if (req.query['title']) {
-		query.title = req.query['title'];
+	if (req.query.title) {
+		query.title = req.query.title;
 	}
 
-	if (req.query['dj']) {
-		query.dj = req.query['dj'];
+	if (req.query.dj) {
+		query.dj = req.query.dj;
 	}
 
 	Mix.count(query).exec(function(err, count) {

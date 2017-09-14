@@ -1,7 +1,7 @@
-exports.routes = function(app) {
+exports.routes = (app) => {
 	app.get('/', exports.index);
 };
 
-exports.index = function(req, res) {
+exports.index = (req, res) => {
 	res.render('index', {title: 'Grime Archive'});
 };

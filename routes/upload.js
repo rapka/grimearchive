@@ -1,28 +1,29 @@
-var AWS = require('aws-sdk');
+const AWS = require('aws-sdk');
+const path = require('path');
 
-AWS.config.loadFromPath(__dirname + '/../aws.json');
+AWS.config.loadFromPath(path.join(__dirname, '/../aws.json'));
 
-var s3 = new AWS.S3();
+const s3 = new AWS.S3();
 
-exports.routes = function(app) {
+exports.routes = (app) => {
 	app.get('/upload', exports.index);
 	app.post('/upload', exports.add);
 	app.get('/upload/:url', exports.checkFfmpeg);
 };
 
-exports.index = function(req, res) {
+exports.index = (req, res) => {
 	res.render('upload', {
-		title: 'Upload'
+		title: 'Upload',
 	});
 };
 
-exports.checkFfmpeg = function(req, res) {
-	var params = {
+exports.checkFfmpeg = (req, res) => {
+	const params = {
 		Bucket: 'grimearchive',
-		Key: req.params.url + '.mp3'
+		Key: req.params.url + '.mp3',
 	};
 
-	s3.headObject(params, function(err) {
+	s3.headObject(params, (err) => {
 		if (err) {
 			res.send('-1');
 		} else {
@@ -31,11 +32,9 @@ exports.checkFfmpeg = function(req, res) {
 	});
 };
 
-exports.add = function(req, res) {
+exports.add = (req, res) => {
 	if (typeof req.files.file !== 'undefined') {
-		var url = req.files.file.name.split('.')[0];
-		res.send('/mix/' + url);
-
+		res.send('/mix/' + req.files.file.name.split('.')[0]);
 	} else {
 		console.log('no file');
 		res.redirect('/upload');

@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
-var Mix = mongoose.model('Mix');
-var pageCount = 20;
+const mongoose = require('mongoose');
+
+const Mix = mongoose.model('Mix');
+const pageCount = 20;
 
 exports.routes = function(app) {
 	app.get('/mixes', exports.mixes);
@@ -22,7 +23,7 @@ exports.routes = function(app) {
 };
 
 exports.mixes = function(req, res) {
-	var page;
+	let page;
 
 	if (typeof req.params.page !== 'undefined') {
 
@@ -37,13 +38,13 @@ exports.mixes = function(req, res) {
 
 	var skip = (page - 1) * pageCount;
 
-	Mix.count({hidden: false}).exec(function(err, count) {
+	Mix.count({hidden: false}).exec((err, count) => {
 		if (err) {
 			console.error('find error');
 			throw err;
 		}
 
-		Mix.find({hidden: false}).skip(skip).sort({date: -1}).limit(pageCount).exec(function(err, mixes) {
+		Mix.find({hidden: false}).skip(skip).sort({date: -1}).limit(pageCount).exec((err, mixes) => {
 			if (err) {
 				console.error('find error');
 				throw err;

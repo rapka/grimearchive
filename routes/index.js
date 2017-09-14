@@ -1,64 +1,53 @@
-var mongoose = require('mongoose');
-var Mix = mongoose.model('Mix');
+const mongoose = require('mongoose');
 
-exports.routes = function(app) {
+const Mix = mongoose.model('Mix');
+
+mongoose.Promise = global.Promise;
+
+exports.routes = (app) => {
 	app.get('/', exports.index);
 	app.get('/about', exports.about);
 };
 
-exports.index = function(req, res) {
-	Mix.find({hidden: false, mcs: [], crews: []}).sort({date: -1}).limit(5).exec(function(err, instrumentals) {
-		if (err) {
-			throw err;
-		}
+exports.index = async (req, res) => {
+	const instrumentals = await Mix.find({hidden: false, mcs: [], crews: []}).sort({date: -1}).limit(5).exec();
+	const recent = await Mix.find({hidden: false}).sort({date: -1}).limit(5);
+	const popular = await Mix.find({hidden: false}).sort({downloads: -1}).limit(5);
+	const count = await Mix.count({hidden: false});
 
-		Mix.find({hidden: false}).sort({date: -1}).limit(5).exec(function(err, recent) {
-			if (err) {
-				throw err;
-			}
-
-			Mix.find({hidden: false}).sort({downloads: -1}).limit(5).exec(function(err, popular) {
-				if (err) {
-					throw err;
-				}
-				Mix.count({hidden: false}, function(err, count) {
-					Mix.aggregate({
-						$group: {
-							_id: null,
-							total: {
-								$sum: '$duration'
-							},
-							downloads: {
-								$sum: '$downloads'
-							}
-						}
-					}, {
-						$project: {
-							_id: 0,
-							total: 1,
-							downloads: 2
-						}
-					}, function(err, result) {
-						var sum;
-						var downloads;
-
-						if (err || result.length === 0) {
-							sum = 0;
-							downloads = 0;
-						} else {
-							sum = Math.floor(result[0].total / 60);
-							downloads = result[0].downloads;
-						}
-
-						res.render('index', {sum: sum, downloads: downloads, popular: popular, recent: recent, count: count, instrumentals: instrumentals});
-					});
-				});
-			});
-		});
+	const result = await Mix.aggregate({
+		$group: {
+			_id: null,
+			total: {
+				$sum: '$duration',
+			},
+			downloads: {
+				$sum: '$downloads',
+			},
+		},
+	}, {
+		$project: {
+			_id: 0,
+			total: 1,
+			downloads: 2,
+		},
 	});
+
+	let sum;
+	let downloads;
+
+	if (result.length === 0) {
+		sum = 0;
+		downloads = 0;
+	} else {
+		sum = Math.floor(result[0].total / 60);
+		downloads = result[0].downloads;
+	}
+
+	res.render('index', {sum, downloads, popular, recent, count, instrumentals});
 };
 
-exports.about = function(req, res) {
+exports.about = (req, res) => {
 	res.render('about', {title: 'About'});
 };
 

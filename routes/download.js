@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var Mix = mongoose.model('Mix');
-var config = require('../config');
-var AWS = require('aws-sdk');
+const mongoose = require('mongoose');
+const Mix = mongoose.model('Mix');
+const config = require('../config');
+const AWS = require('aws-sdk');
 
 AWS.config.loadFromPath(__dirname + '/../aws.json');
 
@@ -31,8 +31,8 @@ exports.download = function(req, res) {
 	});
 };
 
-var generateFilename = function(mix) {
-	var titleString = '';
+const generateFilename = (mix) => {
+	let titleString = '';
 	// Append date
 	if (mix.day && mix.month && mix.year) {
 		titleString = mix.year.toString() + '-' + mix.month.toString() + '-' + mix.day.toString();
@@ -57,7 +57,7 @@ var generateFilename = function(mix) {
 		titleString += ' feat ' + mix.crews[0];
 	} else if (mix.crews.length >= 1) {
 		titleString += ' feat ';
-		for (var i = 0; i < mix.crews.length; i++) {
+		for (let i = 0; i < mix.crews.length; i++) {
 			if (i === 0) {
 				titleString += mix.crews[i];
 			} else if (i == (mix.crews.length - 1)) {

@@ -1,39 +1,40 @@
-var pmx = require('pmx').init({
+const pmx = require('pmx').init({
 	http: true,
 	errors: true,
 	network: true,
-	ports: true
+	ports: true,
 });
 
-var express = require('express');
-var mongoose = require('mongoose');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var bodyParser = require('body-parser');
-var busboy = require('connect-busboy');
-var fs = require('fs');
-var multer = require('multer');
-var expressSession = require('express-session');
-var FileStore = require('session-file-store')(expressSession);
-var config = require('./config');
+const express = require('express');
+const mongoose = require('mongoose');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const busboy = require('connect-busboy');
+const fs = require('fs');
+const multer = require('multer');
+const expressSession = require('express-session');
+const FileStore = require('session-file-store')(expressSession);
+const config = require('./config');
 
-var app = express();
+const app = express();
 
 app.use(logger('dev'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(busboy());
-app.use(favicon(__dirname + '/public/img/favicon.ico'));
+app.use(favicon(path.join(__dirname, '/public/img/favicon.ico')));
 
-var uploadHandler = require('./uploadHandler.js');
+const uploadHandler = require('./uploadHandler.js');
+
 app.use(multer({
 	dest: './upload/',
 	rename: uploadHandler.rename,
 	onFileUploadStart: uploadHandler.onFileUploadStart,
 	onFileUploadComplete: uploadHandler.onFileUploadComplete,
 	onParseEnd: uploadHandler.onParseEnd,
-	onFileUploadData: uploadHandler.onFileUploadData
+	onFileUploadData: uploadHandler.onFileUploadData,
 }));
 
 app.use(expressSession({
@@ -42,8 +43,8 @@ app.use(expressSession({
 	resave: true,
 	secret: config.secret,
 	cookie: {
-		secure: false
-	}
+		secure: false,
+	},
 }));
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -61,36 +62,36 @@ mongoose.connect('mongodb://127.0.0.1/grime');
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-	app.use(function(err, req, res, next) {
+	app.use((err, req, res, next) => {
 		res.status(err.status || 500);
 		res.render('error', {
 			message: err.message,
-			error: err
+			error: err,
 		});
 	});
 }
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
 	res.status(err.status || 500);
 	res.render('error', {
 		message: err.message,
-		error: {}
+		error: {},
 	});
 });
 
 // Load models.
-var modelsPath = __dirname + '/models';
-fs.readdirSync(modelsPath).forEach(function(file) {
+const modelsPath = path.join(__dirname, '/models');
+fs.readdirSync(modelsPath).forEach((file) => {
 	if (~file.indexOf('.js')) {
 		require(modelsPath + '/' + file);
 	}
 });
 
 // Load routes.
-var routesPath = path.join(__dirname, '/routes');
-fs.readdirSync(routesPath).forEach(function(file) {
+const routesPath = path.join(__dirname, '/routes');
+fs.readdirSync(routesPath).forEach((file) => {
 	if (~file.indexOf('.js')) {
 		var route = require(path.join(routesPath, file));
 		route.routes(app);
@@ -98,7 +99,7 @@ fs.readdirSync(routesPath).forEach(function(file) {
 });
 
 // Render 404 page
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
 	res.status(404).render('404.jade', {title: 'Not Found'});
 	next();
 });

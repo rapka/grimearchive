@@ -1,70 +1,21 @@
 {
-	"env": {
-		"browser": true,
-		"node": true
-	},
-
-	"extends": "eslint:recommended",
-
-	"rules": {
-		// POSSIBLE ERRORS
-		"no-console": 0,
-
-		// BEST PRACTICES
-		"consistent-return": 2,
-		"curly": 2,
-		"dot-location": [2, "property"],
-		"no-alert": 2,
-		"no-caller": 2,
-		"no-eval": 2,
-		"no-extend-native": 2,
-		"no-extra-bind": 2,
-		"no-floating-decimal": 2,
-		"no-loop-func": 2,
-		"no-multi-spaces": 2,
-		"no-multi-str": 2,
-		"no-native-reassign": 2,
-		"no-new-func": 2,
-		"no-new-object": 2,
-		"no-new-wrappers": 2,
-		"no-return-assign": 2,
-		"no-self-compare": 2,
-		"no-sequences": 2,
-		"no-unused-expressions": 2,
-		"yoda": 2,
-
-		// VARIABLES
-		"no-shadow-restricted-names": 2,
-		"no-undef-init": 2,
-
-		// STYLISTIC ISSUES
-		"array-bracket-spacing": 2,
-		"brace-style": 2,
-		"camelcase": 2,
-		"comma-spacing": 2,
-		"comma-style": 2,
-		"computed-property-spacing": 2,
-		"eol-last": 2,
-		"indent": [2, "tab", {"SwitchCase": 1}],
-		"jsx-quotes": [2, "prefer-single"],
-		"key-spacing": 2,
-		"keyword-spacing": 2,
-		"no-array-constructor": 2,
-		"no-multiple-empty-lines": [2, {"max": 1}],
-		"no-spaced-func": 2,
-		"no-trailing-spaces": 2,
-		"object-curly-spacing": 2,
-		"one-var": [2, "never"],
-		"operator-linebreak": 2,
-		"quote-props": [2, "as-needed"],
-		"quotes": [2, "single", "avoid-escape"],
-		"semi": 2,
-		"semi-spacing": 2,
-		"space-before-blocks": 2,
-		"space-before-function-paren": [2, "never"],
-		"space-in-parens": 2,
-		"space-infix-ops": 2,
-		"space-unary-ops": 2,
-		"spaced-comment": 2,
-	}
+  extends: 'airbnb-base',
+  rules: {
+    'global-require': 'off',
+    'no-param-reassign': ['error', { 'props': false }],
+    'no-unused-vars': ['error', { argsIgnorePattern: 'next' }],
+    'consistent-return': 'off',
+    'no-restricted-syntax': 'off',
+    'padded-blocks': 'off',
+    'func-names': 'off',
+    'max-len': ['error', 120],
+    'indent': ['error', 'tab'],
+    'no-tabs': 'off',
+    'object-curly-spacing': ['error', 'never'],
+    'prefer-template': 'off',
+  },
+  env: {
+    'es6': true,
+    'node': true
+   },
 }

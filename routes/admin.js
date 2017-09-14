@@ -1,10 +1,10 @@
-var mongoose = require('mongoose');
-var Mix = mongoose.model('Mix');
-var admins = require('../admins');
-var crypto = require('crypto');
-var fs = require('fs');
-var config = require('../config');
-var pageCount = 20;
+const mongoose = require('mongoose');
+const Mix = mongoose.model('Mix');
+const admins = require('../admins');
+const crypto = require('crypto');
+const fs = require('fs');
+const config = require('../config');
+const pageCount = 20;
 
 exports.routes = function(app) {
 	app.get('/admin', exports.loginForm);
@@ -33,7 +33,7 @@ exports.login = function(req, res) {
 	if (admins.hasOwnProperty(req.body.user) && admins[req.body.user] === hashed) {
 		req.session.username = req.body.user;
 
-		req.session.save(function() {
+		req.session.save(() => {
 			res.redirect('/admin/loggedIn');
 		});
 	} else {
@@ -47,8 +47,8 @@ exports.edit = function(req, res) {
 		return;
 	}
 
-	Mix.findOne({url: req.params.url}).exec(function(err, mix) {
-		var title;
+	Mix.findOne({url: req.params.url}).exec((err, mix) => {
+		let title;
 		if (mix.dj) {
 			title = mix.dj + ' - ';
 		} else {
@@ -62,19 +62,19 @@ exports.edit = function(req, res) {
 		}
 
 		res.render('edit', {
-			title: title,
-			mix: mix
+			title,
+			mix,
 		});
 	});
 };
 
-exports.remove = function(req, res) {
+exports.remove = (req, res) => {
 	if (!req.session.username) {
 		res.status(401).render('404.jade', {title: 'Not Found'});
 		return;
 	}
 
-	var mix = Mix.findOne({url: req.params.url, hidden: true}).exec(function(err) {
+	const mix = Mix.findOne({url: req.params.url, hidden: true}).exec((err) => {
 		if (err) {
 			console.error(err);
 		} else {
@@ -85,8 +85,8 @@ exports.remove = function(req, res) {
 	});
 };
 
-exports.hidden = function(req, res) {
-	var page;
+exports.hidden = (req, res) => {
+	let page;
 
 	if (!req.session.username) {
 		res.status(401).render('404.jade', {title: 'Not Found'});
@@ -94,7 +94,6 @@ exports.hidden = function(req, res) {
 	}
 
 	if (typeof req.params.page !== 'undefined') {
-
 		page = req.params.page;
 
 		if (page < 1) {
@@ -104,22 +103,22 @@ exports.hidden = function(req, res) {
 		page = 1;
 	}
 
-	var skip = (page - 1) * pageCount;
+	const skip = (page - 1) * pageCount;
 
-	Mix.count({hidden: true}).exec(function(err, count) {
+	Mix.count({hidden: true}).exec((err, count) => {
 		if (err) {
 			console.error('find error');
 			throw err;
 		}
 
-		Mix.find({hidden: true}).skip(skip).sort({date: -1}).limit(pageCount) .exec(function(err, mixes) {
+		Mix.find({hidden: true}).skip(skip).sort({date: -1}).limit(pageCount).exec((err, mixes) => {
 			if (err) {
 				console.error('find error');
 				throw err;
 			}
-			var currentUrl = '/mixes/page/';
+			const currentUrl = '/mixes/page/';
 
-			var hasNext = false;
+			let hasNext = false;
 			if (count > (skip + pageCount)) {
 				hasNext = true;
 			}

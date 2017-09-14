@@ -1,12 +1,12 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 	require('load-grunt-tasks')(grunt);
 
 	grunt.initConfig({
 		eslint: {
 			target: ['./'],
 			options: {
-				extensions: ['.js']
-			}
+				extensions: ['.js'],
+			},
 		},
 
 		autoprefixer: {
@@ -16,37 +16,37 @@ module.exports = function(grunt) {
 			grimelist: {
 				expand: true,
 				flatten: false,
-				src: 'public/style/**/*.css'
-			}
+				src: 'public/style/**/*.css',
+			},
 		},
 
 		less: {
 			development: {
 				options: {
-					paths: ['public-src/style']
+					paths: ['public-src/style'],
 				},
 				files: [{
 					expand: true,
 					cwd: 'public-src/style',
 					src: ['**/*.less'],
 					dest: 'public/style',
-					ext: '.css'
-				}]
+					ext: '.css',
+				}],
 			},
 
 			production: {
 				options: {
 					paths: ['public-src/style'],
-					cleancss: true
+					cleancss: true,
 				},
 				files: [{
 					expand: true,
 					cwd: 'public-src/style',
 					src: ['**/*.less'],
 					dest: 'public/style',
-					ext: '.css'
-				}]
-			}
+					ext: '.css',
+				}],
+			},
 		},
 
 		clean: {
@@ -55,16 +55,16 @@ module.exports = function(grunt) {
 				'public/js',
 				'public/img/*.png',
 				'public/img/*.webm',
-				'public/favicon.ico'
-			]
+				'public/favicon.ico',
+			],
 		},
 
 		express: {
 			dev: {
 				options: {
-					script: 'bin/www'
-				}
-			}
+					script: 'bin/www',
+				},
+			},
 		},
 
 		uglify: {
@@ -73,9 +73,9 @@ module.exports = function(grunt) {
 					expand: true,
 					cwd: 'public-src/js',
 					src: '**/*.js',
-					dest: 'public/js'
-				}]
-			}
+					dest: 'public/js',
+				}],
+			},
 		},
 
 		copy: {
@@ -87,10 +87,10 @@ module.exports = function(grunt) {
 					src: [
 						'style/**/*.css',
 						'js/**/*.js',
-						'img/**/*'
+						'img/**/*',
 					],
-					dest: 'public'
-				}]
+					dest: 'public',
+				}],
 			},
 			production: {
 				files: [{
@@ -100,37 +100,37 @@ module.exports = function(grunt) {
 					src: [
 						'style/**/*.css',
 						'js/**/*.js',
-						'img/**/*'
+						'img/**/*',
 					],
-					dest: 'public'
-				}]
-			}
+					dest: 'public',
+				}],
+			},
 		},
 
 		watch: {
 			express: {
 				files: [
 					'bin/www',
-					'app.js'
+					'app.js',
 				],
 				tasks: ['express:dev'],
 				options: {
-					nospawn: true
-				}
+					nospawn: true,
+				},
 			},
 			styles: {
 				files: ['public-src/style/**/*.less'],
-				tasks: ['buildstyles']
+				tasks: ['buildstyles'],
 			},
 			js: {
 				files: ['public-src/js/**/*.js'],
-				tasks: ['copy:development']
+				tasks: ['copy:development'],
 			},
 			img: {
 				files: ['public-src/img/**/*'],
-				tasks: ['copy:development']
-			}
-		}
+				tasks: ['copy:development'],
+			},
+		},
 
 	});
 
@@ -138,7 +138,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('buildstyles', 'Compile and autoprefix LESS to CSS', [
 		'less:development',
-		'autoprefixer'
+		'autoprefixer',
 	]);
 
 	grunt.registerTask('buildprod', 'Builds all files for prod deploys', [
@@ -146,13 +146,13 @@ module.exports = function(grunt) {
 		'less:production',
 		'autoprefixer',
 		'uglify',
-		'copy:production'
+		'copy:production',
 	]);
 
 	grunt.registerTask('builddev', 'Builds all files for dev testing', [
 		'clean',
 		'buildstyles',
-		'copy'
+		'copy',
 	]);
 
 	grunt.registerTask('work', 'Build and run app for development', [
@@ -160,6 +160,6 @@ module.exports = function(grunt) {
 		'builddev',
 		'checkcode',
 		'express:dev',
-		'watch'
+		'watch',
 	]);
 };
