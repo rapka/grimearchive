@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const Mix = mongoose.model('Mix');
-const pageCount = 20;
+const PAGE_COUNT = 20;
 
-exports.routes = function(app) {
+exports.routes = (app) => {
 	app.get('/mixes', exports.mixes);
 	app.get('/mixes/page/:page', exports.mixes);
 	app.get('/dj/:url/page/:page', exports.dj);
@@ -22,12 +22,11 @@ exports.routes = function(app) {
 	app.get('/instrumentals/page/:page', exports.instrumentals);
 };
 
-exports.mixes = function(req, res) {
+const createPagination = (basePage, count) => {
 	let page;
 
-	if (typeof req.params.page !== 'undefined') {
-
-		page = req.params.page;
+	if (typeof basePage !== 'undefined') {
+		page = basePage;
 
 		if (page < 1) {
 			page = 1;
@@ -36,368 +35,122 @@ exports.mixes = function(req, res) {
 		page = 1;
 	}
 
-	var skip = (page - 1) * pageCount;
+	const skip = (page - 1) * PAGE_COUNT;
 
-	Mix.count({hidden: false}).exec((err, count) => {
-		if (err) {
-			console.error('find error');
-			throw err;
-		}
+	let hasNext = false;
+	if (count > (skip + PAGE_COUNT)) {
+		hasNext = true;
+	}
 
-		Mix.find({hidden: false}).skip(skip).sort({date: -1}).limit(pageCount).exec((err, mixes) => {
-			if (err) {
-				console.error('find error');
-				throw err;
-			}
-			var currentUrl = '/mixes/page/';
-
-			var hasNext = false;
-			if (count > (skip + pageCount)) {
-				hasNext = true;
-			}
-
-			res.render('mixes', {title: 'All Mixes', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
-		});
-	});
+	return {page, skip, hasNext};
 };
 
-exports.instrumentals = function(req, res) {
-	var page;
+exports.createPagination = createPagination;
 
-	if (typeof req.params.page !== 'undefined') {
+exports.mixes = async (req, res) => {
+	const count = await Mix.count({hidden: false});
+	const {page, skip, hasNext} = createPagination(req.params.page, count);
+	const url = '/mixes/page/';
+	const mixes = await Mix.find({hidden: false}).skip(skip).sort({date: -1}).limit(PAGE_COUNT);
 
-		page = req.params.page;
-
-		if (page < 1) {
-			page = 1;
-		}
-	} else {
-		page = 1;
-	}
-
-	var skip = (page - 1) * pageCount;
-
-	Mix.count({hidden: false, mcs: [], crews: []}).exec(function(err, count) {
-		if (err) {
-			console.error('find error');
-			throw err;
-		}
-
-		Mix.find({hidden: false, mcs: [], crews: []}).skip(skip).sort({date: -1}).limit(pageCount).exec(function(err, mixes) {
-			if (err) {
-				console.error('find error');
-				throw err;
-			}
-			var currentUrl = '/instrumentals/page/';
-
-			var hasNext = false;
-			if (count > (skip + pageCount)) {
-				hasNext = true;
-			}
-
-			res.render('mixes', {title: 'Instrumental Only Mixes', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
-		});
-	});
+	res.render('mixes', {title: 'All Mixes', mixes, url, page, hasNext});
 };
 
-exports.dj = function(req, res) {
-	var page;
+exports.instrumentals = async (req, res) => {
+	const count = await Mix.count({hidden: false, mcs: [], crews: []});
+	const {page, skip, hasNext} = createPagination(req.params.page, count);
+	const mixes = await Mix.find({hidden: false, mcs: [], crews: []}).skip(skip).sort({date: -1}).limit(PAGE_COUNT);
+	const url = '/instrumentals/page/';
 
-	if (typeof req.params.page !== 'undefined') {
-
-		page = req.params.page;
-
-		if (page < 1) {
-			page = 1;
-		}
-	} else {
-		page = 1;
-	}
-
-	var skip = (page - 1) * pageCount;
-
-	Mix.count({dj: req.params.url, hidden: false}).exec(function(err, count) {
-		if (err) {
-			console.error('find error');
-			throw err;
-		}
-
-		Mix.find({dj: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(pageCount).exec(function(err, mixes) {
-			if (err) {
-				console.error('find error');
-				throw err;
-			}
-			var currentUrl = '/dj/' + req.params.url + '/page/';
-
-			var hasNext = false;
-			if (count > (skip + pageCount)) {
-				hasNext = true;
-			}
-
-			res.render('mixes', {title: 'Mixes by ' + req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
-		});
-	});
+	res.render('mixes', {title: 'Instrumental Only Mixes', mixes, url, page, hasNext});
 };
 
-exports.mc = function(req, res) {
-	var page;
+exports.dj = async (req, res) => {
+	const count = await Mix.count({dj: req.params.url, hidden: false});
+	const {page, skip, hasNext} = createPagination(req.params.page, count);
+	const mixes = await Mix.find({dj: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(PAGE_COUNT);
+	const url = '/dj/' + req.params.url + '/page/';
 
-	if (typeof req.params.page !== 'undefined') {
-
-		page = req.params.page;
-
-		if (page < 1) {
-			page = 1;
-		}
-	} else {
-		page = 1;
-	}
-
-	var skip = (page - 1) * pageCount;
-
-	Mix.count({mcs: req.params.url, hidden: false}).exec(function(err, count) {
-		if (err) {
-			console.error('find error');
-			throw err;
-		}
-
-		Mix.find({mcs: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(pageCount).exec(function(err, mixes) {
-			if (err) {
-				console.error('find error');
-				throw err;
-			}
-			var currentUrl = '/mc/' + req.params.url + '/page/';
-
-			var hasNext = false;
-			if (count > (skip + pageCount)) {
-				hasNext = true;
-			}
-
-			res.render('mixes', {title: 'Mixes featuring ' + req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
-		});
-	});
+	res.render('mixes', {title: 'Mixes by ' + req.params.url, mixes, url, page, hasNext});
 };
 
-exports.crew = function(req, res) {
-	var page;
+exports.mc = async (req, res) => {
+	const count = await Mix.count({mcs: req.params.url, hidden: false});
+	const {page, skip, hasNext} = createPagination(req.params.page, count);
+	const mixes = Mix.find({mcs: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(PAGE_COUNT);
+	const url = '/mc/' + req.params.url + '/page/';
 
-	if (typeof req.params.page !== 'undefined') {
-
-		page = req.params.page;
-
-		if (page < 1) {
-			page = 1;
-		}
-	} else {
-		page = 1;
-	}
-
-	var skip = (page - 1) * pageCount;
-
-	Mix.count({crews: req.params.url, hidden: false}).exec(function(err, count) {
-		if (err) {
-			console.error('find error');
-			throw err;
-		}
-
-		Mix.find({crews: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(pageCount).exec(function(err, mixes) {
-			if (err) {
-				console.error('find error');
-				throw err;
-			}
-			var currentUrl = '/crew/' + req.params.url + '/page/';
-
-			var hasNext = false;
-			if (count > (skip + pageCount)) {
-				hasNext = true;
-			}
-
-			res.render('mixes', {title: 'Mixes featuring ' + req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
-		});
-	});
+	res.render('mixes', {title: 'Mixes featuring ' + req.params.url, mixes, url, page, hasNext});
 };
 
-exports.uploader = function(req, res) {
-	var page;
+exports.crew = async (req, res) => {
+	const count = await Mix.count({crews: req.params.url, hidden: false});
+	const {page, skip, hasNext} = createPagination(req.params.page, count);
+	const mixes = await Mix.find({crews: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(PAGE_COUNT);
+	const url = '/crew/' + req.params.url + '/page/';
 
-	if (typeof req.params.page !== 'undefined') {
-
-		page = req.params.page;
-
-		if (page < 1) {
-			page = 1;
-		}
-	} else {
-		page = 1;
-	}
-
-	var skip = (page - 1) * pageCount;
-
-	var user = req.params.url.split('-')[0];
-	var trip = req.params.url.split('-')[1];
-
-	Mix.count({uploader: user, tripcode: trip, hidden: false}).exec(function(err, count) {
-		if (err) {
-			console.error('find error');
-			throw err;
-		}
-
-		Mix.find({uploader: user, tripcode: trip, hidden: false}).skip(skip).sort({date: -1}).limit(pageCount).exec(function(err, mixes) {
-			if (err) {
-				console.error('find error');
-				throw err;
-			}
-			var currentUrl = '/uploader/' + req.params.url + '/page/';
-
-			var hasNext = false;
-			if (count > (skip + pageCount)) {
-				hasNext = true;
-			}
-
-			res.render('mixes', {title: 'Mixes uploaded by ' + user, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
-		});
-	});
+	res.render('mixes', {title: 'Mixes featuring ' + req.params.url, mixes, url, page, hasNext});
 };
 
-exports.station = function(req, res) {
-	var page;
+exports.uploader = async (req, res) => {
+	const user = req.params.url.split('-')[0];
+	const trip = req.params.url.split('-')[1];
+	const count = await Mix.count({uploader: user, tripcode: trip, hidden: false});
+	const {page, skip, hasNext} = createPagination(req.params.page, count);
+	const mixes = await Mix.find({uploader: user, tripcode: trip, hidden: false})
+		.skip(skip).sort({date: -1}).limit(PAGE_COUNT);
+	const url = '/uploader/' + req.params.url + '/page/';
 
-	if (typeof req.params.page !== 'undefined') {
+	res.render('mixes', {title: 'Mixes uploaded by ' + user, mixes, url, page, hasNext});
+};
 
-		page = req.params.page;
+exports.station = async (req, res) => {
+	const count = await Mix.count({station: req.params.url, hidden: false});
+	const {page, skip, hasNext} = createPagination(req.params.page, count);
+	const mixes	= Mix.find({station: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(PAGE_COUNT);
+	const url = '/station/' + req.params.url + '/page/';
 
-		if (page < 1) {
-			page = 1;
-		}
-	} else {
-		page = 1;
-	}
-
-	var skip = (page - 1) * pageCount;
-
-	Mix.count({station: req.params.url, hidden: false}).exec(function(err, count) {
-		if (err) {
-			console.error('find error');
-			throw err;
-		}
-
-		Mix.find({station: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(pageCount).exec(function(err, mixes) {
-			if (err) {
-				console.error('find error');
-				throw err;
-			}
-			var currentUrl = '/station/' + req.params.url + '/page/';
-
-			var hasNext = false;
-			if (count > (skip + pageCount)) {
-				hasNext = true;
-			}
-
-			res.render('mixes', {title: 'Mixes from ' + req.params.url, mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
-		});
-	});
+	res.render('mixes', {title: 'Mixes from ' + req.params.url, mixes, url, page, hasNext});
 };
 
 // Route for initial search. Search form comes as a query
-exports.searchForm = function(req, res) {
-	var page;
-
-	var searchTerm = req.query['title'];
-
-	if (typeof req.params.page !== 'undefined') {
-
-		page = req.params.page;
-
-		if (page < 1) {
-			page = 1;
-		}
-	} else {
-		page = 1;
-	}
-
-	var skip = (page - 1) * pageCount;
-	var regexQuery = {$regex: new RegExp(searchTerm, 'i')};
-
-	var query = {$or: [
+exports.searchForm = async (req, res) => {
+	const searchTerm = req.query.title;
+	const regexQuery = {$regex: new RegExp(searchTerm, 'i')};
+	const query = {$or: [
 		{dj: regexQuery, hidden: false},
 		{title: regexQuery, hidden: false},
 		{title: regexQuery, hidden: false},
 		{mcs: regexQuery, hidden: false},
 		{crews: regexQuery, hidden: false},
 		{station: regexQuery, hidden: false},
-		{uploader: regexQuery, hidden: false}
+		{uploader: regexQuery, hidden: false},
 	]};
-	Mix.count(query).exec(function(err, count) {
-		if (err) {
-			console.error('find error');
-			throw err;
-		}
+	const count = await Mix.count(query);
+	const {page, skip, hasNext} = createPagination(req.params.page, count);
+	const mixes = await Mix.find(query).skip(skip).sort({date: -1}).limit(PAGE_COUNT);
+	const url = '/search/' + searchTerm + '/page/';
 
-		Mix.find(query).skip(skip).sort({date: -1}).limit(pageCount).exec(function(err, mixes) {
-			if (err) {
-				console.error('find error');
-				throw err;
-			}
-			var currentUrl = '/search/' + searchTerm + '/page/';
-
-			var hasNext = false;
-			if (count > (skip + pageCount)) {
-				hasNext = true;
-			}
-
-			res.render('mixes', {title: 'Search results for "' + searchTerm + '"', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
-		});
-	});
+	res.render('mixes', {title: 'Search results for "' + searchTerm + '"', mixes, url, page, hasNext});
 };
 
 // Route for search pages > 1. Search term comes through url
-exports.search = function(req, res) {
-	var page;
-
-	var searchTerm = req.params.url;
-
-	if (typeof req.params.page !== 'undefined') {
-
-		page = req.params.page;
-
-		if (page < 1) {
-			page = 1;
-		}
-	} else {
-		page = 1;
-	}
-
-	var skip = (page - 1) * pageCount;
-	var regexQuery = {$regex: new RegExp(searchTerm, 'i')};
-
-	var query = {$or: [
+exports.search = async (req, res) => {
+	const searchTerm = req.params.url;
+	const regexQuery = {$regex: new RegExp(searchTerm, 'i')};
+	const query = {$or: [
 		{dj: regexQuery, hidden: false},
 		{title: regexQuery, hidden: false},
 		{title: regexQuery, hidden: false},
 		{mcs: regexQuery, hidden: false},
 		{crews: regexQuery, hidden: false},
 		{station: regexQuery, hidden: false},
-		{uploader: regexQuery, hidden: false}
+		{uploader: regexQuery, hidden: false},
 	]};
-	Mix.count(query).exec(function(err, count) {
-		if (err) {
-			console.error('find error');
-			throw err;
-		}
+	const count = await Mix.count(query);
+	const {page, skip, hasNext} = createPagination(req.params.page, count);
+	const mixes = await Mix.find(query).skip(skip).sort({date: -1}).limit(PAGE_COUNT);
+	const url = '/search/' + searchTerm + '/page/';
 
-		Mix.find(query).skip(skip).sort({date: -1}).limit(pageCount).exec(function(err, mixes) {
-			if (err) {
-				console.error('find error');
-				throw err;
-			}
-			var currentUrl = '/search/' + searchTerm + '/page/';
-
-			var hasNext = false;
-			if (count > (skip + pageCount)) {
-				hasNext = true;
-			}
-
-			res.render('mixes', {title: 'Search results for "' + searchTerm + '"', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
-		});
-	});
+	res.render('mixes', {title: 'Search results for "' + searchTerm + '"', mixes, url, page, hasNext});
 };

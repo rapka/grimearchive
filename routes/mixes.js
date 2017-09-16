@@ -8,7 +8,6 @@ exports.routes = (app) => {
 
 exports.view = (req, res) => {
 	Mix.findOne({url: req.params.url}).exec((err, mix) => {
-
 		if (err || !mix) {
 			res.status(401).render('404.jade', {title: 'Not Found'});
 		}

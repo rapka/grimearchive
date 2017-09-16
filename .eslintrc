@@ -13,6 +13,13 @@
     'no-tabs': 'off',
     'object-curly-spacing': ['error', 'never'],
     'prefer-template': 'off',
+    'no-plusplus': 'off',
+    'radix': 'off',
+    'object-curly-newline': 'off',
+    'no-console': 'off',
+    'import/no-dynamic-require': 'off',
+    'no-bitwise': 'off',
+    'no-underscore-dangle': 'off',
   },
   env: {
     'es6': true,

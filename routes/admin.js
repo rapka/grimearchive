@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
-const Mix = mongoose.model('Mix');
 const admins = require('../admins');
 const crypto = require('crypto');
 const fs = require('fs');
 const config = require('../config');
-const pageCount = 20;
+const {createPagination} = require('./search');
 
-exports.routes = function(app) {
+const pageCount = 20;
+const Mix = mongoose.model('Mix');
+
+exports.routes = (app) => {
 	app.get('/admin', exports.loginForm);
 	app.post('/admin/login', exports.login);
 	app.get('/admin/:message', exports.loginForm);
@@ -15,12 +17,11 @@ exports.routes = function(app) {
 	app.get('/delete/:url', exports.remove);
 };
 
-exports.loginForm = function(req, res) {
+exports.loginForm = (req, res) => {
 	console.log(req.session);
-	console.log(req.session.username);
-	if (req.session.username && req.params.message == 'loggedIn') {
+	if (req.session.username && req.params.message === 'loggedIn') {
 		res.render('login', {message: req.params.message});
-	} else if (req.params.message == 'loggedIn') {
+	} else if (req.params.message === 'loggedIn') {
 		res.render('login');
 	} else {
 		res.render('login', {message: req.params.message});
@@ -28,8 +29,8 @@ exports.loginForm = function(req, res) {
 };
 
 // Attemps a user login.
-exports.login = function(req, res) {
-	var hashed = crypto.createHash('sha256').update(req.body.password).digest('hex');
+exports.login = (req, res) => {
+	const hashed = crypto.createHash('sha256').update(req.body.password).digest('hex');
 	if (admins.hasOwnProperty(req.body.user) && admins[req.body.user] === hashed) {
 		req.session.username = req.body.user;
 
@@ -41,7 +42,7 @@ exports.login = function(req, res) {
 	}
 };
 
-exports.edit = function(req, res) {
+exports.edit = (req, res) => {
 	if (!req.session.username) {
 		res.status(401).render('404.jade', {title: 'Not Found'});
 		return;
@@ -85,46 +86,18 @@ exports.remove = (req, res) => {
 	});
 };
 
-exports.hidden = (req, res) => {
-	let page;
-
+exports.hidden = async (req, res) => {
 	if (!req.session.username) {
 		res.status(401).render('404.jade', {title: 'Not Found'});
 		return;
 	}
 
-	if (typeof req.params.page !== 'undefined') {
-		page = req.params.page;
+	const count = await Mix.count({hidden: true});
+	const {page, skip, hasNext} = createPagination(req.params.page, count);
+	const mixes = await Mix.find({hidden: true}).skip(skip).sort({date: -1}).limit(pageCount);
+	const url = '/mixes/page/';
 
-		if (page < 1) {
-			page = 1;
-		}
-	} else {
-		page = 1;
-	}
+	res.render('mixes', {title: 'Hidden Mixes', mixes, url, page, hasNext});
 
-	const skip = (page - 1) * pageCount;
-
-	Mix.count({hidden: true}).exec((err, count) => {
-		if (err) {
-			console.error('find error');
-			throw err;
-		}
-
-		Mix.find({hidden: true}).skip(skip).sort({date: -1}).limit(pageCount).exec((err, mixes) => {
-			if (err) {
-				console.error('find error');
-				throw err;
-			}
-			const currentUrl = '/mixes/page/';
-
-			let hasNext = false;
-			if (count > (skip + pageCount)) {
-				hasNext = true;
-			}
-
-			res.render('mixes', {title: 'Hidden Mixes', mixes: mixes, url: currentUrl, page: page, hasNext: hasNext});
-		});
-	});
 };
 

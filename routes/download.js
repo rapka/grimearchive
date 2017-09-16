@@ -1,35 +1,13 @@
 const mongoose = require('mongoose');
-const Mix = mongoose.model('Mix');
 const config = require('../config');
 const AWS = require('aws-sdk');
+const path = require('path');
 
-AWS.config.loadFromPath(__dirname + '/../aws.json');
+const Mix = mongoose.model('Mix');
 
-var s3 = new AWS.S3();
+AWS.config.loadFromPath(path.join(__dirname, '/../aws.json'));
 
-exports.routes = function(app) {
-	app.get('/download/:url', exports.download);
-};
-
-exports.download = function(req, res) {
-	Mix.findOne({url: req.params.url}).exec(function(err, mix) {
-		if (err) {
-			console.error('find error');
-			res.status(404).render('404.jade', {title: 'Not Found'});
-		}
-
-		var attachment = 'attachment; filename="' + generateFilename(mix) + '.mp3"';
-
-		var params = {Bucket: config.bucket, Key: req.params.url + '.mp3', ResponseContentDisposition: attachment};
-		s3.getSignedUrl('getObject', params, function(err, url) {
-
-			mix.downloads++;
-			mix.save();
-
-			res.redirect(url);
-		});
-	});
-};
+const s3 = new AWS.S3();
 
 const generateFilename = (mix) => {
 	let titleString = '';
@@ -53,14 +31,14 @@ const generateFilename = (mix) => {
 		titleString += ' - ' + mix.title;
 	} else if (mix.station) {
 		titleString += ', ' + mix.station;
-	} else if (mix.crews.length == 1) { // Append crews if no mcs
+	} else if (mix.crews.length === 1) { // Append crews if no mcs
 		titleString += ' feat ' + mix.crews[0];
 	} else if (mix.crews.length >= 1) {
 		titleString += ' feat ';
 		for (let i = 0; i < mix.crews.length; i++) {
 			if (i === 0) {
 				titleString += mix.crews[i];
-			} else if (i == (mix.crews.length - 1)) {
+			} else if (i === (mix.crews.length - 1)) {
 				titleString += ' & ' + mix.crews[i];
 			} else {
 				titleString += ', ' + mix.crews[i];
@@ -69,4 +47,27 @@ const generateFilename = (mix) => {
 	}
 
 	return titleString.replace(/[\.\/\\$%\^\*;:{}=`~]/g, '_');
+};
+
+exports.routes = (app) => {
+	app.get('/download/:url', exports.download);
+};
+
+exports.download = (req, res) => {
+	Mix.findOne({url: req.params.url}).exec((err, mix) => {
+		if (err) {
+			console.error('find error');
+			res.status(404).render('404.jade', {title: 'Not Found'});
+		}
+
+		const attachment = 'attachment; filename="' + generateFilename(mix) + '.mp3"';
+		const params = {Bucket: config.bucket, Key: req.params.url + '.mp3', ResponseContentDisposition: attachment};
+		s3.getSignedUrl('getObject', params, (err, url) => {
+
+			mix.downloads++;
+			mix.save();
+
+			res.redirect(url);
+		});
+	});
 };

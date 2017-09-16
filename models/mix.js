@@ -1,18 +1,18 @@
 const id3Reader = require('id3_reader');
 const fs = require('fs');
+const path = require('path');
 const mm = require('musicmetadata');
+const mongoose = require('mongoose');
 const config = require('../config');
 const AWS = require('aws-sdk');
 
-AWS.config.loadFromPath(__dirname + '/../aws.json');
+AWS.config.loadFromPath(path.join(__dirname, '/../aws.json'));
 
-var s3 = new AWS.S3();
-
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const s3 = new AWS.S3();
+const Schema = mongoose.Schema;
 
 // Define the model.
-var mixSchema = new Schema({
+const mixSchema = new Schema({
 	url: String,
 	title: String,
 	uploader: {type: 'String', default: 'Anonymous'},
@@ -31,20 +31,38 @@ var mixSchema = new Schema({
 	bitrate: Number,
 	file: String,
 	hidden: {type: Boolean, default: false},
-	description: String
-
+	description: String,
 });
 
-mixSchema.methods.updateTags = function(preserve, albumtitle) {
+const uploadToS3 = (filePath, filename) => {
+	const stream = fs.readFileSync(filePath);
+	console.log('uploading', filename);
+
+	const s3params = {
+		Bucket: 'grimearchive',
+		Key: filename,
+		Body: stream,
+	};
+
+	s3.upload(s3params, (err) => {
+		if (err) {
+			console.log('file upload error', err);
+		}
+		console.log('file uploaded');
+		fs.unlinkSync(filePath);
+	});
+};
+
+mixSchema.methods.updateTags = (preserve, albumtitle) => {
 	if (this.file) {
 		this.url = this.file.split('.')[0];
 	} else {
 		return;
 	}
 
-	var titleString = 'Unknown';
+	let titleString = 'Unknown';
 
-	var filename = this.file;
+	const filename = this.file;
 
 	// Either use user supplied title or radio station
 	if (this.title) {
@@ -61,27 +79,27 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 	}
 
 	// Append mcs
-	if (this.mcs.length == 1) {
+	if (this.mcs.length === 1) {
 		titleString += ' feat. ' + this.mcs[0];
 	} else if (this.mcs.length >= 1) {
 		titleString += ' feat. ';
-		for (var i = 0; i < this.mcs.length; i++) {
+		for (let i = 0; i < this.mcs.length; i++) {
 			if (i === 0) {
 				titleString += this.mcs[i];
-			} else if (i == (this.mcs.length - 1)) {
+			} else if (i === (this.mcs.length - 1)) {
 				titleString += ' & ' + this.mcs[i];
 			} else {
 				titleString += ', ' + this.mcs[i];
 			}
 		}
-	} else if (this.crews.length == 1) { // Append crews if no mcs
+	} else if (this.crews.length === 1) { // Append crews if no mcs
 		titleString += ' feat. ' + this.crews[0];
 	} else if (this.crews.length >= 1) {
 		titleString += ' feat. ';
-		for (var k = 0; k < this.crews.length; k++) {
+		for (let k = 0; k < this.crews.length; k++) {
 			if (k === 0) {
 				titleString += this.crews[k];
-			} else if (k == (this.crews.length - 1)) {
+			} else if (k === (this.crews.length - 1)) {
 				titleString += ' & ' + this.crews[k];
 			} else {
 				titleString += ', ' + this.crews[k];
@@ -90,9 +108,9 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 	}
 
 	// Update mp3 artist title
-	var artistString = '';
+	let artistString = '';
 
-	var filePath = config.uploadDirectory + this.file;
+	const filePath = config.uploadDirectory + this.file;
 
 	if (this.dj) {
 		artistString = this.dj;
@@ -101,38 +119,38 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 	}
 
 	// Create id3 tags
-	var tags = {
+	const tags = {
 
 		TIT2: titleString,
 		TPE1: artistString,
 		TALB: 'The Grime Archive',
 		TCON: 'Grime',
-		TPE2: 'The Grime Archive'
+		TPE2: 'The Grime Archive',
 	};
 
 	if (albumtitle && this.title) {
-		tags['TALB'] = this.title;
+		tags.TALB = this.title;
 	} else if (albumtitle) {
-		tags['TALB'] = titleString;
+		tags.TALB = titleString;
 	} else {
-		tags['TALB'] = 'The Grime Archive';
+		tags.TALB = 'The Grime Archive';
 	}
 
 	if (this.year) {
-		tags['TYER'] = this.year.toString();
+		tags.TYER = this.year.toString();
 	}
 
-	var s3key = this.file;
+	const s3key = this.file;
 
-	fs.access(filePath, fs.F_OK, function(err) {
+	fs.access(filePath, fs.F_OK, (err) => {
 		if (!err) {
 			// Do something
 			console.log('NOT DOWNLOADING');
 			if (!preserve) {
-				var albumArtPath = __dirname + '/../public/img/albumart.png';
-				var albumArt = fs.readFileSync(albumArtPath);
-				tags['APICPNG'] = albumArt;
-				id3Reader.write(filePath, tags, function(success, msg) {
+				const albumArtPath = path.join(__dirname, '/../public/img/albumart.png');
+				const albumArt = fs.readFileSync(albumArtPath);
+				tags.APICPNG = albumArt;
+				id3Reader.write(filePath, tags, (success, msg) => {
 					if (!success) {
 						console.log(msg);
 						return;
@@ -140,18 +158,18 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 					uploadToS3(filePath, filename);
 				});
 			} else {
-				mm(fs.createReadStream(filePath), function(err, metadata) {
+				mm(fs.createReadStream(filePath), (err, metadata) => {
 					if (err) {
 						console.log(err);
 					}
 
-					if (metadata.picture && metadata.picture[0].format == 'jpg') {
-						tags['APICJPEG'] = metadata.picture[0].data;
-					} else if (metadata.picture && metadata.picture[0].format == 'png') {
-						tags['APICPNG'] = metadata.picture[0].data;
+					if (metadata.picture && metadata.picture[0].format === 'jpg') {
+						tags.APICJPEG = metadata.picture[0].data;
+					} else if (metadata.picture && metadata.picture[0].format === 'png') {
+						tags.APICPNG = metadata.picture[0].data;
 					}
 
-					id3Reader.write(filePath, tags, function(success, msg) {
+					id3Reader.write(filePath, tags, (success, msg) => {
 						if (!success) {
 							console.log(msg);
 							return;
@@ -162,12 +180,12 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 			}
 		} else {
 			// It isn't accessible
-			var params = {
+			const params = {
 				Bucket: 'grimearchive',
-				Key: s3key
+				Key: s3key,
 			};
 
-			s3.getObject(params, function(err, data) {
+			s3.getObject(params, (err, data) => {
 				if (err) {
 					console.log(err);
 				}
@@ -176,10 +194,10 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 
 				console.log('file saved at', filePath);
 				if (!preserve) {
-					var albumArtPath = __dirname + '/../public/img/albumart.png';
-					var albumArt = fs.readFileSync(albumArtPath);
-					tags['APICPNG'] = albumArt;
-					id3Reader.write(filePath, tags, function(success, msg) {
+					const albumArtPath = path.join(__dirname, '/../public/img/albumart.png');
+					const albumArt = fs.readFileSync(albumArtPath);
+					tags.APICPNG = albumArt;
+					id3Reader.write(filePath, tags, (success, msg) => {
 						if (!success) {
 							console.log(msg);
 							return;
@@ -187,18 +205,18 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 						uploadToS3(filePath, filename);
 					});
 				} else {
-					mm(fs.createReadStream(filePath), function(err, metadata) {
+					mm(fs.createReadStream(filePath), (err, metadata) => {
 						if (err) {
 							console.log(err);
 						}
 
-						if (metadata.picture && metadata.picture[0].format == 'jpg') {
-							tags['APICJPEG'] = metadata.picture[0].data;
-						} else if (metadata.picture && metadata.picture[0].format == 'png') {
-							tags['APICPNG'] = metadata.picture[0].data;
+						if (metadata.picture && metadata.picture[0].format === 'jpg') {
+							tags.APICJPEG = metadata.picture[0].data;
+						} else if (metadata.picture && metadata.picture[0].format === 'png') {
+							tags.APICPNG = metadata.picture[0].data;
 						}
 
-						id3Reader.write(filePath, tags, function(success, msg) {
+						id3Reader.write(filePath, tags, (success, msg) => {
 							if (!success) {
 								console.log(msg);
 								return;
@@ -209,25 +227,6 @@ mixSchema.methods.updateTags = function(preserve, albumtitle) {
 				}
 			});
 		}
-	});
-};
-
-const uploadToS3 = (filePath, filename) => {
-	const stream = fs.readFileSync(filePath);
-	console.log('uploading', filename);
-
-	const s3params = {
-		Bucket: 'grimearchive',
-		Key: filename,
-		Body: stream
-	};
-
-	s3.upload(s3params, (err) => {
-		if (err) {
-			console.log('file upload error', err);
-		}
-		console.log('file uploaded');
-		fs.unlinkSync(filePath);
 	});
 };
 

@@ -1,50 +1,51 @@
-var fs = require('fs');
-var probe = require('node-ffprobe');
-var crypto = require('crypto');
-var config = require('./config');
+const fs = require('fs');
+const path = require('path');
+const probe = require('node-ffprobe');
+const crypto = require('crypto');
+const config = require('./config');
+const mongoose = require('mongoose');
 
 // Load models
-var modelsPath = __dirname + '/models';
-fs.readdirSync(modelsPath).forEach(function(file) {
+const modelsPath = path.join(__dirname, '/models');
+fs.readdirSync(modelsPath).forEach((file) => {
 	if (file.indexOf('.js') >= -1) {
-		require(modelsPath + '/' + file);
+		require(path.join(modelsPath, '/', file));
 	}
 });
 
-var mongoose = require('mongoose');
-var Mix = mongoose.model('Mix');
+const Mix = mongoose.model('Mix');
 
-var allowedTypes = [
+const allowedTypes = [
 	'audio/mpeg3',
 	'audio/mpeg',
-	'audio/mp3'
+	'audio/mp3',
 ];
 
-var existsSync = function(filePath) {
+const existsSync = (filePath) => {
 	try {
 		fs.statSync(filePath);
 	} catch (err) {
-		if (err.code == 'ENOENT') {
+		if (err.code === 'ENOENT') {
 			return false;
 		}
 	}
 	return true;
 };
 
-exports.rename = function() {
-	var ts = String(new Date().getTime());
-	var num = ts.substr(ts.length - 7);
-	var path = config.uploadDirectory + num + '.mp3';
+exports.rename = () => {
+	const ts = String(new Date().getTime());
+	let num = ts.substr(ts.length - 7);
+	let currentPath = config.uploadDirectory + num + '.mp3';
 	// Check for duplicates
 	while (existsSync(path)) {
 		num = ts.substr(ts.length - 7);
-		path = config.uploadDirectory + num + '.mp3';
+		currentPath = config.uploadDirectory + num + '.mp3';
 	}
 
 	return num;
 };
 
-exports.onFileUploadStart = function(file) {
+exports.onFileUploadStart = (file) => {
 	// Only allow files with a type in the allowedTypes array.
 	if (allowedTypes.indexOf(file.mimetype) === -1) {
 		console.log('415: Disallowed file type: ' + file.mimetype);
@@ -55,17 +56,17 @@ exports.onFileUploadStart = function(file) {
 	return true;
 };
 
-exports.onFileUploadComplete = function(file) {
-	probe(file.path, function(err, probeData) {
+exports.onFileUploadComplete = (file) => {
+	probe(file.path, (err, probeData) => {
 		if (err) {
 			console.log('500: Probe Error.');
 			return;
 		}
 
 		Mix.update({file: file.name}, {
-			bitrate: probeData.streams[0]['bit_rate'] / 1000,
-			duration: probeData.streams[0]['duration']
-		}, function(err) {
+			bitrate: probeData.streams[0].bit_rate / 1000,
+			duration: probeData.streams[0].duration,
+		}, (err) => {
 			if (err) {
 				console.error('Error updating mix.');
 				return;
@@ -81,7 +82,7 @@ exports.onFileUploadComplete = function(file) {
 exports.onParseEnd = function(req, next) {
 	console.log('File parsing complete.');
 
-	var mix;
+	let mix;
 
 	// Server side check for no file selected
 	if (typeof req.files.file === 'undefined' && !req.body.edit) {
@@ -93,15 +94,15 @@ exports.onParseEnd = function(req, next) {
 			title: req.body.title,
 			dj: req.body.dj,
 			file: req.files.file.name,
-			station: req.body.station
+			station: req.body.station,
 		});
 
 		if (req.body.username) {
 			mix.uploader = req.body.username;
 		}
 		if (req.body.tripcode) {
-			// var crypted = crypt(req.body.tripcode, crypt.createSalt('md5'));
-			var crypted = crypto.createHash('sha256').update(req.body.tripcode).digest('hex').substring(0, 8);
+			// const crypted = crypt(req.body.tripcode, crypt.createSalt('md5'));
+			const crypted = crypto.createHash('sha256').update(req.body.tripcode).digest('hex').substring(0, 8);
 			mix.tripcode = crypted;
 		}
 
@@ -129,7 +130,7 @@ exports.onParseEnd = function(req, next) {
 		mix.updateTags(req.body.preserve, req.body.albumtitle);
 
 		// File written successfully, save the entry in mongo.
-		mix.save(function(err) {
+		mix.save((err) => {
 			if (err) {
 				console.log('500: Could not save file entry to database.');
 				console.log(err);
@@ -179,8 +180,7 @@ exports.onParseEnd = function(req, next) {
 			mix.description = req.body.description;
 		}
 
-		Mix.update({url: req.body.edit}, mix,
-		function(err) {
+		Mix.update({url: req.body.edit}, mix, (err) => {
 			if (err) {
 				console.log(err);
 				console.error('Error updating mix.');
@@ -188,14 +188,14 @@ exports.onParseEnd = function(req, next) {
 			}
 		});
 
-		Mix.findOne({url: req.body.edit}).exec(function(err, mix) {
+		Mix.findOne({url: req.body.edit}).exec((err, foundMix) => {
 			if (err) {
 				console.log(err);
 				console.error('Error updating mix.');
 				return;
 			}
 
-			mix.updateTags(true, req.body.albumtitle);
+			foundMix.updateTags(true, req.body.albumtitle);
 		});
 	}
 

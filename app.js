@@ -57,7 +57,7 @@ app.set('view engine', 'jade');
 // Connect to mongo.
 mongoose.connect('mongodb://127.0.0.1/grime');
 
-/* eslint-disable no-unused-vars */
+/* eslint-disable, no-unused-vars */
 
 // development error handler
 // will print stacktrace
@@ -85,7 +85,7 @@ app.use((err, req, res, next) => {
 const modelsPath = path.join(__dirname, '/models');
 fs.readdirSync(modelsPath).forEach((file) => {
 	if (~file.indexOf('.js')) {
-		require(modelsPath + '/' + file);
+		require(path.join(modelsPath, '/', file));
 	}
 });
 
@@ -93,7 +93,8 @@ fs.readdirSync(modelsPath).forEach((file) => {
 const routesPath = path.join(__dirname, '/routes');
 fs.readdirSync(routesPath).forEach((file) => {
 	if (~file.indexOf('.js')) {
-		var route = require(path.join(routesPath, file));
+		const route = require(path.join(routesPath, file));
+
 		route.routes(app);
 	}
 });
@@ -104,7 +105,7 @@ app.use((req, res, next) => {
 	next();
 });
 
-/* eslint-enable no-unused-vars */
+/* eslint-enable, no-unused-vars */
 
 app.use(pmx.expressErrorHandler());
 
