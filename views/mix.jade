@@ -7,8 +7,8 @@ block content
 				a(href='/dj/' + mix.dj) #{mix.dj}
 			else
 				| Unknown DJ
-			
-		div.big.blue.mix-element 
+
+		div.big.blue.mix-element
 			if mix.title
 				| #{mix.title}
 			else
@@ -16,10 +16,10 @@ block content
 
 		br
 		if mix.mcs.length != 0
-			div.big.red.mix-element 
+			div.big.red.mix-element
 				div.mix-item
-					| feat. 
-				each mc, index in mix.mcs	
+					| feat.
+				each mc, index in mix.mcs
 					div.mix-item
 						a(href='/mc/' + mc) #{mc}
 					if (index + 1) % 4 == 0
@@ -34,9 +34,9 @@ block content
 					| Unknown MCs
 			br
 		if mix.crews.length != 0
-			div.big.green.mix-element 
+			div.big.green.mix-element
 				div.mix-item
-				each crew, index in mix.crews	
+				each crew, index in mix.crews
 					div.mix-item
 						a(href='/crew/' + crew) #{crew}
 					if (index + 1) % 3 == 0
@@ -45,7 +45,7 @@ block content
 						div.mix-item
 							| /
 			br
-		div.big.yellow.mix-element 
+		div.big.yellow.mix-element
 				if mix.day && mix.month && mix.year
 					| !{mix.day}/#{mix.month}/#{mix.year}
 				else if mix.day && mix.month
@@ -55,22 +55,26 @@ block content
 				else
 					| Unknown Date
 		if mix.station
-			div.big.blue.mix-element 
+			div.big.blue.mix-element
 					| @
 					a(href='/station/' + mix.station) #{mix.station}
 		br
-		div.big.green.mix-element 
+		div.big.green.mix-element
 			| #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
-		div.big.blue.mix-element 
-			| #{Math.floor(mix.bitrate)}kbps 
-		div.big.yellow.mix-element 
-			| #{mix.downloads} 
+		div.big.blue.mix-element
+			| #{Math.floor(mix.bitrate)}kbps
+		div.big.yellow.mix-element
+			| #{mix.downloads}
 			if mix.downloads == 1
 				| Download
 			else
 				| Downloads
-		div.big.red.mix-element 
+		br
+		div.big.red.mix-element
 			a(download href='/download/' + mix.url) [Download]
+		if mix.youtube
+			div.big.blue.mix-element
+				a(youtube href=mix.youtube) [Listen on YouTube]
 
 
 		if mix.description
@@ -78,10 +82,10 @@ block content
 				p= mix.description
 
 		div.mix-uploader
-			p Uploaded #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()} by 
+			p Uploaded #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()} by
 				if mix.uploader == 'Anonymous'
 					| Anonymous
-				else 
+				else
 					a(id="upload_link" href='/uploader/' + mix.uploader + '-' + mix.tripcode) #{mix.uploader}
 					div.tripcode
 						| #{mix.tripcode}
@@ -101,7 +105,7 @@ block content
 								var link = '<a href="' + $('#upload_link').attr('href') + '">';
 								link += data + '</a>';
 								$('.tripcode').html(link);
-			
+
 							}
 							});
 						}
@@ -109,7 +113,7 @@ block content
 							updateEmojis();
 						});
 				| .
-				.report-button 
+				.report-button
 					a(href='mailto:thecollegehill@gmail.com?subject=Report%20for%20Grime%20Archive%20Mix%20%23' + mix.url) Report
-					|  | 
+					|  |
 					a(href='mailto:thecollegehill@gmail.com?subject=Correction%20for%20Grime%20Archive%20Mix%20%23' + mix.url) Submit correction

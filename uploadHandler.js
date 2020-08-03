@@ -127,6 +127,9 @@ exports.onParseEnd = function(req, next) {
 		if (req.body.description) {
 			mix.description = req.body.description;
 		}
+		if (req.body.youtube) {
+			mix.youtube = req.body.youtube;
+		}
 		mix.updateTags(req.body.preserve, req.body.albumtitle);
 
 		// File written successfully, save the entry in mongo.
@@ -178,6 +181,9 @@ exports.onParseEnd = function(req, next) {
 		}
 		if (req.body.description) {
 			mix.description = req.body.description;
+		}
+		if (req.body.youtube) {
+			mix.youtube = req.body.youtube;
 		}
 
 		Mix.update({url: req.body.edit}, mix, (err) => {

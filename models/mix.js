@@ -32,6 +32,7 @@ const mixSchema = new Schema({
 	file: String,
 	hidden: {type: Boolean, default: false},
 	description: String,
+	youtube: String,
 });
 
 const uploadToS3 = (filePath, filename) => {

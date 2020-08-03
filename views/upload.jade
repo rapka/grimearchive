@@ -2,15 +2,15 @@ extends layout
 
 block content
 
-	.upload.content 
+	.upload.content
 		.upload-title.blue
 			p Upload to Grime Archive
 		.upload-text
 			p * No fields are required, but please fill out as many as possible.
 			p * Don't enter duplicate info (MCs, station, etc) in the title field.
-			p * Only MP3 files are supported. 
+			p * Only MP3 files are supported.
 			p * Tags are automatically updated with mix information.
-			p * Follow the 
+			p * Follow the
 				a(href='/about/') rules
 				| !
 
@@ -40,12 +40,15 @@ block content
 				input(type="text", name="month" placeholder="month" class="date")
 				input(type="text", name="year" placeholder="year" class="date")
 				br
+				div.upload-label
+					| YouTube link (optional)
+				input(type="text", name="youtube" placeholder="youtube" class="youtube")
 				div.upload-divider
 				div.upload-label
 					| Username
 				input(type="text", name="username")
 				div.upload-label
-					| Tripcode 
+					| Tripcode
 					div.tripcode-tooltip.tooltip-button
 						| (?)
 				input(type="text", name="tripcode")
@@ -64,7 +67,7 @@ block content
 				div.upload-label
 					| MP3 Options
 				div.option-container
-					div.mp3-option 
+					div.mp3-option
 						| Preserve embedded art?
 					div.squaredOne
 						input(type="checkbox" value="None" id="squaredOne" name="preserve")
@@ -86,9 +89,9 @@ block content
 						|   (?)
 					div.tooltip.album-tooltip-text
 						br
-						| If checked, the title of the mix will also be used as the tag for the album title, 
+						| If checked, the title of the mix will also be used as the tag for the album title,
 						| otherwise the title 'Grime Archive' will be used.
-						
+
 				.file-inputs
 					input(type="file", name="file" id='_file' accept='audio/mpeg3,audio/mpeg,audio/mp3')
 					.file-overlay
@@ -115,13 +118,13 @@ block content
 								var split = xhr.responseText.split("/")[2];
 								console.log("xhr", xhr.responseText);
 								var tries = 0;
-								var interval = setInterval(function() { 
+								var interval = setInterval(function() {
 									$('#_submit').prop('value', 'Processing...');
 									$('#_cancel').removeClass('visible');
 									console.log("calling uploar");
 									$.get("upload/" + split, function (data) {
 										if (parseInt(data) > 0) {
-												window.location = xhr.responseText; 
+												window.location = xhr.responseText;
 										}
 										else {
 												tries++;
@@ -129,14 +132,14 @@ block content
 										if (tries >= 200) {
 											$('#_submit').prop('value', 'Error uploading mix :( Please refresh');
 											clearInterval(interval);
-										} 
-									}); 
+										}
+									});
 								}, 1000);
 							}
 						};
 						xhr.open('post', '/upload', true);
 
-						xhr.send(fd);	
+						xhr.send(fd);
 
 						return xhr;
 					}
@@ -146,13 +149,14 @@ block content
 						var form = document.getElementById('_form');
 						var fd = new FormData(form);
 						var file = document.getElementById('_file');
-						
+
 						var acceptedTypes = ['mp3'];
 						var filename = document.getElementById('_file').value;
 						var day = $('input[name="day"]')[0].value;
 						var month = $('input[name="month"]')[0].value;
 						var year = $('input[name="year"]')[0].value;
-						
+						var youtube = $('input[name="youtube"]')[0].value;
+
 						// Check for non-numeric date entries
 						if ((day != '' && isNaN(parseInt(day))) || (month != '' && isNaN(parseInt(month))) || (year != '' && isNaN(parseInt(year)))) {
 							$('#_submit').prop('value', 'Invalid date');
@@ -171,16 +175,19 @@ block content
 						else if (acceptedTypes.indexOf(filename.match(/\.([^\.]+)$/)[1].toLowerCase()) == -1 ) {
 							$('#_submit').prop('value', 'Invalid file type');
 						}
+						else if (youtube && !mix.youtube.match(/^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/)) {
+							$('#_submit').prop('value', 'Invalid YouTube URL');
+						}
 
 						else {
 							console.log("tests passed");
-							
+
 							$('#_submit').addClass('progress');
 							$('.labels-overlay').addClass('visible');
 							$('#_submit').prop('value', 'Uploading...');
 							document.getElementById('_submit').onclick = null;
 							var xhr = upload(fd);
-							
+
 							setTimeout (function () {
 								$('#_cancel').addClass('visible');
 								document.getElementById('_cancel').addEventListener('click', function() {
