@@ -56,6 +56,7 @@ exports.advancedSearch = async (req, res) => {
 	}
 
 	query.bitrate = {$gte: minBitrate};
+	query.hidden = false;
 
 	if (req.query.title) {
 		query.title = req.query.title;
