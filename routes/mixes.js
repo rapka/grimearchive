@@ -12,7 +12,7 @@ exports.view = (req, res) => {
 			return res.status(401).render('404.jade', {title: 'Not Found'});
 		}
 
-		if (mix && (!mix.hidden || req.session.username) {
+		if (mix && (!mix.hidden || req.session.username)) {
 			let title;
 			if (mix.dj) {
 				title = mix.dj + ' - ';
