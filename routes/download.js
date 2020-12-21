@@ -57,7 +57,7 @@ exports.download = (req, res) => {
 	Mix.findOne({url: req.params.url}).exec((err, mix) => {
 		if (err || !mix) {
 			console.error('find error');
-			res.status(404).render('404.jade', {title: 'Not Found'});
+			return res.status(404).render('404.jade', {title: 'Not Found'});
 		}
 
 		const attachment = 'attachment; filename="' + generateFilename(mix) + '.mp3"';

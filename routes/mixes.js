@@ -9,10 +9,10 @@ exports.routes = (app) => {
 exports.view = (req, res) => {
 	Mix.findOne({url: req.params.url}).exec((err, mix) => {
 		if (err || !mix) {
-			res.status(401).render('404.jade', {title: 'Not Found'});
+			return res.status(401).render('404.jade', {title: 'Not Found'});
 		}
 
-		if (mix && (!mix.hidden || req.session.username)) {
+		if (mix && (!mix.hidden || req.session.username) {
 			let title;
 			if (mix.dj) {
 				title = mix.dj + ' - ';
