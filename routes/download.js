@@ -9,7 +9,7 @@ AWS.config.loadFromPath(path.join(__dirname, '/../aws.json'));
 
 const s3 = new AWS.S3();
 
-const generateFilename = (mix) => {
+const generateFilename = (mix = {}) => {
 	let titleString = '';
 	// Append date
 	if (mix.day && mix.month && mix.year) {
