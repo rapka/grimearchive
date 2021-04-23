@@ -1,8 +1,8 @@
 const pmx = require('pmx').init({
-	http: true,
-	errors: true,
-	network: true,
-	ports: true,
+  http: true,
+  errors: true,
+  network: true,
+  ports: true,
 });
 
 const express = require('express');
@@ -29,22 +29,22 @@ app.use(favicon(path.join(__dirname, '/public/img/favicon.ico')));
 const uploadHandler = require('./uploadHandler.js');
 
 app.use(multer({
-	dest: './upload/',
-	rename: uploadHandler.rename,
-	onFileUploadStart: uploadHandler.onFileUploadStart,
-	onFileUploadComplete: uploadHandler.onFileUploadComplete,
-	onParseEnd: uploadHandler.onParseEnd,
-	onFileUploadData: uploadHandler.onFileUploadData,
+  dest: './upload/',
+  rename: uploadHandler.rename,
+  onFileUploadStart: uploadHandler.onFileUploadStart,
+  onFileUploadComplete: uploadHandler.onFileUploadComplete,
+  onParseEnd: uploadHandler.onParseEnd,
+  onFileUploadData: uploadHandler.onFileUploadData,
 }));
 
 app.use(expressSession({
-	store: new FileStore({}),
-	saveUninitialized: false,
-	resave: true,
-	secret: config.secret,
-	cookie: {
-		secure: false,
-	},
+  store: new FileStore({}),
+  saveUninitialized: false,
+  resave: true,
+  secret: config.secret,
+  cookie: {
+    secure: false,
+  },
 }));
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -56,10 +56,13 @@ app.set('view engine', 'jade');
 
 // Connect to mongo.
 try {
-	mongoose.connect(config.databaseUrl || 'mongodb://127.0.0.1/grime', {useNewUrlParser: true, useUnifiedTopology: true, ssl:true});
-
+  mongoose.connect(config.databaseUrl || 'mongodb://127.0.0.1/grime', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    ssl: true
+  });
 } catch (err) {
-	console.error('Connection error:' + err);
+  console.error('Connection error:' + err);
 }
 
 /* eslint-disable, no-unused-vars */
@@ -67,47 +70,47 @@ try {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-	app.use((err, req, res, next) => {
-		res.status(err.status || 500);
-		res.render('error', {
-			message: err.message,
-			error: err,
-		});
-	});
+  app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err,
+    });
+  });
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use((err, req, res, next) => {
-	res.status(err.status || 500);
-	res.render('error', {
-		message: err.message,
-		error: {},
-	});
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {},
+  });
 });
 
 // Load models.
 const modelsPath = path.join(__dirname, '/models');
 fs.readdirSync(modelsPath).forEach((file) => {
-	if (~file.indexOf('.js')) {
-		require(path.join(modelsPath, '/', file));
-	}
+  if (~file.indexOf('.js')) {
+    require(path.join(modelsPath, '/', file));
+  }
 });
 
 // Load routes.
 const routesPath = path.join(__dirname, '/routes');
 fs.readdirSync(routesPath).forEach((file) => {
-	if (~file.indexOf('.js')) {
-		const route = require(path.join(routesPath, file));
+  if (~file.indexOf('.js')) {
+    const route = require(path.join(routesPath, file));
 
-		route.routes(app);
-	}
+    route.routes(app);
+  }
 });
 
 // Render 404 page
 app.use((req, res, next) => {
-	res.status(404).render('404.jade', {title: 'Not Found'});
-	next();
+  res.status(404).render('404.jade', {title: 'Not Found'});
+  next();
 });
 
 /* eslint-enable, no-unused-vars */

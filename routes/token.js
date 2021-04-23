@@ -1,7 +1,7 @@
 exports.routes = (app) => {
-	app.get('/', exports.index);
+  app.get('/', exports.index);
 };
 
 exports.index = (req, res) => {
-	res.render('index', {title: 'Grime Archive'});
+  res.render('index', {title: 'Grime Archive'});
 };

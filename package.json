@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "build": "grunt buildprod"
+    "build": "grunt buildprod",
+    "lint": "eslint ."
   },
   "dependencies": {
     "aws-sdk": "^2.114.0",
