@@ -55,7 +55,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // Connect to mongo.
-mongoose.connect(config.databaseUrl || 'mongodb://127.0.0.1/grime');
+try {
+	mongoose.connect(config.databaseUrl || 'mongodb://127.0.0.1/grime', {useNewUrlParser: true, useUnifiedTopology: true, ssl:true});
+
+} catch (err) {
+	console.error('Connection error:' + err);
+}
 
 /* eslint-disable, no-unused-vars */
 

@@ -48,7 +48,7 @@ const createPagination = (basePage, count) => {
 exports.createPagination = createPagination;
 
 exports.mixes = async (req, res) => {
-	const count = await Mix.count({hidden: false});
+	const count = await Mix.countDocuments({hidden: false});
 	const {page, skip, hasNext} = createPagination(req.params.page, count);
 	const url = '/mixes/page/';
 	const mixes = await Mix.find({hidden: false}).skip(skip).sort({date: -1}).limit(PAGE_COUNT);
@@ -57,7 +57,7 @@ exports.mixes = async (req, res) => {
 };
 
 exports.instrumentals = async (req, res) => {
-	const count = await Mix.count({hidden: false, mcs: [], crews: []});
+	const count = await Mix.countDocuments({hidden: false, mcs: [], crews: []});
 	const {page, skip, hasNext} = createPagination(req.params.page, count);
 	const mixes = await Mix.find({hidden: false, mcs: [], crews: []}).skip(skip).sort({date: -1}).limit(PAGE_COUNT);
 	const url = '/instrumentals/page/';
@@ -66,7 +66,7 @@ exports.instrumentals = async (req, res) => {
 };
 
 exports.dj = async (req, res) => {
-	const count = await Mix.count({dj: req.params.url, hidden: false});
+	const count = await Mix.countDocuments({dj: req.params.url, hidden: false});
 	const {page, skip, hasNext} = createPagination(req.params.page, count);
 	const mixes = await Mix.find({dj: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(PAGE_COUNT);
 	const url = '/dj/' + req.params.url + '/page/';
@@ -75,7 +75,7 @@ exports.dj = async (req, res) => {
 };
 
 exports.mc = async (req, res) => {
-	const count = await Mix.count({mcs: req.params.url, hidden: false});
+	const count = await Mix.countDocuments({mcs: req.params.url, hidden: false});
 	const {page, skip, hasNext} = createPagination(req.params.page, count);
 	const mixes = Mix.find({mcs: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(PAGE_COUNT);
 	const url = '/mc/' + req.params.url + '/page/';
@@ -84,7 +84,7 @@ exports.mc = async (req, res) => {
 };
 
 exports.crew = async (req, res) => {
-	const count = await Mix.count({crews: req.params.url, hidden: false});
+	const count = await Mix.countDocuments({crews: req.params.url, hidden: false});
 	const {page, skip, hasNext} = createPagination(req.params.page, count);
 	const mixes = await Mix.find({crews: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(PAGE_COUNT);
 	const url = '/crew/' + req.params.url + '/page/';
@@ -95,7 +95,7 @@ exports.crew = async (req, res) => {
 exports.uploader = async (req, res) => {
 	const user = req.params.url.split('-')[0];
 	const trip = req.params.url.split('-')[1];
-	const count = await Mix.count({uploader: user, tripcode: trip, hidden: false});
+	const count = await Mix.countDocuments({uploader: user, tripcode: trip, hidden: false});
 	const {page, skip, hasNext} = createPagination(req.params.page, count);
 	const mixes = await Mix.find({uploader: user, tripcode: trip, hidden: false})
 		.skip(skip).sort({date: -1}).limit(PAGE_COUNT);
@@ -105,7 +105,7 @@ exports.uploader = async (req, res) => {
 };
 
 exports.station = async (req, res) => {
-	const count = await Mix.count({station: req.params.url, hidden: false});
+	const count = await Mix.countDocuments({station: req.params.url, hidden: false});
 	const {page, skip, hasNext} = createPagination(req.params.page, count);
 	const mixes	= Mix.find({station: req.params.url, hidden: false}).skip(skip).sort({date: -1}).limit(PAGE_COUNT);
 	const url = '/station/' + req.params.url + '/page/';
@@ -126,7 +126,7 @@ exports.searchForm = async (req, res) => {
 		{station: regexQuery, hidden: false},
 		{uploader: regexQuery, hidden: false},
 	]};
-	const count = await Mix.count(query);
+	const count = await Mix.countDocuments(query);
 	const {page, skip, hasNext} = createPagination(req.params.page, count);
 	const mixes = await Mix.find(query).skip(skip).sort({date: -1}).limit(PAGE_COUNT);
 	const url = '/search/' + searchTerm + '/page/';
@@ -147,7 +147,7 @@ exports.search = async (req, res) => {
 		{station: regexQuery, hidden: false},
 		{uploader: regexQuery, hidden: false},
 	]};
-	const count = await Mix.count(query);
+	const count = await Mix.countDocuments(query);
 	const {page, skip, hasNext} = createPagination(req.params.page, count);
 	const mixes = await Mix.find(query).skip(skip).sort({date: -1}).limit(PAGE_COUNT);
 	const url = '/search/' + searchTerm + '/page/';

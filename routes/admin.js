@@ -92,7 +92,7 @@ exports.hidden = async (req, res) => {
 		return;
 	}
 
-	const count = await Mix.count({hidden: true});
+	const count = await Mix.countDocuments({hidden: true});
 	const {page, skip, hasNext} = createPagination(req.params.page, count);
 	const mixes = await Mix.find({hidden: true}).skip(skip).sort({date: -1}).limit(pageCount);
 	const url = '/mixes/page/';

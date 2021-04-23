@@ -66,7 +66,7 @@ exports.advancedSearch = async (req, res) => {
 		query.dj = req.query.dj;
 	}
 
-	const count = await Mix.count(query);
+	const count = await Mix.countDocuments(query);
 	const {page, skip, hasNext} = createPagination(parseInt(req.query.page), count);
 	const mixes = await Mix.find(query).skip(skip).sort(sortQuery).limit(pageCount);
 	const url = '/search/' + searchTerm + '/page/';

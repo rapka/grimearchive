@@ -13,9 +13,9 @@ exports.index = async (req, res) => {
 	const instrumentals = await Mix.find({hidden: false, mcs: [], crews: []}).sort({date: -1}).limit(5).exec();
 	const recent = await Mix.find({hidden: false}).sort({date: -1}).limit(5);
 	const popular = await Mix.find({hidden: false}).sort({downloads: -1}).limit(5);
-	const count = await Mix.count({hidden: false});
+	const count = await Mix.countDocuments({hidden: false});
 
-	const result = await Mix.aggregate({
+	const result = await Mix.aggregate([{
 		$group: {
 			_id: null,
 			total: {
@@ -31,7 +31,7 @@ exports.index = async (req, res) => {
 			total: 1,
 			downloads: 2,
 		},
-	});
+	}]);
 
 	let sum;
 	let downloads;
