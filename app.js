@@ -55,7 +55,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // Connect to mongo.
-mongoose.connect('mongodb://127.0.0.1/grime');
+mongoose.connect(config.databaseUrl || 'mongodb://127.0.0.1/grime');
 
 /* eslint-disable, no-unused-vars */
 
