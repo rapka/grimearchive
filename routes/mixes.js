@@ -7,9 +7,9 @@ exports.routes = (app) => {
 };
 
 exports.view = (req, res) => {
-  Mix.findOne({url: req.params.url}).exec((err, mix) => {
+  Mix.findOne({ url: req.params.url }).exec((err, mix) => {
     if (err || !mix) {
-      return res.status(401).render('404.jade', {title: 'Not Found'});
+      return res.status(401).render('404.jade', { title: 'Not Found' });
     }
 
     if (mix && (!mix.hidden || req.session.username)) {
@@ -33,7 +33,7 @@ exports.view = (req, res) => {
         mix,
       });
     } else {
-      res.status(401).render('404.jade', {title: 'Not Found'});
+      res.status(401).render('404.jade', { title: 'Not Found' });
     }
   });
 };

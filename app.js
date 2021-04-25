@@ -47,7 +47,7 @@ app.use(expressSession({
   },
 }));
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // view engine setup
@@ -59,7 +59,7 @@ try {
   mongoose.connect(config.databaseUrl || 'mongodb://127.0.0.1/grime', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    ssl: true
+    ssl: true,
   });
 } catch (err) {
   console.error('Connection error:' + err);
@@ -109,7 +109,7 @@ fs.readdirSync(routesPath).forEach((file) => {
 
 // Render 404 page
 app.use((req, res, next) => {
-  res.status(404).render('404.jade', {title: 'Not Found'});
+  res.status(404).render('404.jade', { title: 'Not Found' });
   next();
 });
 

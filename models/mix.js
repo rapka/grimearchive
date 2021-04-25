@@ -15,9 +15,9 @@ const Schema = mongoose.Schema;
 const mixSchema = new Schema({
   url: String,
   title: String,
-  uploader: {type: 'String', default: 'Anonymous'},
+  uploader: { type: 'String', default: 'Anonymous' },
   tripcode: String,
-  date: {type: Date, default: Date.now},
+  date: { type: Date, default: Date.now },
   length: Number,
   dj: String,
   crews: [],
@@ -27,10 +27,10 @@ const mixSchema = new Schema({
   month: Number,
   year: Number,
   duration: Number,
-  downloads: {type: Number, default: 0},
+  downloads: { type: Number, default: 0 },
   bitrate: Number,
   file: String,
-  hidden: {type: Boolean, default: false},
+  hidden: { type: Boolean, default: false },
   description: String,
   youtube: String,
 });
@@ -49,6 +49,7 @@ const uploadToS3 = (filePath, filename) => {
     if (err) {
       console.log('file upload error', err);
     }
+
     console.log('file uploaded');
     fs.unlinkSync(filePath);
   });
@@ -121,7 +122,6 @@ mixSchema.methods.updateTags = (preserve, albumtitle) => {
 
   // Create id3 tags
   const tags = {
-
     TIT2: titleString,
     TPE1: artistString,
     TALB: 'The Grime Archive',
@@ -146,7 +146,6 @@ mixSchema.methods.updateTags = (preserve, albumtitle) => {
   fs.access(filePath, fs.F_OK, (err) => {
     if (!err) {
       // Do something
-      console.log('NOT DOWNLOADING');
       if (!preserve) {
         const albumArtPath = path.join(__dirname, '/../public/img/albumart.png');
         const albumArt = fs.readFileSync(albumArtPath);
@@ -180,6 +179,7 @@ mixSchema.methods.updateTags = (preserve, albumtitle) => {
         });
       }
     } else {
+      console.log('NOT DOWNLOADING');
       // It isn't accessible
       const params = {
         Bucket: 'grimearchive',

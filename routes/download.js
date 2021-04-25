@@ -54,14 +54,14 @@ exports.routes = (app) => {
 };
 
 exports.download = (req, res) => {
-  Mix.findOne({url: req.params.url}).exec((err, mix) => {
+  Mix.findOne({ url: req.params.url }).exec((err, mix) => {
     if (err || !mix) {
       console.error('find error');
-      return res.status(404).render('404.jade', {title: 'Not Found'});
+      return res.status(404).render('404.jade', { title: 'Not Found' });
     }
 
     const attachment = 'attachment; filename="' + generateFilename(mix) + '.mp3"';
-    const params = {Bucket: config.bucket, Key: req.params.url + '.mp3', ResponseContentDisposition: attachment};
+    const params = { Bucket: config.bucket, Key: req.params.url + '.mp3', ResponseContentDisposition: attachment };
     s3.getSignedUrl('getObject', params, (err, url) => {
 
       mix.downloads++;

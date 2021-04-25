@@ -36,8 +36,10 @@ exports.rename = () => {
   const ts = String(new Date().getTime());
   let num = ts.substr(ts.length - 7);
   let currentPath = config.uploadDirectory + num + '.mp3';
+
   // Check for duplicates
-  while (existsSync(path)) {
+  while (existsSync(currentPath)) {
+  	String(new Date().getTime());
     num = ts.substr(ts.length - 7);
     currentPath = config.uploadDirectory + num + '.mp3';
   }
@@ -63,7 +65,7 @@ exports.onFileUploadComplete = (file) => {
       return;
     }
 
-    Mix.update({file: file.name}, {
+    Mix.update({ file: file.name }, {
       bitrate: probeData.streams[0].bit_rate / 1000,
       duration: probeData.streams[0].duration,
     }, (err) => {
@@ -187,15 +189,14 @@ exports.onParseEnd = function (req, next) {
       mix.youtube = req.body.youtube;
     }
 
-    Mix.update({url: req.body.edit}, mix, (err) => {
+    Mix.update({ url: req.body.edit }, mix, (err) => {
       if (err) {
         console.log(err);
         console.error('Error updating mix.');
-
       }
     });
 
-    Mix.findOne({url: req.body.edit}).exec((err, foundMix) => {
+    Mix.findOne({ url: req.body.edit }).exec((err, foundMix) => {
       if (err) {
         console.log(err);
         console.error('Error updating mix.');

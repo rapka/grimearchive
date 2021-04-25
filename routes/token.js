@@ -3,5 +3,5 @@ exports.routes = (app) => {
 };
 
 exports.index = (req, res) => {
-  res.render('index', {title: 'Grime Archive'});
+  res.render('index', { title: 'Grime Archive' });
 };

@@ -3,7 +3,7 @@ const admins = require('../admins');
 const crypto = require('crypto');
 const fs = require('fs');
 const config = require('../config');
-const {createPagination} = require('./search');
+const { createPagination } = require('./search');
 
 const pageCount = 20;
 const Mix = mongoose.model('Mix');
@@ -20,11 +20,11 @@ exports.routes = (app) => {
 exports.loginForm = (req, res) => {
   console.log(req.session);
   if (req.session.username && req.params.message === 'loggedIn') {
-    res.render('login', {message: req.params.message});
+    res.render('login', { message: req.params.message });
   } else if (req.params.message === 'loggedIn') {
     res.render('login');
   } else {
-    res.render('login', {message: req.params.message});
+    res.render('login', { message: req.params.message });
   }
 };
 
@@ -44,11 +44,11 @@ exports.login = (req, res) => {
 
 exports.edit = (req, res) => {
   if (!req.session.username) {
-    res.status(401).render('404.jade', {title: 'Not Found'});
+    res.status(401).render('404.jade', { title: 'Not Found' });
     return;
   }
 
-  Mix.findOne({url: req.params.url}).exec((err, mix) => {
+  Mix.findOne({ url: req.params.url }).exec((err, mix) => {
     let title;
     if (mix.dj) {
       title = mix.dj + ' - ';
@@ -71,11 +71,11 @@ exports.edit = (req, res) => {
 
 exports.remove = (req, res) => {
   if (!req.session.username) {
-    res.status(401).render('404.jade', {title: 'Not Found'});
+    res.status(401).render('404.jade', { title: 'Not Found' });
     return;
   }
 
-  const mix = Mix.findOne({url: req.params.url, hidden: true}).exec((err) => {
+  const mix = Mix.findOne({ url: req.params.url, hidden: true }).exec((err) => {
     if (err) {
       console.error(err);
     } else {
@@ -88,16 +88,15 @@ exports.remove = (req, res) => {
 
 exports.hidden = async (req, res) => {
   if (!req.session.username) {
-    res.status(401).render('404.jade', {title: 'Not Found'});
+    res.status(401).render('404.jade', { title: 'Not Found' });
     return;
   }
 
-  const count = await Mix.countDocuments({hidden: true});
-  const {page, skip, hasNext} = createPagination(req.params.page, count);
-  const mixes = await Mix.find({hidden: true}).skip(skip).sort({date: -1}).limit(pageCount);
+  const count = await Mix.countDocuments({ hidden: true });
+  const { page, skip, hasNext } = createPagination(req.params.page, count);
+  const mixes = await Mix.find({ hidden: true }).skip(skip).sort({ date: -1 }).limit(pageCount);
   const url = '/mixes/page/';
 
-  res.render('mixes', {title: 'Hidden Mixes', mixes, url, page, hasNext});
-
+  res.render('mixes', { title: 'Hidden Mixes', mixes, url, page, hasNext });
 };
 

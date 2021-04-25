@@ -10,10 +10,10 @@ exports.routes = (app) => {
 };
 
 exports.index = async (req, res) => {
-  const instrumentals = await Mix.find({hidden: false, mcs: [], crews: []}).sort({date: -1}).limit(5).exec();
-  const recent = await Mix.find({hidden: false}).sort({date: -1}).limit(5);
-  const popular = await Mix.find({hidden: false}).sort({downloads: -1}).limit(5);
-  const count = await Mix.countDocuments({hidden: false});
+  const instrumentals = await Mix.find({ hidden: false, mcs: [], crews: [] }).sort({ date: -1 }).limit(5).exec();
+  const recent = await Mix.find({ hidden: false }).sort({ date: -1 }).limit(5);
+  const popular = await Mix.find({ hidden: false }).sort({ downloads: -1 }).limit(5);
+  const count = await Mix.countDocuments({ hidden: false });
 
   const result = await Mix.aggregate([{
     $group: {
@@ -44,10 +44,10 @@ exports.index = async (req, res) => {
     downloads = result[0].downloads;
   }
 
-  res.render('index', {sum, downloads, popular, recent, count, instrumentals});
+  res.render('index', { sum, downloads, popular, recent, count, instrumentals });
 };
 
 exports.about = (req, res) => {
-  res.render('about', {title: 'About'});
+  res.render('about', { title: 'About' });
 };
 
