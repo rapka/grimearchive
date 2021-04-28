@@ -37,7 +37,6 @@ public-src/*.css
 upload
 
 #private config files
-config.json
 admins.json
 aws.json
 

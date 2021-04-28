@@ -66,7 +66,7 @@ exports.download = (req, res) => {
     const params = {
       Bucket: process.env.AWS_S3_BUCKET || config.bucket,
       Key: req.params.url + '.mp3',
-      ResponseContentDisposition: attachment
+      ResponseContentDisposition: attachment,
   	};
 
     s3.getSignedUrl('getObject', params, (err, url) => {

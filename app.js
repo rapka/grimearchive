@@ -56,7 +56,7 @@ app.set('view engine', 'jade');
 
 // Connect to mongo.
 try {
-  mongoose.connect(config.databaseUrl || 'mongodb://127.0.0.1/grime', {
+  mongoose.connect(config.databaseUrl || process.env.DATABASE_URL || 'mongodb://127.0.0.1/grime', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     ssl: true,
