@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const admins = require('../admins');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
@@ -34,7 +33,7 @@ exports.loginForm = (req, res) => {
 // Attemps a user login.
 exports.login = (req, res) => {
   const hashed = crypto.createHash('sha256').update(req.body.password).digest('hex');
-  const adminPassword = admins.hasOwnProperty(req.body.user) ? admins[req.body.user] : process.env.ADMIN_PASSWORD;
+  const adminPassword = process.env.ADMIN_PASSWORD;
   if (adminPassword === hashed) {
     req.session.username = req.body.user;
 
