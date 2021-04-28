@@ -25,7 +25,7 @@ block content
 					if (index + 1) % 4 == 0
 						br
 					else if index != (mix.mcs.length - 1)
-						div.mix-item
+						div.mix-item-divider
 							| /
 			br
 		if mix.crews.length != 0 && mix.mcs.length == 0
@@ -42,7 +42,7 @@ block content
 					if (index + 1) % 3 == 0
 						br
 					else if index != (mix.crews.length - 1)
-						div.mix-item
+						div.mix-item-divider
 							| /
 			br
 		div.big.yellow.mix-element
@@ -86,7 +86,7 @@ block content
 				if mix.uploader == 'Anonymous'
 					| Anonymous
 				else
-					a(id="upload_link" href='/uploader/' + mix.uploader + '-' + mix.tripcode) #{mix.uploader}
+					a(id="upload_link" href='/uploader/' + mix.uploader + (mix.tripcode ? '-' + mix.tripcode || '')) #{mix.uploader}
 					div.tripcode
 						| #{mix.tripcode}
 					script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')

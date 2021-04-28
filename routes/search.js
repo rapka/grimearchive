@@ -94,7 +94,7 @@ exports.crew = async (req, res) => {
 
 exports.uploader = async (req, res) => {
   const user = req.params.url.split('-')[0];
-  const trip = req.params.url.split('-')[1];
+  const trip = req.params.url.split('-')[1] || '';
   const count = await Mix.countDocuments({ uploader: user, tripcode: trip, hidden: false });
   const { page, skip, hasNext } = createPagination(req.params.page, count);
   const mixes = await Mix.find({ uploader: user, tripcode: trip, hidden: false })
