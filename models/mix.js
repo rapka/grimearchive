@@ -6,7 +6,11 @@ const mongoose = require('mongoose');
 const config = require('../config');
 const AWS = require('aws-sdk');
 
-AWS.config.loadFromPath(path.join(__dirname, '/../aws.json'));
+const UPLOAD_DIRECTORY = process.env.UPLOAD_DIRECTORY || config.uploadDirectory;
+
+if (fs.existsSync(path.join(__dirname, '/../aws.json'))) {
+  AWS.config.loadFromPath(path.join(__dirname, '/../aws.json'));
+}
 
 const s3 = new AWS.S3();
 const Schema = mongoose.Schema;
@@ -112,7 +116,7 @@ mixSchema.methods.updateTags = (preserve, albumtitle) => {
   // Update mp3 artist title
   let artistString = '';
 
-  const filePath = config.uploadDirectory + this.file;
+  const filePath = UPLOAD_DIRECTORY + this.file;
 
   if (this.dj) {
     artistString = this.dj;

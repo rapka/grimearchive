@@ -41,7 +41,7 @@ app.use(expressSession({
   store: new FileStore({}),
   saveUninitialized: false,
   resave: true,
-  secret: config.secret,
+  secret: process.env.COOKIE_SECRET || config.secret,
   cookie: {
     secure: false,
   },

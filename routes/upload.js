@@ -1,7 +1,10 @@
 const AWS = require('aws-sdk');
 const path = require('path');
+const fs = require('fs');
 
-AWS.config.loadFromPath(path.join(__dirname, '/../aws.json'));
+if (fs.existsSync(path.join(__dirname, '/../aws.json'))) {
+  AWS.config.loadFromPath(path.join(__dirname, '/../aws.json'));
+}
 
 const s3 = new AWS.S3();
 

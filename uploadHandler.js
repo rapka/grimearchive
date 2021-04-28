@@ -5,6 +5,8 @@ const crypto = require('crypto');
 const config = require('./config');
 const mongoose = require('mongoose');
 
+const UPLOAD_DIRECTORY = process.env.UPLOAD_DIRECTORY || config.uploadDirectory;
+
 // Load models
 const modelsPath = path.join(__dirname, '/models');
 fs.readdirSync(modelsPath).forEach((file) => {
@@ -35,13 +37,13 @@ const existsSync = (filePath) => {
 exports.rename = () => {
   const ts = String(new Date().getTime());
   let num = ts.substr(ts.length - 7);
-  let currentPath = config.uploadDirectory + num + '.mp3';
+  let currentPath = UPLOAD_DIRECTORY + num + '.mp3';
 
   // Check for duplicates
   while (existsSync(currentPath)) {
   	String(new Date().getTime());
     num = ts.substr(ts.length - 7);
-    currentPath = config.uploadDirectory + num + '.mp3';
+    currentPath = UPLOAD_DIRECTORY + num + '.mp3';
   }
 
   return num;

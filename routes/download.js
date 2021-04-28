@@ -5,7 +5,9 @@ const path = require('path');
 
 const Mix = mongoose.model('Mix');
 
-AWS.config.loadFromPath(path.join(__dirname, '/../aws.json'));
+if (fs.existsSync(path.join(__dirname, '/../aws.json'))) {
+  AWS.config.loadFromPath(path.join(__dirname, '/../aws.json'));
+}
 
 const s3 = new AWS.S3();
 
@@ -61,7 +63,12 @@ exports.download = (req, res) => {
     }
 
     const attachment = 'attachment; filename="' + generateFilename(mix) + '.mp3"';
-    const params = { Bucket: config.bucket, Key: req.params.url + '.mp3', ResponseContentDisposition: attachment };
+    const params = {
+      Bucket: process.env.AWS_S3_BUCKET || config.bucket,
+      Key: req.params.url + '.mp3',
+      ResponseContentDisposition: attachment
+  	};
+
     s3.getSignedUrl('getObject', params, (err, url) => {
 
       mix.downloads++;

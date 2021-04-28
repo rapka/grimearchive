@@ -2,11 +2,14 @@ const mongoose = require('mongoose');
 const admins = require('../admins');
 const crypto = require('crypto');
 const fs = require('fs');
+const path = require('path');
 const config = require('../config');
 const { createPagination } = require('./search');
 
 const pageCount = 20;
 const Mix = mongoose.model('Mix');
+
+const UPLOAD_DIRECTORY = process.env.UPLOAD_DIRECTORY || config.uploadDirectory;
 
 exports.routes = (app) => {
   app.get('/admin', exports.loginForm);
@@ -31,7 +34,8 @@ exports.loginForm = (req, res) => {
 // Attemps a user login.
 exports.login = (req, res) => {
   const hashed = crypto.createHash('sha256').update(req.body.password).digest('hex');
-  if (admins.hasOwnProperty(req.body.user) && admins[req.body.user] === hashed) {
+  const adminPassword = admins.hasOwnProperty(req.body.user) ? admins[req.body.user] : process.env.ADMIN_PASSWORD;
+  if (adminPassword === hashed) {
     req.session.username = req.body.user;
 
     req.session.save(() => {
@@ -79,7 +83,7 @@ exports.remove = (req, res) => {
     if (err) {
       console.error(err);
     } else {
-      fs.unlinkSync(config.uploadDirectory + mix.file);
+      fs.unlinkSync(UPLOAD_DIRECTORY + mix.file);
       mix.remove();
     }
     res.render('upload');
