@@ -26,7 +26,6 @@ block content
 						br
 					else if index != (mix.mcs.length - 1)
 						div.mix-item-divider
-							| /
 			br
 		if mix.crews.length != 0 && mix.mcs.length == 0
 			div.big.red.mix-element
@@ -43,7 +42,6 @@ block content
 						br
 					else if index != (mix.crews.length - 1)
 						div.mix-item-divider
-							| /
 			br
 		div.big.yellow.mix-element
 				if mix.day && mix.month && mix.year
@@ -85,8 +83,10 @@ block content
 			p Uploaded #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()} by
 				if mix.uploader == 'Anonymous'
 					| Anonymous
+				else if !mix.tripcode
+					a(id='upload_link' href='/uploader/' + mix.uploader) !{mix.uploader}
 				else
-					a(id="upload_link" href='/uploader/' + mix.uploader + mix.tripcode + mix.tripcode && '-' + mix.tripcode || '') #{mix.uploader}
+					a(id='upload_link' href='/uploader/' + mix.uploader + '-' + mix.tripcode) !{mix.uploader}
 					div.tripcode
 						| #{mix.tripcode}
 					script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
