@@ -62,7 +62,7 @@ block content
 		div.big.blue.mix-element
 			| #{Math.floor(mix.bitrate)}kbps
 		div.big.yellow.mix-element
-			| #{mix.downloads}
+			| #{mix.downloads + ' '}
 			if mix.downloads == 1
 				| Download
 			else
@@ -81,6 +81,7 @@ block content
 
 		div.mix-uploader
 			p Uploaded #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()} by
+				=" "
 				if mix.uploader == 'Anonymous'
 					| Anonymous
 				else if !mix.tripcode
@@ -116,4 +117,5 @@ block content
 				.report-button
 					a(href='mailto:thecollegehill@gmail.com?subject=Report%20for%20Grime%20Archive%20Mix%20%23' + mix.url) Report
 					|  |
+					=" "
 					a(href='mailto:thecollegehill@gmail.com?subject=Correction%20for%20Grime%20Archive%20Mix%20%23' + mix.url) Submit correction
