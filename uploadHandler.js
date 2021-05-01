@@ -66,7 +66,7 @@ exports.onFileUploadStart = (file) => {
 exports.onFileUploadComplete = (file) => {
   try {
   	ffprobe(file.path).then((probeData) => {
-      console.log('Got probe data' probeData.streams[0].duration);
+      console.log('Got probe data', probeData.streams[0].duration);
       Mix.updateOne({ file: file.name }, {
         bitrate: probeData.streams[0].bit_rate / 1000,
         duration: probeData.streams[0].duration,
@@ -80,10 +80,6 @@ exports.onFileUploadComplete = (file) => {
   	console.error('Upload processing error:', err);
   }
 };
-
-// Unused for now
-// exports.onFileUploadData = function (file, data) {
-// };
 
 exports.onParseEnd = function (req, next) {
   console.log('File parsing complete.');
@@ -148,7 +144,9 @@ exports.onParseEnd = function (req, next) {
       }
     });
   } else { // Edit mix
-    mix = {};
+    mix = {
+    	hidden: !!req.body.hidden,
+    };
 
     if (req.body.title) {
       // Hack to clear file names
@@ -166,11 +164,6 @@ exports.onParseEnd = function (req, next) {
       mix.station = req.body.station;
     }
 
-    if (req.body.hidden) {
-      mix.hidden = true;
-    } else {
-      mix.hidden = false;
-    }
     if (req.body.mcs) {
       mix.mcs = req.body.mcs.split(',');
     }
