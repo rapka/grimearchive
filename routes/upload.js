@@ -26,18 +26,18 @@ if (fs.existsSync(path.join(__dirname, '/../aws.json'))) {
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, __dirname + '../upload');
+    cb(null, path.join(__dirname + '/../upload'));
   },
   filename(req, file, cb) {
     const ts = String(new Date().getTime());
     let num = ts.substr(ts.length - 7);
-    let currentPath = path.join(__dirname, '/..', 'upload', `${num}.mp3`);
+    let currentPath = path.join(__dirname, `/../upload/${num}.mp3`);
 
     // Check for duplicates
     while (fs.existsSync(currentPath)) {
       String(new Date().getTime());
       num = ts.substr(ts.length - 7);
-      currentPath = path.join(__dirname, '/..', 'upload', `${num}.mp3`);
+      currentPath = path.join(__dirname, `/../upload/${num}.mp3`);
     }
 
     console.log('saving', num);
