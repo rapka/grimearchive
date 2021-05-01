@@ -39,7 +39,7 @@ exports.add = (req, res) => {
   if (typeof req.files.file !== 'undefined') {
     res.send('/mix/' + req.files.file.name.split('.')[0]);
   } else {
-    console.log('no file');
+    console.log('no file selected');
     res.redirect('/upload');
   }
 };

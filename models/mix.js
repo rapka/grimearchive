@@ -61,6 +61,7 @@ const uploadToS3 = (filePath, filename) => {
 
 mixSchema.methods.updateTags = (preserve, albumTitle) => {
   console.log('in updateTags', albumTitle);
+
   if (this.file) {
     this.url = this.file.split('.')[0];
   } else {
@@ -84,6 +85,8 @@ mixSchema.methods.updateTags = (preserve, albumTitle) => {
   } else if (this.year && !this.title) {
     titleString += ', ' + this.year.toString();
   }
+
+  console.log('checkpoint 1', this);
 
   // Append mcs
   if (this.mcs.length === 1) {
@@ -114,6 +117,8 @@ mixSchema.methods.updateTags = (preserve, albumTitle) => {
     }
   }
 
+  console.log('checkpoint 2', this);
+
   // Update mp3 artist title
   let artistString = '';
 
@@ -133,6 +138,8 @@ mixSchema.methods.updateTags = (preserve, albumTitle) => {
     TCON: 'Grime',
     TPE2: 'The Grime Archive',
   };
+
+    console.log('checkpoint 3', tags);
 
   if (albumTitle && this.title) {
     tags.TALB = this.title;
