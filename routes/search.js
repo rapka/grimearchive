@@ -86,7 +86,8 @@ exports.mc = async (req, res) => {
 exports.crew = async (req, res) => {
   const count = await Mix.countDocuments({ crews: req.params.url, hidden: false });
   const { page, skip, hasNext } = createPagination(req.params.page, count);
-  const mixes = await Mix.find({ crews: req.params.url, hidden: false }).skip(skip).sort({ date: -1 }).limit(PAGE_COUNT);
+  const mixes = await Mix.find({ crews: req.params.url, hidden: false })
+  	.skip(skip).sort({ date: -1 }).limit(PAGE_COUNT);
   const url = '/crew/' + req.params.url + '/page/';
 
   res.render('mixes', { title: 'Mixes featuring ' + req.params.url, mixes, url, page, hasNext });

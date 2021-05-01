@@ -1,9 +1,12 @@
 const fs = require('fs');
 const path = require('path');
-const probe = require('node-ffprobe');
+const ffprobeInstaller = require('@ffprobe-installer/ffprobe');
+const ffprobe = require('node-ffprobe');
 const crypto = require('crypto');
 const config = require('./config');
 const mongoose = require('mongoose');
+
+ffprobe.FFPROBE_PATH = ffprobeInstaller.path;
 
 const UPLOAD_DIRECTORY = process.env.UPLOAD_DIRECTORY || config.uploadDirectory;
 
@@ -41,7 +44,7 @@ exports.rename = () => {
 
   // Check for duplicates
   while (existsSync(currentPath)) {
-  	String(new Date().getTime());
+    String(new Date().getTime());
     num = ts.substr(ts.length - 7);
     currentPath = UPLOAD_DIRECTORY + num + '.mp3';
   }
@@ -61,22 +64,21 @@ exports.onFileUploadStart = (file) => {
 };
 
 exports.onFileUploadComplete = (file) => {
-  probe(file.path, (err, probeData) => {
-    if (err) {
-      console.log('500: Probe Error.');
-      return;
-    }
-
-    Mix.update({ file: file.name }, {
-      bitrate: probeData.streams[0].bit_rate / 1000,
-      duration: probeData.streams[0].duration,
-    }, (err) => {
-      if (err) {
-        console.error('Error updating mix.');
-
-      }
+  try {
+  	ffprobe(file.path).then((probeData) => {
+      console.log(probeData);
+      Mix.update({ file: file.name }, {
+        bitrate: probeData.streams[0].bit_rate / 1000,
+        duration: probeData.streams[0].duration,
+      }, (error) => {
+        if (error) {
+          console.error('Error updating mix.', error);
+        }
+      });
     });
-  });
+  } catch (err) {
+  	console.error('Upload processing error:', err);
+  }
 };
 
 // Unused for now
