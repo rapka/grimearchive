@@ -100,7 +100,7 @@ exports.add = async (req, res) => {
     let mix;
 
     // Server side check for no file selected
-    if (typeof req.files.file === 'undefined' && !req.body.edit) {
+    if (typeof file === 'undefined') {
       console.log('error: no file selected');
       return;
     }
@@ -111,7 +111,7 @@ exports.add = async (req, res) => {
       _id: mongoose.Types.ObjectId(req.body._id),
       title: req.body.title,
       dj: req.body.dj,
-      file: req.files.file.name,
+      file: file.name,
       station: req.body.station,
       bitrate: probeData.streams[0].bit_rate / 1000,
       duration: probeData.streams[0].duration,
@@ -164,8 +164,8 @@ exports.add = async (req, res) => {
     console.error('Upload processing error:', err);
   }
 
-  if (typeof req.files.file !== 'undefined') {
-    res.send('/mix/' + req.files.file.name.split('.')[0]);
+  if (typeof file !== 'undefined') {
+    res.send('/mix/' + file.name.split('.')[0]);
   } else {
     console.log('no file selected');
     res.redirect('/upload');
@@ -180,7 +180,7 @@ exports.edit = async (req, res) => {
     let mix;
 
     // Server side check for no file selected
-    if (typeof req.files.file === 'undefined' && !req.body.editUrl) {
+    if (!req.body.editUrl) {
       console.log('error: no file selected');
       return;
     } { // Edit mix
@@ -247,10 +247,5 @@ exports.edit = async (req, res) => {
     console.error('Upload processing error:', err);
   }
 
-  if (typeof req.files.file !== 'undefined') {
-    res.send('/mix/' + req.files.file.name.split('.')[0]);
-  } else {
-    console.log('no file selected');
-    res.redirect('/upload');
-  }
+  res.send('/mix/' + req.files.file.name.split('.')[0]);
 };
