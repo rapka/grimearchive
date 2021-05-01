@@ -66,8 +66,8 @@ exports.onFileUploadStart = (file) => {
 exports.onFileUploadComplete = (file) => {
   try {
   	ffprobe(file.path).then((probeData) => {
-      console.log(probeData);
-      Mix.update({ file: file.name }, {
+      console.log('Got probe data' probeData.streams[0].duration);
+      Mix.updateOne({ file: file.name }, {
         bitrate: probeData.streams[0].bit_rate / 1000,
         duration: probeData.streams[0].duration,
       }, (error) => {
@@ -193,7 +193,7 @@ exports.onParseEnd = function (req, next) {
       mix.youtube = req.body.youtube;
     }
 
-    Mix.update({ url: req.body.edit }, mix, (err) => {
+    Mix.updateOne({ url: req.body.edit }, mix, (err) => {
       if (err) {
         console.log(err);
         console.error('Error updating mix.');
