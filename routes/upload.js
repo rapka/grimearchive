@@ -22,11 +22,11 @@ if (fs.existsSync(path.join(__dirname, '/../aws.json'))) {
 
 const Mix = mongoose.model('Mix');
 
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, '/uploads')
+const storage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, '/uploads');
   },
-  filename: function (req, file, cb) {
+  filename(req, file, cb) {
     const ts = String(new Date().getTime());
     let num = ts.substr(ts.length - 7);
     let currentPath = UPLOAD_DIRECTORY + num + '.mp3';
@@ -39,11 +39,11 @@ var storage = multer.diskStorage({
     }
 
     cb(null, num);
-  }
+  },
 });
 
-var upload = multer({
-  storage: storage,
+const upload = multer({
+  storage,
   fileFilter: (req, file, cb) => {
     // Only allow files with a type in the allowedTypes array.
     if (ALLOWED_TYPES.indexOf(file.mimetype) === -1) {
@@ -53,7 +53,7 @@ var upload = multer({
     console.log(`file uploading: ${file}`);
 
     cb(null, true);
-  }
+  },
 });
 
 // app.use(multer({
@@ -94,7 +94,7 @@ exports.checkFfmpeg = (req, res) => {
   });
 };
 
-exports.add = (req, res) => {
+exports.add = async (req, res) => {
   const file = req.file;
   console.log('inn post endpoint', file);
 

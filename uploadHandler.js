@@ -1,13 +1,5 @@
-const fs = require('fs');
-const path = require('path');
-const ffprobeInstaller = require('@ffprobe-installer/ffprobe');
-const ffprobe = require('node-ffprobe');
 const crypto = require('crypto');
-const config = require('./config');
 const mongoose = require('mongoose');
-
-
-exports.fileFilter = ;
 
 exports.onParseEnd = (req, next) => {
   console.log('File parsing complete.');
