@@ -120,7 +120,7 @@ mixSchema.methods.updateTags = (preserve, albumTitle) => {
   // Update mp3 artist title
   let artistString = '';
 
-  const filePath = path.join(__dirname, '..', 'upload', this.file);
+  const filePath = path.join(__dirname, '/..', 'upload', this.file);
 
   if (this.dj) {
     artistString = this.dj;

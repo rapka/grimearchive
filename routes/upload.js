@@ -4,8 +4,12 @@ const fs = require('fs');
 const ffprobeInstaller = require('@ffprobe-installer/ffprobe');
 const ffprobe = require('node-ffprobe');
 const multer = require('multer');
-require('../models/mix');
 const mongoose = require('mongoose');
+
+require('../models/mix');
+
+const Mix = mongoose.model('Mix');
+
 
 ffprobe.FFPROBE_PATH = ffprobeInstaller.path;
 
@@ -19,7 +23,6 @@ if (fs.existsSync(path.join(__dirname, '/../aws.json'))) {
   AWS.config.loadFromPath(path.join(__dirname, '/../aws.json'));
 }
 
-const Mix = mongoose.model('Mix');
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -28,15 +31,16 @@ const storage = multer.diskStorage({
   filename(req, file, cb) {
     const ts = String(new Date().getTime());
     let num = ts.substr(ts.length - 7);
-    let currentPath = path.join(__dirname, '..', 'upload', `${num}.mp3`);
+    let currentPath = path.join(__dirname, '/..', 'upload', `${num}.mp3`);
 
     // Check for duplicates
     while (fs.existsSync(currentPath)) {
       String(new Date().getTime());
       num = ts.substr(ts.length - 7);
-      currentPath = path.join(__dirname, '..', 'upload', `${num}.mp3`);
+      currentPath = path.join(__dirname, '/..', 'upload', `${num}.mp3`);
     }
-    console.log('saving')
+
+    console.log('saving', num);
     cb(null, num);
   },
 });
@@ -54,15 +58,6 @@ const upload = multer({
     cb(null, true);
   },
 });
-
-// app.use(multer({
-//   dest: './upload/',
-//   rename: uploadHandler.rename,
-//   fileFilter: uploadHandler.fileFilter,
-//   onFileUploadComplete: uploadHandler.onFileUploadComplete,
-//   onParseEnd: uploadHandler.onParseEnd,
-//   onFileUploadData: uploadHandler.onFileUploadData,
-// }));
 
 const s3 = new AWS.S3();
 

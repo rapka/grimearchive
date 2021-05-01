@@ -78,7 +78,7 @@ exports.remove = (req, res) => {
     if (err) {
       console.error(err);
     } else {
-      const filePath = path.join(__dirname, '..', 'upload', mix.file);
+      const filePath = path.join(__dirname, '/..', 'upload', mix.file);
       fs.unlinkSync(filePath);
       mix.remove();
     }
