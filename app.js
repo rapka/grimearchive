@@ -39,7 +39,7 @@ app.use(multer({
 
 app.use(expressSession({
   store: new FileStore({}),
-  saveUninitialized: false,
+  saveUninitialized: true,
   resave: true,
   secret: process.env.COOKIE_SECRET || config.secret,
   cookie: {
