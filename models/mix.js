@@ -60,7 +60,7 @@ const uploadToS3 = (filePath, filename) => {
 };
 
 mixSchema.methods.updateTags = (preserve, albumTitle) => {
-  console.log('in updateTags', albumTitle);
+  console.log('in updateTags', this);
 
   if (this.file) {
     this.url = this.file.split('.')[0];
@@ -139,7 +139,7 @@ mixSchema.methods.updateTags = (preserve, albumTitle) => {
     TPE2: 'The Grime Archive',
   };
 
-    console.log('checkpoint 3', tags);
+  console.log('checkpoint 3', tags);
 
   if (albumTitle && this.title) {
     tags.TALB = this.title;

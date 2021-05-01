@@ -6,82 +6,10 @@ const crypto = require('crypto');
 const config = require('./config');
 const mongoose = require('mongoose');
 
-ffprobe.FFPROBE_PATH = ffprobeInstaller.path;
 
-const UPLOAD_DIRECTORY = process.env.UPLOAD_DIRECTORY || config.uploadDirectory;
+exports.fileFilter = ;
 
-// Load models
-const modelsPath = path.join(__dirname, '/models');
-fs.readdirSync(modelsPath).forEach((file) => {
-  if (file.indexOf('.js') >= -1) {
-    require(path.join(modelsPath, '/', file));
-  }
-});
-
-const Mix = mongoose.model('Mix');
-
-const allowedTypes = [
-  'audio/mpeg3',
-  'audio/mpeg',
-  'audio/mp3',
-];
-
-const existsSync = (filePath) => {
-  try {
-    fs.statSync(filePath);
-  } catch (err) {
-    if (err.code === 'ENOENT') {
-      return false;
-    }
-  }
-  return true;
-};
-
-exports.rename = () => {
-  const ts = String(new Date().getTime());
-  let num = ts.substr(ts.length - 7);
-  let currentPath = UPLOAD_DIRECTORY + num + '.mp3';
-
-  // Check for duplicates
-  while (existsSync(currentPath)) {
-    String(new Date().getTime());
-    num = ts.substr(ts.length - 7);
-    currentPath = UPLOAD_DIRECTORY + num + '.mp3';
-  }
-
-  return num;
-};
-
-exports.onFileUploadStart = (file) => {
-  // Only allow files with a type in the allowedTypes array.
-  if (allowedTypes.indexOf(file.mimetype) === -1) {
-    console.log('415: Disallowed file type: ' + file.mimetype);
-    return false;
-  }
-  console.log('file uploading');
-
-  return true;
-};
-
-exports.onFileUploadComplete = (file) => {
-  try {
-  	ffprobe(file.path).then((probeData) => {
-      console.log('Got probe data', probeData.streams[0].duration);
-      Mix.updateOne({ file: file.name }, {
-        bitrate: probeData.streams[0].bit_rate / 1000,
-        duration: probeData.streams[0].duration,
-      }, (error) => {
-        if (error) {
-          console.error('Error updating mix.', error);
-        }
-      });
-    });
-  } catch (err) {
-  	console.error('Upload processing error:', err);
-  }
-};
-
-exports.onParseEnd = function (req, next) {
+exports.onParseEnd = (req, next) => {
   console.log('File parsing complete.');
 
   let mix;
@@ -91,7 +19,7 @@ exports.onParseEnd = function (req, next) {
     console.log('error: no file selected');
     return;
   } else if (!req.body.edit) { // Add new mix
-  	console.log('adding new mix');
+  	console.log('adding new mix', req.files);
     mix = new Mix({
       _id: mongoose.Types.ObjectId(req.body._id),
       title: req.body.title,
@@ -145,7 +73,7 @@ exports.onParseEnd = function (req, next) {
     });
   } else { // Edit mix
     mix = {
-    	hidden: !!req.body.hidden,
+      hidden: !!req.body.hidden,
     };
 
     if (req.body.title) {

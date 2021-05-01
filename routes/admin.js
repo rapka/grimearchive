@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const fs = require('fs');
-const path = require('path');
 const config = require('../config');
 const { createPagination } = require('./search');
 
@@ -20,7 +19,6 @@ exports.routes = (app) => {
 };
 
 exports.loginForm = (req, res) => {
-  console.log(req.session);
   if (req.session.username && req.params.message === 'loggedIn') {
     res.render('login', { message: req.params.message });
   } else if (req.params.message === 'loggedIn') {

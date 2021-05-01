@@ -13,7 +13,6 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const busboy = require('connect-busboy');
 const fs = require('fs');
-const multer = require('multer');
 const expressSession = require('express-session');
 const FileStore = require('session-file-store')(expressSession);
 const config = require('./config');
@@ -25,17 +24,6 @@ app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(busboy());
 app.use(favicon(path.join(__dirname, '/public/img/favicon.ico')));
-
-const uploadHandler = require('./uploadHandler.js');
-
-app.use(multer({
-  dest: './upload/',
-  rename: uploadHandler.rename,
-  onFileUploadStart: uploadHandler.onFileUploadStart,
-  onFileUploadComplete: uploadHandler.onFileUploadComplete,
-  onParseEnd: uploadHandler.onParseEnd,
-  onFileUploadData: uploadHandler.onFileUploadData,
-}));
 
 app.use(expressSession({
   store: new FileStore({}),
