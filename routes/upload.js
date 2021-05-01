@@ -40,8 +40,8 @@ const storage = multer.diskStorage({
       currentPath = path.join(__dirname, `/../upload/${num}.mp3`);
     }
 
-    console.log('saving', num);
-    cb(null, num + '.mp3');
+    console.log(`Final filename: ${num}.mp3`);
+    cb(null, `${num}.mp3`);
   },
 });
 
@@ -152,14 +152,11 @@ exports.add = async (req, res) => {
     }
 
     console.log('beginning tag update');
-    mix.updateTags(req.body.preserve, req.body.albumtitle);
+
 
     // File written successfully, save the entry in mongo.
-    mix.save((err) => {
-      if (err) {
-        console.log('500: Could not save file entry to database.', err);
-      }
-    });
+    await mix.save();
+    mix.updateTags(req.body.preserve, req.body.albumtitle);
   } catch (err) {
     console.error('Upload processing error:', err);
   }
