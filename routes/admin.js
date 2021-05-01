@@ -7,8 +7,6 @@ const { createPagination } = require('./search');
 const pageCount = 20;
 const Mix = mongoose.model('Mix');
 
-const UPLOAD_DIRECTORY = process.env.UPLOAD_DIRECTORY || config.uploadDirectory;
-
 exports.routes = (app) => {
   app.get('/admin', exports.loginForm);
   app.post('/admin/login', exports.login);
@@ -80,7 +78,8 @@ exports.remove = (req, res) => {
     if (err) {
       console.error(err);
     } else {
-      fs.unlinkSync(UPLOAD_DIRECTORY + mix.file);
+      const filePath = path.join(__dirname, '..', 'upload', mix.file);
+      fs.unlinkSync(filePath);
       mix.remove();
     }
     res.render('upload');

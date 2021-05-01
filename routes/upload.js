@@ -8,7 +8,6 @@ require('../models/mix');
 const mongoose = require('mongoose');
 
 ffprobe.FFPROBE_PATH = ffprobeInstaller.path;
-const UPLOAD_DIRECTORY = process.env.UPLOAD_DIRECTORY || config.uploadDirectory;
 
 const ALLOWED_TYPES = [
   'audio/mpeg3',
@@ -24,21 +23,20 @@ const Mix = mongoose.model('Mix');
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, './uploads');
+    cb(null, __dirname + '../upload');
   },
   filename(req, file, cb) {
     const ts = String(new Date().getTime());
     let num = ts.substr(ts.length - 7);
-    let currentPath = UPLOAD_DIRECTORY + num + '.mp3';
 
     // Check for duplicates
     while (fs.existsSync(currentPath)) {
       String(new Date().getTime());
       num = ts.substr(ts.length - 7);
-      currentPath = UPLOAD_DIRECTORY + num + '.mp3';
     }
 
-    cb(null, currentPath);
+    console.log('saving:', num);
+    cb(null, num);
   },
 });
 
