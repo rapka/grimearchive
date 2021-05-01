@@ -41,7 +41,7 @@ const mixSchema = new Schema({
 
 const uploadToS3 = (filePath, filename) => {
   const stream = fs.readFileSync(filePath);
-  console.log('uploading', filename);
+  console.log('uploading to s3', filename);
 
   const s3params = {
     Bucket: 'grimearchive',
@@ -146,6 +146,8 @@ mixSchema.methods.updateTags = (preserve, albumtitle) => {
   }
 
   const s3key = this.file;
+
+  console.log('updating tags for ', filePath);
 
   fs.access(filePath, fs.F_OK, (err) => {
     if (!err) {

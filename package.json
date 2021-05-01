@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@ffprobe-installer/ffprobe": "^1.1.0",
-    "aws-sdk": "^2.114.0",
+    "aws-sdk": "^2.897.0",
     "body-parser": "~1.8.1",
     "busboy": "~0.2.9",
     "connect-busboy": "~0.0.2",

@@ -95,6 +95,7 @@ exports.onParseEnd = function (req, next) {
     console.log('error: no file selected');
     return;
   } else if (!req.body.edit) { // Add new mix
+  	console.log('adding new mix');
     mix = new Mix({
       _id: mongoose.Types.ObjectId(req.body._id),
       title: req.body.title,
@@ -137,27 +138,27 @@ exports.onParseEnd = function (req, next) {
       mix.youtube = req.body.youtube;
     }
 
+    console.log('beginning tag update');
     mix.updateTags(req.body.preserve, req.body.albumtitle);
 
     // File written successfully, save the entry in mongo.
     mix.save((err) => {
       if (err) {
-        console.log('500: Could not save file entry to database.');
-        console.log(err);
-
+        console.log('500: Could not save file entry to database.', err);
       }
     });
   } else { // Edit mix
     mix = {};
 
     if (req.body.title) {
+      // Hack to clear file names
       if (req.body.title === '0xDEADBEEF') {
         mix.title = '';
       } else {
         mix.title = req.body.title;
       }
-
     }
+
     if (req.body.dj) {
       mix.dj = req.body.dj;
     }
@@ -166,7 +167,6 @@ exports.onParseEnd = function (req, next) {
     }
 
     if (req.body.hidden) {
-      console.log(req.body.hidden);
       mix.hidden = true;
     } else {
       mix.hidden = false;
