@@ -24,7 +24,7 @@ const Mix = mongoose.model('Mix');
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, '/uploads');
+    cb(null, './uploads');
   },
   filename(req, file, cb) {
     const ts = String(new Date().getTime());
@@ -38,7 +38,7 @@ const storage = multer.diskStorage({
       currentPath = UPLOAD_DIRECTORY + num + '.mp3';
     }
 
-    cb(null, num);
+    cb(null, currentPath);
   },
 });
 
@@ -50,7 +50,7 @@ const upload = multer({
       console.log('415: Disallowed file type: ' + file.mimetype);
       cb(null, false);
     }
-    console.log(`file uploading: ${file}`);
+    console.log(`file uploading: ${file.mimetype}`);
 
     cb(null, true);
   },

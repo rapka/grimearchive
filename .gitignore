@@ -33,9 +33,6 @@ data
 public
 public-src/*.css
 
-#upload folder
-upload
-
 #private config files
 admins.json
 aws.json
