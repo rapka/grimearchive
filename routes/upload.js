@@ -28,14 +28,15 @@ const storage = multer.diskStorage({
   filename(req, file, cb) {
     const ts = String(new Date().getTime());
     let num = ts.substr(ts.length - 7);
+    let currentPath = path.join(__dirname, '..', 'upload', `${num}.mp3`);
 
     // Check for duplicates
     while (fs.existsSync(currentPath)) {
       String(new Date().getTime());
       num = ts.substr(ts.length - 7);
+      currentPath = path.join(__dirname, '..', 'upload', `${num}.mp3`);
     }
-
-    console.log('saving:', num);
+    console.log('saving')
     cb(null, num);
   },
 });
