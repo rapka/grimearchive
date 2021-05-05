@@ -3,7 +3,6 @@ const fs = require('fs');
 const path = require('path');
 const mm = require('musicmetadata');
 const mongoose = require('mongoose');
-const config = require('../config');
 const AWS = require('aws-sdk');
 
 if (fs.existsSync(path.join(__dirname, '/../aws.json'))) {
@@ -13,7 +12,6 @@ if (fs.existsSync(path.join(__dirname, '/../aws.json'))) {
 const s3 = new AWS.S3();
 const Schema = mongoose.Schema;
 
-// Define the model.
 const mixSchema = new Schema({
   url: String,
   title: String,
@@ -39,7 +37,6 @@ const mixSchema = new Schema({
 
 const uploadToS3 = (filePath, filename) => {
   const stream = fs.readFileSync(filePath);
-  console.log('uploading to s3', filename);
 
   const s3params = {
     Bucket: 'grimearchive',
@@ -49,17 +46,14 @@ const uploadToS3 = (filePath, filename) => {
 
   s3.upload(s3params, (err) => {
     if (err) {
-      console.log('file upload error', err);
+      console.error('file upload error', err);
     }
 
-    console.log('file uploaded');
     fs.unlinkSync(filePath);
   });
 };
 
-mixSchema.methods.updateTags = function(preserve, albumTitle) {
-  console.log('in updateTags', this);
-
+mixSchema.methods.updateTags = function (preserve, albumTitle) {
   let titleString = 'Unknown';
 
   const filename = this.file;
@@ -77,8 +71,6 @@ mixSchema.methods.updateTags = function(preserve, albumTitle) {
   } else if (this.year && !this.title) {
     titleString += ', ' + this.year.toString();
   }
-
-  console.log('checkpoint 1', this);
 
   // Append mcs
   if (this.mcs.length === 1) {
@@ -109,8 +101,6 @@ mixSchema.methods.updateTags = function(preserve, albumTitle) {
     }
   }
 
-  console.log('checkpoint 2', this);
-
   // Update mp3 artist title
   let artistString = '';
 
@@ -131,8 +121,6 @@ mixSchema.methods.updateTags = function(preserve, albumTitle) {
     TPE2: 'The Grime Archive',
   };
 
-  console.log('checkpoint 3', tags);
-
   if (albumTitle && this.title) {
     tags.TALB = this.title;
   } else if (albumTitle) {
@@ -146,8 +134,6 @@ mixSchema.methods.updateTags = function(preserve, albumTitle) {
   }
 
   const s3key = this.file;
-
-  console.log('updating tags for ', filePath);
 
   fs.access(filePath, fs.F_OK, (err) => {
     if (!err) {
@@ -199,22 +185,22 @@ mixSchema.methods.updateTags = function(preserve, albumTitle) {
 
         fs.writeFileSync(filePath, data.Body);
 
-        console.log('file saved at', filePath);
         if (!preserve) {
           const albumArtPath = path.join(__dirname, '/../public/img/albumart.png');
           const albumArt = fs.readFileSync(albumArtPath);
           tags.APICPNG = albumArt;
           id3Reader.write(filePath, tags, (success, msg) => {
             if (!success) {
-              console.log(msg);
+              console.error(`ID3 writing error: ${msg}`);
               return;
             }
+
             uploadToS3(filePath, filename);
           });
         } else {
           mm(fs.createReadStream(filePath), (err, metadata) => {
             if (err) {
-              console.log(err);
+              console.error(`ID3 reading error: ${err}`);
             }
 
             if (metadata.picture && metadata.picture[0].format === 'jpg') {
@@ -225,9 +211,10 @@ mixSchema.methods.updateTags = function(preserve, albumTitle) {
 
             id3Reader.write(filePath, tags, (success, msg) => {
               if (!success) {
-                console.log(msg);
+                console.error(`ID3 writing error: ${msg}`);
                 return;
               }
+
               uploadToS3(filePath, filename);
             });
           });
@@ -237,5 +224,4 @@ mixSchema.methods.updateTags = function(preserve, albumTitle) {
   });
 };
 
-// Export model.
 module.exports = mongoose.model('Mix', mixSchema);

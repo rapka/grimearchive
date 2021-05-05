@@ -59,7 +59,7 @@ exports.routes = (app) => {
 exports.download = async (req, res) => {
   const mix = await Mix.findOne({ url: req.params.url }).exec();
   if (!mix) {
-    console.error(`Mix download error.`);
+    console.error('Mix download error.');
     return res.status(404).render('404.jade', { title: 'Not Found' });
   }
 

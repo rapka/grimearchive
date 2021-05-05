@@ -5,11 +5,11 @@ const ffprobeInstaller = require('@ffprobe-installer/ffprobe');
 const ffprobe = require('node-ffprobe');
 const multer = require('multer');
 const mongoose = require('mongoose');
+const crypto = require('crypto');
 
 require('../models/mix');
 
 const Mix = mongoose.model('Mix');
-
 
 ffprobe.FFPROBE_PATH = ffprobeInstaller.path;
 
@@ -23,10 +23,9 @@ if (fs.existsSync(path.join(__dirname, '/../aws.json'))) {
   AWS.config.loadFromPath(path.join(__dirname, '/../aws.json'));
 }
 
-
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, path.join(__dirname + '/../upload'));
+    cb(null, path.join(__dirname, '/../upload'));
   },
   filename(req, file, cb) {
     const ts = String(new Date().getTime());
@@ -40,7 +39,6 @@ const storage = multer.diskStorage({
       currentPath = path.join(__dirname, `/../upload/${num}.mp3`);
     }
 
-    console.log(`Final filename: ${num}.mp3`);
     cb(null, `${num}.mp3`);
   },
 });
@@ -50,10 +48,9 @@ const upload = multer({
   fileFilter: (req, file, cb) => {
     // Only allow files with a type in the allowedTypes array.
     if (ALLOWED_TYPES.indexOf(file.mimetype) === -1) {
-      console.log('415: Disallowed file type: ' + file.mimetype);
+      console.error('415: Disallowed file type: ' + file.mimetype);
       cb(null, false);
     }
-    console.log(`file uploading: ${file.mimetype}`);
 
     cb(null, true);
   },
@@ -90,22 +87,17 @@ exports.checkFfmpeg = (req, res) => {
 };
 
 exports.add = async (req, res) => {
-  const file = req.file;
-  console.log('inn post endpoint', file);
+  const { file } = req;
+  let mix;
 
   try {
     const probeData = await ffprobe(file.path);
-    console.log('Got probe data', probeData.streams[0].duration);
-
-    let mix;
 
     // Server side check for no file selected
     if (typeof file === 'undefined') {
       console.log('error: no file selected');
       return;
     }
-
-    console.log('adding new mix', req.files);
 
     mix = new Mix({
       _id: mongoose.Types.ObjectId(req.body._id),
@@ -122,9 +114,7 @@ exports.add = async (req, res) => {
       mix.uploader = req.body.username;
     }
     if (req.body.tripcode) {
-      // const crypted = crypt(req.body.tripcode, crypt.createSalt('md5'));
-      const crypted = crypto.createHash('sha256').update(req.body.tripcode).digest('hex').substring(0, 8);
-      mix.tripcode = crypted;
+      mix.tripcode = crypto.createHash('sha256').update(req.body.tripcode).digest('hex').substring(0, 8);
     }
 
     if (req.body.hidden) {
@@ -152,9 +142,6 @@ exports.add = async (req, res) => {
       mix.youtube = req.body.youtube;
     }
 
-    console.log('beginning tag save', mix);
-
-
     // File written successfully, save the entry in mongo.
     await mix.save();
     console.log('savved mixx', mix);
@@ -172,12 +159,11 @@ exports.add = async (req, res) => {
 };
 
 exports.edit = async (req, res) => {
-  const file = req.file;
+  const { file } = req;
   console.log('inn post EDIT endpoint', file);
+  let mix;
 
   try {
-    let mix;
-
     // Server side check for no file selected
     if (!req.body.editUrl) {
       console.log('error: no file selected');
@@ -225,25 +211,14 @@ exports.edit = async (req, res) => {
         mix.youtube = req.body.youtube;
       }
 
-      Mix.updateOne({ url: req.body.editUrl }, mix, (err) => {
-        if (err) {
-          console.log(err);
-          console.error('Error updating mix.');
-        }
-      });
+      await Mix.updateOne({ url: req.body.editUrl }, mix).exec();
 
-      Mix.findOne({ url: req.body.editUrl }).exec((err, foundMix) => {
-        if (err) {
-          console.log(err);
-          console.error('Error updating mix.');
-          return;
-        }
+      const foundMix = await Mix.findOne({ url: req.body.editUrl }).exec();
 
-        foundMix.updateTags(true, req.body.albumtitle);
-      });
+      foundMix.updateTags(true, req.body.albumtitle);
     }
   } catch (err) {
-    console.error('Upload processing error:', err);
+    console.error('Upload editing error:', err);
   }
 
   res.send('/mix/' + mix.file.split('.')[0]);
