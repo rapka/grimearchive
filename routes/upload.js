@@ -112,6 +112,7 @@ exports.add = async (req, res) => {
       title: req.body.title,
       dj: req.body.dj,
       file: file.filename,
+      url: file.filename.split('.')[0],
       station: req.body.station,
       bitrate: probeData.streams[0].bit_rate / 1000,
       duration: probeData.streams[0].duration,

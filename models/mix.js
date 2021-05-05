@@ -60,12 +60,6 @@ const uploadToS3 = (filePath, filename) => {
 mixSchema.methods.updateTags = function(preserve, albumTitle) {
   console.log('in updateTags', this);
 
-  if (this.file) {
-    this.url = this.file.split('.')[0];
-  } else {
-    return;
-  }
-
   let titleString = 'Unknown';
 
   const filename = this.file;
