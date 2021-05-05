@@ -5,10 +5,6 @@ const mm = require('musicmetadata');
 const mongoose = require('mongoose');
 const AWS = require('aws-sdk');
 
-if (fs.existsSync(path.join(__dirname, '/../aws.json'))) {
-  AWS.config.loadFromPath(path.join(__dirname, '/../aws.json'));
-}
-
 const s3 = new AWS.S3();
 const Schema = mongoose.Schema;
 
@@ -52,6 +48,19 @@ const uploadToS3 = (filePath, filename) => {
     fs.unlinkSync(filePath);
   });
 };
+
+const writeTagsAndUpload = (filePath, filename, tags) => id3Reader.write(
+  filePath,
+  tags,
+  (success, msg) => {
+    if (!success) {
+      console.error(`ID3 writing error: ${msg}`);
+      return;
+    }
+
+    uploadToS3(filePath, filename);
+  },
+);
 
 mixSchema.methods.updateTags = function (preserve, albumTitle) {
   let titleString = 'Unknown';
@@ -142,13 +151,7 @@ mixSchema.methods.updateTags = function (preserve, albumTitle) {
         const albumArtPath = path.join(__dirname, '/../public/img/albumart.png');
         const albumArt = fs.readFileSync(albumArtPath);
         tags.APICPNG = albumArt;
-        id3Reader.write(filePath, tags, (success, msg) => {
-          if (!success) {
-            console.log(msg);
-            return;
-          }
-          uploadToS3(filePath, filename);
-        });
+        writeTagsAndUpload(filePath, filename, tags);
       } else {
         mm(fs.createReadStream(filePath), (err2, metadata) => {
           if (err2) {
@@ -161,13 +164,7 @@ mixSchema.methods.updateTags = function (preserve, albumTitle) {
             tags.APICPNG = metadata.picture[0].data;
           }
 
-          id3Reader.write(filePath, tags, (success, msg) => {
-            if (!success) {
-              console.log(msg);
-              return;
-            }
-            uploadToS3(filePath, filename);
-          });
+          writeTagsAndUpload(filePath, filename, tags);
         });
       }
     } else {
@@ -189,14 +186,8 @@ mixSchema.methods.updateTags = function (preserve, albumTitle) {
           const albumArtPath = path.join(__dirname, '/../public/img/albumart.png');
           const albumArt = fs.readFileSync(albumArtPath);
           tags.APICPNG = albumArt;
-          id3Reader.write(filePath, tags, (success, msg) => {
-            if (!success) {
-              console.error(`ID3 writing error: ${msg}`);
-              return;
-            }
 
-            uploadToS3(filePath, filename);
-          });
+          writeTagsAndUpload(filePath, filename, tags);
         } else {
           mm(fs.createReadStream(filePath), (err, metadata) => {
             if (err) {
@@ -209,14 +200,7 @@ mixSchema.methods.updateTags = function (preserve, albumTitle) {
               tags.APICPNG = metadata.picture[0].data;
             }
 
-            id3Reader.write(filePath, tags, (success, msg) => {
-              if (!success) {
-                console.error(`ID3 writing error: ${msg}`);
-                return;
-              }
-
-              uploadToS3(filePath, filename);
-            });
+            writeTagsAndUpload(filePath, filename, tags);
           });
         }
       });
