@@ -56,10 +56,10 @@ exports.routes = (app) => {
   app.get('/download/:url', exports.download);
 };
 
-exports.download = (req, res) => {
+exports.download = async (req, res) => {
   const mix = await Mix.findOne({ url: req.params.url }).exec();
-  if (err || !mix) {
-    console.error(`Mix download error: ${err}`);
+  if (!mix) {
+    console.error(`Mix download error.`);
     return res.status(404).render('404.jade', { title: 'Not Found' });
   }
 
@@ -71,7 +71,6 @@ exports.download = (req, res) => {
   };
 
   s3.getSignedUrl('getObject', params, (err, url) => {
-
     mix.downloads++;
     mix.save();
 
