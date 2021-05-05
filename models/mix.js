@@ -57,7 +57,7 @@ const uploadToS3 = (filePath, filename) => {
   });
 };
 
-mixSchema.methods.updateTags = (preserve, albumTitle) => {
+mixSchema.methods.updateTags = function(preserve, albumTitle) {
   console.log('in updateTags', this);
 
   if (this.file) {
