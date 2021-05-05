@@ -8,9 +8,9 @@ exports.routes = (app) => {
 
 exports.view = async (req, res) => {
   const mix = await Mix.findOne({ url: req.params.url }).exec();
-  console.log('view chieh', req.params.url, err, mix);
+  console.log('view chieh', req.params.url, mix);
 
-  if (err || !mix) {
+  if (!mix) {
     return res.status(401).render('404.jade', { title: 'Not Found' });
   }
 
