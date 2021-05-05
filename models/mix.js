@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const AWS = require('aws-sdk');
 
 const s3 = new AWS.S3();
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 const mixSchema = new Schema({
   url: String,
@@ -175,9 +175,9 @@ mixSchema.methods.updateTags = function (preserve, albumTitle) {
         Key: s3key,
       };
 
-      s3.getObject(params, (err, data) => {
-        if (err) {
-          console.log(err);
+      s3.getObject(params, (err2, data) => {
+        if (err2) {
+          console.log(err2);
         }
 
         fs.writeFileSync(filePath, data.Body);
@@ -189,9 +189,9 @@ mixSchema.methods.updateTags = function (preserve, albumTitle) {
 
           writeTagsAndUpload(filePath, filename, tags);
         } else {
-          mm(fs.createReadStream(filePath), (err, metadata) => {
-            if (err) {
-              console.error(`ID3 reading error: ${err}`);
+          mm(fs.createReadStream(filePath), (err3, metadata) => {
+            if (err3) {
+              console.error(`ID3 reading error: ${err3}`);
             }
 
             if (metadata.picture && metadata.picture[0].format === 'jpg') {

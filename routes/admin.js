@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
+const path = require('path');
 const fs = require('fs');
-const config = require('../config');
 const { createPagination } = require('./search');
 
 const pageCount = 20;

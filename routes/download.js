@@ -1,5 +1,3 @@
-const path = require('path');
-const fs = require('fs');
 const mongoose = require('mongoose');
 const config = require('../config');
 const AWS = require('aws-sdk');
