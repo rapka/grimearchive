@@ -34,7 +34,7 @@ exports.index = async (req, res) => {
   }]);
 
   let sum = 0;
-  let downloads 0;
+  let downloads = 0;
 
   if (result.length > 0) {
     sum = Math.floor(result[0].total / 60);
