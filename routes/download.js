@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const config = require('../config');
 const AWS = require('aws-sdk');
 
-
 const Mix = mongoose.model('Mix');
 
 if (fs.existsSync(path.join(__dirname, '/../aws.json'))) {
@@ -58,25 +57,24 @@ exports.routes = (app) => {
 };
 
 exports.download = (req, res) => {
-  Mix.findOne({ url: req.params.url }).exec((err, mix) => {
-    if (err || !mix) {
-      console.error(`Mix download error: ${err}`);
-      return res.status(404).render('404.jade', { title: 'Not Found' });
-    }
+  const mix = await Mix.findOne({ url: req.params.url }).exec();
+  if (err || !mix) {
+    console.error(`Mix download error: ${err}`);
+    return res.status(404).render('404.jade', { title: 'Not Found' });
+  }
 
-    const attachment = 'attachment; filename="' + generateFilename(mix) + '.mp3"';
-    const params = {
-      Bucket: process.env.AWS_S3_BUCKET || config.bucket,
-      Key: req.params.url + '.mp3',
-      ResponseContentDisposition: attachment,
-  	};
+  const attachment = 'attachment; filename="' + generateFilename(mix) + '.mp3"';
+  const params = {
+    Bucket: process.env.AWS_S3_BUCKET || config.bucket,
+    Key: req.params.url + '.mp3',
+    ResponseContentDisposition: attachment,
+  };
 
-    s3.getSignedUrl('getObject', params, (err, url) => {
+  s3.getSignedUrl('getObject', params, (err, url) => {
 
-      mix.downloads++;
-      mix.save();
+    mix.downloads++;
+    mix.save();
 
-      res.redirect(url);
-    });
+    res.redirect(url);
   });
 };

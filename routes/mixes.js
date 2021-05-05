@@ -6,35 +6,35 @@ exports.routes = (app) => {
   app.get('/mix/:url', exports.view);
 };
 
-exports.view = (req, res) => {
-  Mix.findOne({ url: req.params.url }).exec((err, mix) => {
-    console.log('view chieh', req.params.url, err, mix);
-    if (err || !mix) {
-      return res.status(401).render('404.jade', { title: 'Not Found' });
-    }
+exports.view = async (req, res) => {
+  const mix = await Mix.findOne({ url: req.params.url }).exec();
+  console.log('view chieh', req.params.url, err, mix);
 
-    if (mix && (!mix.hidden || req.session.username)) {
-      let title;
-      if (mix.dj) {
-        title = mix.dj + ' - ';
-      } else {
-        title = 'Unknown DJ - ';
-      }
+  if (err || !mix) {
+    return res.status(401).render('404.jade', { title: 'Not Found' });
+  }
 
-      if (mix.title) {
-        title += mix.title;
-      } else {
-        title += 'Untitled';
-      }
-
-      title += ' | Grime Archive';
-
-      res.render('mix', {
-        title,
-        mix,
-      });
+  if (mix && (!mix.hidden || req.session.username)) {
+    let title;
+    if (mix.dj) {
+      title = mix.dj + ' - ';
     } else {
-      res.status(401).render('404.jade', { title: 'Not Found' });
+      title = 'Unknown DJ - ';
     }
-  });
+
+    if (mix.title) {
+      title += mix.title;
+    } else {
+      title += 'Untitled';
+    }
+
+    title += ' | Grime Archive';
+
+    res.render('mix', {
+      title,
+      mix,
+    });
+  } else {
+    res.status(401).render('404.jade', { title: 'Not Found' });
+  }
 };
