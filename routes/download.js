@@ -6,10 +6,6 @@ const AWS = require('aws-sdk');
 
 const Mix = mongoose.model('Mix');
 
-if (fs.existsSync(path.join(__dirname, '/../aws.json'))) {
-  AWS.config.loadFromPath(path.join(__dirname, '/../aws.json'));
-}
-
 const s3 = new AWS.S3();
 
 const generateFilename = (mix = {}) => {
@@ -58,8 +54,9 @@ exports.routes = (app) => {
 
 exports.download = async (req, res) => {
   const mix = await Mix.findOne({ url: req.params.url }).exec();
+
   if (!mix) {
-    console.error('Mix download error.');
+    console.error(`Mix download error for ${req.params.url}`);
     return res.status(404).render('404.jade', { title: 'Not Found' });
   }
 

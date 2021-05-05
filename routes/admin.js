@@ -68,22 +68,22 @@ exports.edit = (req, res) => {
   });
 };
 
-exports.remove = (req, res) => {
+exports.remove = async (req, res) => {
   if (!req.session.username) {
     res.status(401).render('404.jade', { title: 'Not Found' });
     return;
   }
 
-  const mix = Mix.findOne({ url: req.params.url, hidden: true }).exec((err) => {
-    if (err) {
-      console.error(err);
-    } else {
-      const filePath = path.join(__dirname, '/..', 'upload', mix.file);
-      fs.unlinkSync(filePath);
-      mix.remove();
-    }
-    res.render('upload');
-  });
+  try {
+    const mix = Mix.findOne({ url: req.params.url, hidden: true }).exec();
+    const filePath = path.join(__dirname, '/..', 'upload', mix.file);
+    fs.unlinkSync(filePath);
+    mix.remove();
+  } catch (err) {
+    console.error(`Mix removing error: ${err}`);
+  }
+
+  res.render('upload');
 };
 
 exports.hidden = async (req, res) => {
@@ -99,4 +99,3 @@ exports.hidden = async (req, res) => {
 
   res.render('mixes', { title: 'Hidden Mixes', mixes, url, page, hasNext });
 };
-

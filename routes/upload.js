@@ -144,7 +144,6 @@ exports.add = async (req, res) => {
 
     // File written successfully, save the entry in mongo.
     await mix.save();
-    console.log('savved mixx', mix);
     mix.updateTags(req.body.preserve, req.body.albumtitle);
   } catch (err) {
     console.error('Upload processing error:', err);

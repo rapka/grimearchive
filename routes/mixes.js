@@ -8,10 +8,9 @@ exports.routes = (app) => {
 
 exports.view = async (req, res) => {
   const mix = await Mix.findOne({ url: req.params.url }).exec();
-  console.log('view chieh', req.params.url, mix);
 
   if (!mix) {
-    return res.status(401).render('404.jade', { title: 'Not Found' });
+    return res.status(404).render('404.jade', { title: 'Not Found' });
   }
 
   if (mix && (!mix.hidden || req.session.username)) {
