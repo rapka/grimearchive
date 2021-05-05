@@ -151,11 +151,12 @@ exports.add = async (req, res) => {
       mix.youtube = req.body.youtube;
     }
 
-    console.log('beginning tag update');
+    console.log('beginning tag save', mix);
 
 
     // File written successfully, save the entry in mongo.
     await mix.save();
+    console.log('savved mixx', mix);
     mix.updateTags(req.body.preserve, req.body.albumtitle);
   } catch (err) {
     console.error('Upload processing error:', err);
