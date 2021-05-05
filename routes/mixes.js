@@ -8,6 +8,7 @@ exports.routes = (app) => {
 
 exports.view = (req, res) => {
   Mix.findOne({ url: req.params.url }).exec((err, mix) => {
+    console.log('view chieh', req.params.url, err, mix);
     if (err || !mix) {
       return res.status(401).render('404.jade', { title: 'Not Found' });
     }
