@@ -33,13 +33,8 @@ exports.index = async (req, res) => {
     },
   }]);
 
-  let sum = 0;
-  let downloads = 0;
-
-  if (result.length > 0) {
-    sum = Math.floor(result[0].total / 60);
-    { downloads } = result[0];
-  }
+  const sum = result.length > 0 ? Math.floor(result[0].total / 60) : 0;
+  const downloads = result.length > 0 ? result[0].downloads : 0;
 
   res.render('index', { sum, downloads, popular, recent, count, instrumentals });
 };

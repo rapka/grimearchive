@@ -119,9 +119,17 @@ block content
 								console.log("xhr", xhr.responseText);
 								var tries = 0;
 								var interval = setInterval(function() {
-									$('#_submit').prop('value', 'Processing...');
+									if (tries % 4 === 0) {
+										$('#_submit').prop('value', 'Processing');
+									} else if (tries % 4 === 1) {
+										$('#_submit').prop('value', 'Processing.');
+									} else if (tries % 4 === 2) {
+										$('#_submit').prop('value', 'Processing..');
+									} else {
+										$('#_submit').prop('value', 'Processing...');
+									}
+
 									$('#_cancel').removeClass('visible');
-									console.log("calling uploar");
 									$.get("upload/" + split, function (data) {
 										if (parseInt(data) > 0) {
 												window.location = xhr.responseText;
@@ -129,12 +137,12 @@ block content
 										else {
 												tries++;
 										}
-										if (tries >= 200) {
+										if (tries >= 100) {
 											$('#_submit').prop('value', 'Error uploading mix :( Please refresh');
 											clearInterval(interval);
 										}
 									});
-								}, 1000);
+								}, 2000);
 							}
 						};
 						xhr.open('post', '/upload', true);
@@ -180,8 +188,6 @@ block content
 						}
 
 						else {
-							console.log("tests passed");
-
 							$('#_submit').addClass('progress');
 							$('.labels-overlay').addClass('visible');
 							$('#_submit').prop('value', 'Uploading...');
