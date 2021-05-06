@@ -95,10 +95,16 @@ exports.crew = async (req, res) => {
 
 exports.uploader = async (req, res) => {
   const user = req.params.url.split('-')[0];
-  const trip = req.params.url.split('-')[1] || '';
-  const count = await Mix.countDocuments({ uploader: user, tripcode: trip, hidden: false });
+  const trip = req.params.url.split('-')[1];
+  const query = { uploader: user, hidden: false };
+
+  if (trip) {
+    query.tripcode = trip;
+  }
+
+  const count = await Mix.countDocuments();
   const { page, skip, hasNext } = createPagination(req.params.page, count);
-  const mixes = await Mix.find({ uploader: user, tripcode: trip, hidden: false })
+  const mixes = await Mix.find(query)
     .skip(skip).sort({ date: -1 }).limit(PAGE_COUNT);
   const url = '/uploader/' + req.params.url + '/page/';
 
