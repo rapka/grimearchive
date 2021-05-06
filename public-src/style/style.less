@@ -290,12 +290,13 @@ tr.mix-row {
 	}
 
 	.upload-inputs {
+		position: relative;
+		margin: 5px 0px 0px 0px;
 
 		.labels-overlay {
-
 			position: absolute;
-			height: 830px;
-			width: 514px;
+			height: calc(100% - 100px);
+			width: 100%;
 			z-index: -10;
 			background-color: black;
 			opacity: 0;
@@ -309,15 +310,9 @@ tr.mix-row {
 			}
 		}
 
-		margin: 5px 0px 0px 0px;
-
 		.file-inputs {
 			margin-top: 20px;
 			position: relative;
-
-			.file-button {
-
-			}
 
 			input#_file {
 				position: relative;
@@ -365,7 +360,6 @@ tr.mix-row {
 			select {
 				margin: 5px 10px 5px 10px;
 				border: 2px solid @darkPink;
-				//-webkit-appearance: none;
 				border-radius: 0px;
 				background-color: #000000;
 				color: #FFFFFF;
@@ -374,10 +368,8 @@ tr.mix-row {
 				&:focus {
 					outline: none;
 				}
-
 			}
 		}
-
 
 		textarea {
 			font: 16px "Helvetica", Helvetica, Arial, sans-serif;
@@ -399,7 +391,6 @@ tr.mix-row {
 		}
 
 		input#mcs_tag{
-
 			margin: 0px;
 			padding: 3px;
 			width: 500px;
@@ -432,8 +423,8 @@ tr.mix-row {
 				cursor: default;
 
 				&:hover {
-				color: @darkPink;
-				cursor: default;
+					color: @darkPink;
+					cursor: default;
 				}
 			}
 		}
@@ -460,6 +451,7 @@ tr.mix-row {
 				height: 25px;
 				opacity: 1;
 				display: block;
+
 				&:hover {
 					color: #FF86F5;
 					cursor: pointer;
@@ -468,7 +460,7 @@ tr.mix-row {
 		}
 
 
-		.upload-divider{
+		.upload-divider {
 			margin: 5px;
 			width: 505px;
 			color: #888888;
@@ -539,8 +531,6 @@ tr.mix-row {
 			margin: 5px 5px 5px 5px;
 
 			&.tag-input {
-
-
 			}
 
 			&:focus {
@@ -641,6 +631,7 @@ tr.mix-row {
 
 .yellow {
 	color: #FFF117;
+
 	a {
 		color: #FFF117;
 		&:hover {
@@ -651,6 +642,7 @@ tr.mix-row {
 
 .blue {
 	color: @darkBlue;
+
 	a {
 		color: @darkBlue;
 		&:hover {
@@ -661,8 +653,10 @@ tr.mix-row {
 
 .red {
 	color: @darkPink;
+
 	a {
 		color: @darkPink;
+
 		&:hover {
 			color: #FF86F5;
 		}
@@ -671,14 +665,15 @@ tr.mix-row {
 
 .green {
 	color: #BFFF25;
+
 	a {
 		color: #BFFF25;
+
 		&:hover {
 			color: #FFFF9A;
 		}
 	}
 }
-
 
 .report-button {
 	display: inline;
@@ -838,7 +833,6 @@ tr.mix-row {
 		.mix-element {
 			text-align: center;
 			display: block;
-			//font-size: 120px;
 		}
 
 		br {
