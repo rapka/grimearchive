@@ -15,7 +15,6 @@ const busboy = require('connect-busboy');
 const fs = require('fs');
 const expressSession = require('express-session');
 const FileStore = require('session-file-store')(expressSession);
-const config = require('./config');
 
 const app = express();
 
@@ -29,7 +28,7 @@ app.use(expressSession({
   store: new FileStore({}),
   saveUninitialized: true,
   resave: true,
-  secret: process.env.COOKIE_SECRET || config.secret,
+  secret: process.env.COOKIE_SECRET,
   cookie: {
     secure: false,
   },
@@ -40,11 +39,11 @@ app.use(bodyParser.json());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 // Connect to mongo.
 try {
-  mongoose.connect(config.databaseUrl || process.env.DATABASE_URL || 'mongodb://127.0.0.1/grime', {
+  mongoose.connect(process.env.DATABASE_URL || 'mongodb://127.0.0.1/grime', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     ssl: true,

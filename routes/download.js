@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const config = require('../config');
 const AWS = require('aws-sdk');
 
 const Mix = mongoose.model('Mix');
@@ -60,7 +59,7 @@ exports.download = async (req, res) => {
 
   const attachment = 'attachment; filename="' + generateFilename(mix) + '.mp3"';
   const params = {
-    Bucket: process.env.AWS_S3_BUCKET || config.bucket,
+    Bucket: process.env.AWS_S3_BUCKET,
     Key: req.params.url + '.mp3',
     ResponseContentDisposition: attachment,
   };

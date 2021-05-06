@@ -28,4 +28,10 @@ Linting:
 grunt checkcode
 ```
 
-Mix files are uploaded to AWS S3. A configuration file called `aws.json` in the root of the project with your AWS credentials. See: http://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-json-file.html
+The following environment variables must also be set:
+```
+COOKIE_SECRET // Secret string to use for session management
+DATABASE_URL // Mongo database url
+ADMIN_PASSWORD // SHA256 encypted password for admin access to mixes
+AWS_S3_BUCKET // AWS S3 bucket to upload mixes to
+```

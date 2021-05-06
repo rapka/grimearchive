@@ -19,10 +19,6 @@ const ALLOWED_TYPES = [
   'audio/mp3',
 ];
 
-if (fs.existsSync(path.join(__dirname, '/../aws.json'))) {
-  AWS.config.loadFromPath(path.join(__dirname, '/../aws.json'));
-}
-
 const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, path.join(__dirname, '/../upload'));

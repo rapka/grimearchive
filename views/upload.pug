@@ -112,11 +112,9 @@ block content
 							}, false);
 						xhr.onreadystatechange = function() {
 							var result;
-							console.log(xhr);
 
 							if (xhr.readyState == 4) {
 								var split = xhr.responseText.split("/")[2];
-								console.log("xhr", xhr.responseText);
 								var tries = 0;
 								var interval = setInterval(function() {
 									if (tries % 4 === 0) {
@@ -153,7 +151,6 @@ block content
 					}
 
 					function submitFile() {
-						console.log("in subimt");
 						var form = document.getElementById('_form');
 						var fd = new FormData(form);
 						var file = document.getElementById('_file');
@@ -197,7 +194,6 @@ block content
 							setTimeout (function () {
 								$('#_cancel').addClass('visible');
 								document.getElementById('_cancel').addEventListener('click', function() {
-									console.log('cancc');
 									$('#_submit').slideDown();
 									$('.labels-overlay').removeClass('visible');
 									$('#_cancel').removeClass('visible');
