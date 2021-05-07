@@ -98,7 +98,7 @@ block content
 						p.file-button Select a File
 				input(type='button',  onclick="submitFile()", value='Upload', id='_submit')
 				input(type='button', value='Cancel', id='_cancel')
-				script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+				script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js')
 				script(src="/js/jquery.tagsinput.js")
 				link(rel="stylesheet" type="text/css" href="style/jquery.tagsinput.css")
 				script(type='text/javascript').
@@ -162,7 +162,7 @@ block content
 						var year = $('input[name="year"]')[0].value;
 						var youtube = $('input[name="youtube"]')[0].value;
 
-						var youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)(?<id>[^"&?\/\s]{11})/i;
+						var youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
 
 						// Check for non-numeric date entries
 						if ((day != '' && isNaN(parseInt(day))) || (month != '' && isNaN(parseInt(month))) || (year != '' && isNaN(parseInt(year)))) {

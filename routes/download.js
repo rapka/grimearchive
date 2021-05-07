@@ -42,6 +42,7 @@ const generateFilename = (mix = {}) => {
     }
   }
 
+  // eslint-disable-next-line no-useless-escape
   return titleString.replace(/[\.\/\\$%\^\*;:{}=`~]/g, '_');
 };
 

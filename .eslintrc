@@ -4,6 +4,7 @@
     'global-require': 'off',
     'no-param-reassign': ['error', { 'props': false }],
     'no-unused-vars': ['error', { argsIgnorePattern: 'next' }],
+    'prefer-destructuring': ['error', { 'object': true, 'array': false }],
     'consistent-return': 'off',
     'no-restricted-syntax': 'off',
     'padded-blocks': 'off',
@@ -21,7 +22,7 @@
     'no-underscore-dangle': 'off',
   },
   env: {
-    'es6': true,
+    'es2020': true,
     'node': true
    },
 }

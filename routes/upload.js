@@ -135,10 +135,12 @@ exports.add = async (req, res) => {
       mix.description = req.body.description;
     }
     if (req.body.youtube) {
-      const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)(?<id>[^"&?\/\s]{11})/i;
+      // eslint-disable-next-line no-useless-escape
+      const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
       const regexMatch = req.body.youtube.match(regex);
-      console.log('reeeeegex', regexMatch)
-      mix.youtube = regexMatch.groups.id;
+      if (regexMatch && regexMatch[1]) {
+        mix.youtube = regexMatch[1];
+      }
     }
 
     // File written successfully, save the entry in mongo.
