@@ -42,7 +42,7 @@ block content
 				br
 				div.upload-label
 					| YouTube URL (optional)
-				input(type="text", name="youtube" placeholder="https://www.youtube.com" class="youtube")
+				input(type="text", name="youtube" placeholder="https://www.youtube.com" id="youtubeField")
 				div.upload-divider
 				div.upload-label
 					| Username
@@ -209,6 +209,23 @@ block content
 
 					$("input[type=file]").on('change',function(){
 						$(".file-button").text(this.files[0].name);
+						$('#_submit').prop('value', 'Upload');
+					});
+
+					$('input[name="day"]').on('change',function(){
+						$('#_submit').prop('value', 'Upload');
+					});
+
+					$('input[name="month"]').on('change',function(){
+						$('#_submit').prop('value', 'Upload');
+					});
+
+					$('input[name="year"]').on('change',function(){
+						$('#_submit').prop('value', 'Upload');
+					});
+
+					$("#youtubeField").on('change',function(){
+						$('#_submit').prop('value', 'Upload');
 					});
 
 					$('.tripcode-tooltip').click(function() {
