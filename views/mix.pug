@@ -71,9 +71,11 @@ block content
 		div.big.red.mix-element
 			a(download href='/download/' + mix.url) [Download]
 		if mix.youtube
-			div.big.blue.mix-element
-				a(youtube href=mix.youtube) [Listen on YouTube]
-				iframe.yt-iframe(width="560" height="315" src="https://www.youtube.com/embed/" + mix.youtube title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen)
+			div.iframe-container
+				div.iframe-inner-container
+					iframe.yt-iframe(width="560" height="315" src="https://www.youtube.com/embed/" + mix.youtube title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen)
+			div.blue.mix-element
+				a(youtube href=mix.youtube) Listen on YouTube >>>
 
 
 		if mix.description
@@ -116,6 +118,7 @@ block content
 						});
 				| .
 				.report-button
+					=" "
 					a(href='mailto:thecollegehill@gmail.com?subject=Report%20for%20Grime%20Archive%20Mix%20%23' + mix.url) Report
 					|  |
 					=" "

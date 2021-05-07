@@ -1,6 +1,7 @@
 @darkPink: #FF31A0;
 @darkBlue: #36E0FF;
 @grey: #333;
+@green: #BFFF25;
 
 body {
 	padding: 50px 0 50px 0;
@@ -283,7 +284,7 @@ tr.mix-row {
 	}
 
 	.upload-label {
-		color: #BFFF25;
+		color: @green;
 		width: 500px;
 		text-align: center;
 		padding-top: 5px;
@@ -664,10 +665,10 @@ tr.mix-row {
 }
 
 .green {
-	color: #BFFF25;
+	color: @green;
 
 	a {
-		color: #BFFF25;
+		color: @green;
 
 		&:hover {
 			color: #FFFF9A;
@@ -686,7 +687,7 @@ tr.mix-row {
 
 	a {
 		text-decoration: none;
-		color: #BFFF25;
+		color: @green;
 		&:hover {
 			color: #FFFF9A;
 		}
@@ -701,7 +702,7 @@ tr.mix-row {
 
 	a {
 		text-decoration: none;
-		color: #BFFF25;
+		color: @green;
 		&:hover {
 			color: #FFFF9A;
 		}
@@ -746,7 +747,18 @@ tr.mix-row {
 
 .yt-iframe {
 	border: 2px solid @darkPink;
-	padding: 4px;
+	padding: 2px;
+}
+
+.iframe-inner-container {
+	border: 2px solid @darkBlue;
+	padding: 2px;
+}
+
+.iframe-container {
+	border: 2px solid @green;
+	padding: 2px;
+	margin: 4px 0;
 }
 
 // Mobile
