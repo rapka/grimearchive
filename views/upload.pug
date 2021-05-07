@@ -162,7 +162,7 @@ block content
 						var year = $('input[name="year"]')[0].value;
 						var youtube = $('input[name="youtube"]')[0].value;
 
-						var youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)(?<id>[^"&?\/\s]{11})/gi;
+						var youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)(?<id>[^"&?\/\s]{11})/i;
 
 						// Check for non-numeric date entries
 						if ((day != '' && isNaN(parseInt(day))) || (month != '' && isNaN(parseInt(month))) || (year != '' && isNaN(parseInt(year)))) {
@@ -209,24 +209,24 @@ block content
 						}
 					}
 
-					$("input[type=file]").on('change',function(){
+					$("input[type=file]").on('change', function() {
 						$(".file-button").text(this.files[0].name);
 						$('#_submit').prop('value', 'Upload');
 					});
 
-					$('input[name="day"]').on('change',function(){
+					$('input[name="day"]').on('change', function() {
 						$('#_submit').prop('value', 'Upload');
 					});
 
-					$('input[name="month"]').on('change',function(){
+					$('input[name="month"]').on('change', function() {
 						$('#_submit').prop('value', 'Upload');
 					});
 
-					$('input[name="year"]').on('change',function(){
+					$('input[name="year"]').on('change', function() {
 						$('#_submit').prop('value', 'Upload');
 					});
 
-					$("#youtubeField").on('change',function(){
+					$("#youtubeField").on('change', function() {
 						$('#_submit').prop('value', 'Upload');
 					});
 
