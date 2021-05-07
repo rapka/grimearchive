@@ -1,16 +1,15 @@
 extends layout
 
 block content
-	h2.search-results-title Welcome to The Grime Archive
 	.nav-bar
 	.index-about
-		p The Grime Archive is a digital archive that aims to preserve the history of grime by providing free downloads of live recordings both old and new. 
-		p 
-			| We are currently hosting 
-			span.index-count #{count} 
-			| grime sets totalling over 
-			span.index-count #{sum} 
-			| minutes of audio with 
+		p The Grime Archive is a digital archive that aims to preserve the history of grime by providing free downloads of live recordings both old and new.
+		p
+			| We are currently hosting
+			span.index-count #{count}
+			| grime sets totalling over
+			span.index-count #{sum}
+			| minutes of audio with
 			span.index-count #{downloads}
 			|  downloads so far.
 		p
@@ -30,11 +29,11 @@ block content
 					td.header-downloads Downloads
 					td.header-uploader Uploader
 					td.header-uploaded Uploaded
-	
+
 			tbody
 				each mix in popular
-					tr.mix-row 		
-						td 
+					tr.mix-row
+						td
 							if mix.title
 								a.mix-link(href='/mix/' + mix.url) #{mix.title}
 							else
@@ -66,7 +65,7 @@ block content
 						td
 							if mix.crews.length
 								each crew, index in mix.crews
-									if index < 3		
+									if index < 3
 										a(href='/crew/' + crew) !{crew}
 										if index != (mix.crews.length - 1)
 											| /
@@ -113,24 +112,24 @@ block content
 												type: 'GET',
 												success: function(data){
 													var oldLink = $('#upload_link').attr('href');
-					
+
 													var link = '<a href="' + $('#upload_link').attr('href') + '">';
 													link += data + '</a>';
 													$('.tripcode').html(link);
-								
+
 												}
 											});
 										}
 										$(function(){
 											updateEmojis();
 										});
-						
+
 						td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
 		div.mix-cta
 			a(href='mixes') View More >>
-	
+
 		h3 Recent Uploads
-	
+
 		table.front-table
 			thead
 				tr.mix-header
@@ -144,11 +143,11 @@ block content
 					td.header-downloads Downloads
 					td.header-uploader Uploader
 					td.header-uploaded Uploaded
-	
+
 			tbody
 				each mix in recent
-					tr.mix-row 		
-						td 
+					tr.mix-row
+						td
 							if mix.title
 								a.mix-link(href='/mix/' + mix.url) #{mix.title}
 							else
@@ -180,7 +179,7 @@ block content
 						td
 							if mix.crews.length
 								each crew, index in mix.crews
-									if index < 3		
+									if index < 3
 										a(href='/crew/' + crew) !{crew}
 										if index != (mix.crews.length - 1)
 											| /
@@ -239,13 +238,13 @@ block content
 										$(function(){
 											updateEmojis();
 										});
-						
+
 						td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
 		div.mix-cta
 			a(href='mixes') View More >>
-	
+
 		h3 Recent Instrumental Mixes
-	
+
 		table.front-table
 			thead
 				tr.mix-header
@@ -259,11 +258,11 @@ block content
 					td.header-downloads Downloads
 					td.header-uploader Uploader
 					td.header-uploaded Uploaded
-	
+
 			tbody
 				each mix in instrumentals
-					tr.mix-row 		
-						td 
+					tr.mix-row
+						td
 							if mix.title
 								a.mix-link(href='/mix/' + mix.url) #{mix.title}
 							else
@@ -294,7 +293,7 @@ block content
 						td
 							if mix.crews.length
 								each crew, index in mix.crews
-									if index < 3		
+									if index < 3
 										a(href='/crew/' + crew) !{crew}
 										if index != (mix.crews.length - 1)
 											| /
@@ -353,7 +352,7 @@ block content
 										$(function(){
 											updateEmojis();
 										});
-						
+
 						td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
 		div.mix-cta
-			a(href='instrumentals') View More >>	
+			a(href='instrumentals') View More >>
