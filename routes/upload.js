@@ -135,7 +135,7 @@ exports.add = async (req, res) => {
       mix.description = req.body.description;
     }
     if (req.body.youtube) {
-      const regexMatch = mix.youtube.match(/^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/(?<yt>.+$)/);
+      const regexMatch = req.body.youtube.match(/^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/(?<yt>.+$)/);
       console.log('reeeeegex', regexMatch)
       mix.youtube = regexMatch.groups.yt;
     }
