@@ -162,6 +162,8 @@ block content
 						var year = $('input[name="year"]')[0].value;
 						var youtube = $('input[name="youtube"]')[0].value;
 
+						var youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)(?<id>[^"&?\/\s]{11})/gi;
+
 						// Check for non-numeric date entries
 						if ((day != '' && isNaN(parseInt(day))) || (month != '' && isNaN(parseInt(month))) || (year != '' && isNaN(parseInt(year)))) {
 							$('#_submit').prop('value', 'Invalid date');
@@ -180,7 +182,7 @@ block content
 						else if (acceptedTypes.indexOf(filename.match(/\.([^\.]+)$/)[1].toLowerCase()) == -1 ) {
 							$('#_submit').prop('value', 'Invalid file type');
 						}
-						else if (youtube && !youtube.match(/^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/(.+$)/)) {
+						else if (youtube && !youtube.match(youtubeRegex) {
 							$('#_submit').prop('value', 'Invalid YouTube URL');
 						}
 

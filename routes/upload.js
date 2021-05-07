@@ -135,9 +135,10 @@ exports.add = async (req, res) => {
       mix.description = req.body.description;
     }
     if (req.body.youtube) {
-      const regexMatch = req.body.youtube.match(/^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/(?<yt>.+$)/);
+      const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)(?<id>[^"&?\/\s]{11})/gi;
+      const regexMatch = req.body.youtube.match(regex);
       console.log('reeeeegex', regexMatch)
-      mix.youtube = regexMatch.groups.yt;
+      mix.youtube = regexMatch.groups.id;
     }
 
     // File written successfully, save the entry in mongo.
