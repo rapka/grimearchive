@@ -2,6 +2,7 @@
 @darkBlue: #36E0FF;
 @grey: #333;
 @green: #BFFF25;
+@yellow: #FFF117;
 
 body {
 	padding: 50px 0 50px 0;
@@ -631,10 +632,10 @@ tr.mix-row {
 }
 
 .yellow {
-	color: #FFF117;
+	color: @yellow;
 
 	a {
-		color: #FFF117;
+		color: @yellow;
 		&:hover {
 			color: #FFF77E;
 		}
@@ -750,14 +751,23 @@ tr.mix-row {
 	padding: 2px;
 }
 
-.iframe-inner-container {
+.iframe-inner-container-1 {
+	border: 2px solid @green;
+	padding: 2px;
+}
+
+.iframe-inner-container-2 {
+	border: 2px solid @yellow;
+	padding: 2px;
+}
+
+.iframe-inner-container-3 {
 	border: 2px solid @darkBlue;
 	padding: 2px;
 }
 
 .iframe-container {
-	border: 2px solid @green;
-	padding: 2px;
+	display: flex;
 	margin: 4px 0;
 }
 

@@ -67,16 +67,17 @@ block content
 				| Download
 			else
 				| Downloads
+		if mix.youtube
+			div.iframe-container
+				div.iframe-inner-container-1
+					div.iframe-inner-container-2
+						div.iframe-inner-container-3
+							iframe.yt-iframe(width="560" height="315" src="https://www.youtube.com/embed/" + mix.youtube title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen)
+			div.blue.mix-element
+				a.youtube-link(href=mix.youtube) Listen on YouTube >>>
 		br
 		div.big.red.mix-element
 			a(download href='/download/' + mix.url) [Download]
-		if mix.youtube
-			div.iframe-container
-				div.iframe-inner-container
-					iframe.yt-iframe(width="560" height="315" src="https://www.youtube.com/embed/" + mix.youtube title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen)
-			div.blue.mix-element
-				a(youtube href=mix.youtube) Listen on YouTube >>>
-
 
 		if mix.description
 			div.mix-description
