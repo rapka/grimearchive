@@ -1,11 +1,15 @@
 grimearchive
 =========
 
-This is the source code for grimearchive.org, a hosting site for recordings of grime mixes and sets. It's currently hosted at grimearchive.org
+This is the source code for Grime Archive, a hosting site for recordings of grime mixes and sets. It's currently hosted at grimearchive.org.
 
 ## Installation
 
-This is a Node app that uses a Mongodb database. Both are required as well as FFMPeg, an audio/video editing library which can be installed with your package manager of choice. Once all three are installed run:
+# Requirements
+
+- Node 14+
+- [MongoDB 4+
+- A valid AWS S3 bucket to store uploads
 
 ```shell
 npm install
@@ -20,15 +24,15 @@ grunt work
 For production deployment:
 ```shell
 grunt buildprod
-./bin/www
+npm start
 ```
 
 Linting:
 ```shell
-grunt checkcode
+npm run lint
 ```
 
-The following environment variables must also be set:
+The following environment variables are required to be set:
 ```
 COOKIE_SECRET // Secret string to use for session management
 DATABASE_URL // Mongo database url
