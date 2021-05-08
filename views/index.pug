@@ -3,16 +3,15 @@ extends layout
 block content
 	.nav-bar
 	.index-about
-		p The Grime Archive is a digital archive that aims to preserve the history of grime by providing free downloads of live recordings both old and new.
+		p The Grime Archive is a digital archival project that aims to preserve the history of grime by cataloguing and providing free downloads of live recordings both old and new.
 		p
 			| We are currently hosting&nbsp;
 			span.index-count #{count}
 			|  grime sets totalling over&nbsp;
 			span.index-count #{sum}
-			|  minutes of audio with
+			|  minutes of audio with&nbsp;
 			span.index-count #{downloads}&nbsp;
-			|  downloads so far.
-		p
+			|  downloads so far.&nbsp;
 			a.more-cta(href='/about') Learn More >>
 	.index-content
 		h3 Popular Mixes
@@ -33,17 +32,17 @@ block content
 			tbody
 				each mix in popular
 					tr.mix-row
-						td
+						td.td-title
 							if mix.title
 								a.mix-link(href='/mix/' + mix.url) #{mix.title}
 							else
 								a.mix-link(href='/mix/' + mix.url) Untitled
-						td
+						td.td-dj
 							if mix.dj
 								a(href='/dj/' + mix.dj) !{mix.dj}
 							else
 								| Unknown DJ
-						td
+						td.td-mcs
 							if mix.mcs.length
 								each mc, index in mix.mcs
 									if index < 3
@@ -62,7 +61,7 @@ block content
 									| -
 								.mobile-listing
 									| No MCs
-						td
+						td.td-crew
 							if mix.crews.length
 								each crew, index in mix.crews
 									if index < 3
@@ -76,7 +75,7 @@ block content
 									| -
 								.mobile-listing
 									| No Crews
-						td
+						td.td-station
 							if mix.station
 								a(href='/station/' + mix.station) #{mix.station}
 							else
@@ -85,16 +84,16 @@ block content
 								.mobile-listing
 									| Unknown Station
 						if mix.day && mix.month && mix.year
-							td  #{mix.day}/#{mix.month}/#{mix.year}
+							td.td-date #{mix.day}/#{mix.month}/#{mix.year}
 						else if mix.day && mix.month
-							td #{mix.day}/#{mix.month}/????
+							td.td-date #{mix.day}/#{mix.month}/????
 						else if mix.year
-							td ??/??/#{mix.year}
+							td.td-date ??/??/#{mix.year}
 						else
-							td ???
-						td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
-						td= mix.downloads
-						td
+							td.td-date ???
+						td.td-duration #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
+						td.td-downloads= mix.downloads
+						td.td-uploader
 							if mix.uploader == 'Anonymous'
 								| Anonymous
 							else if !mix.tripcode
@@ -124,7 +123,7 @@ block content
 											updateEmojis();
 										});
 
-						td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
+						td.td-uploaded #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
 		div.mix-cta
 			a(href='mixes') View More >>
 
@@ -147,17 +146,17 @@ block content
 			tbody
 				each mix in recent
 					tr.mix-row
-						td
+						td.td-title
 							if mix.title
 								a.mix-link(href='/mix/' + mix.url) #{mix.title}
 							else
 								a.mix-link(href='/mix/' + mix.url) Untitled
-						td
+						td.td-dj
 							if mix.dj
 								a(href='/dj/' + mix.dj) !{mix.dj}
 							else
 								| Unknown DJ
-						td
+						td.td-mcs
 							if mix.mcs.length
 								each mc, index in mix.mcs
 									if index < 3
@@ -176,7 +175,7 @@ block content
 									| -
 								.mobile-listing
 									| No MCs
-						td
+						td.td-crews
 							if mix.crews.length
 								each crew, index in mix.crews
 									if index < 3
@@ -190,7 +189,7 @@ block content
 									| -
 								.mobile-listing
 									| No Crews
-						td
+						td.td-station
 							if mix.station
 								a(href='/station/' + mix.station) #{mix.station}
 							else
@@ -199,16 +198,16 @@ block content
 								.mobile-listing
 									| Unknown Station
 						if mix.day && mix.month && mix.year
-							td  #{mix.day}/#{mix.month}/#{mix.year}
+							td.td-date  #{mix.day}/#{mix.month}/#{mix.year}
 						else if mix.day && mix.month
-							td #{mix.day}/#{mix.month}/????
+							td.td-date #{mix.day}/#{mix.month}/????
 						else if mix.year
-							td ??/??/#{mix.year}
+							td.td-date ??/??/#{mix.year}
 						else
-							td ???
-						td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
-						td= mix.downloads
-						td
+							td.td-date ???
+						td.td-duration #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
+						td.td-downloads= mix.downloads
+						td.td-uploader
 							if mix.uploader == 'Anonymous'
 								| Anonymous
 							else if !mix.tripcode
@@ -239,7 +238,7 @@ block content
 											updateEmojis();
 										});
 
-						td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
+						td.td-uploaded #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
 		div.mix-cta
 			a(href='mixes') View More >>
 
@@ -262,17 +261,17 @@ block content
 			tbody
 				each mix in instrumentals
 					tr.mix-row
-						td
+						td.td-title
 							if mix.title
 								a.mix-link(href='/mix/' + mix.url) #{mix.title}
 							else
 								a.mix-link(href='/mix/' + mix.url) Untitled
-						td
+						td.td-dj
 							if mix.dj
 								a(href='/dj/' + mix.dj) !{mix.dj}
 							else
 								| Unknown DJ
-						td
+						td.td-mcs
 							if mix.mcs.length
 								each mc, index in mix.mcs
 									if index < 3
@@ -290,7 +289,7 @@ block content
 									| -
 								.mobile-listing
 									| No MCs
-						td
+						td.td-crews
 							if mix.crews.length
 								each crew, index in mix.crews
 									if index < 3
@@ -304,7 +303,7 @@ block content
 									| -
 								.mobile-listing
 									| No Crews
-						td
+						td.td-station
 							if mix.station
 								a(href='/station/' + mix.station) #{mix.station}
 							else
@@ -313,16 +312,16 @@ block content
 								.mobile-listing
 									| Unknown Station
 						if mix.day && mix.month && mix.year
-							td  #{mix.day}/#{mix.month}/#{mix.year}
+							td.td-date  #{mix.day}/#{mix.month}/#{mix.year}
 						else if mix.day && mix.month
-							td #{mix.day}/#{mix.month}/????
+							td.td-date #{mix.day}/#{mix.month}/????
 						else if mix.year
-							td ??/??/#{mix.year}
+							td.td-date ??/??/#{mix.year}
 						else
-							td ???
-						td #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
-						td= mix.downloads
-						td
+							td.td-date ???
+						td.td-duration #{Math.floor(mix.duration / 60)}:#{Math.floor(mix.duration % 60) < 10 ? '0' + Math.floor(mix.duration % 60).toString() : Math.floor(mix.duration % 60)}
+						td.td-downloads= mix.downloads
+						td.td-uploader
 							if mix.uploader == 'Anonymous'
 								| Anonymous
 							else if !mix.tripcode
@@ -353,6 +352,6 @@ block content
 											updateEmojis();
 										});
 
-						td #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
+						td.td-uploaded #{mix.date.getDate()}/#{mix.date.getMonth() + 1}/#{mix.date.getFullYear()}
 		div.mix-cta
 			a(href='instrumentals') View More >>
