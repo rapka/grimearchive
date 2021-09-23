@@ -11,47 +11,48 @@ block content
 				div.upload-label
 					| Title
 				if mix.title
-					input(type="text", name="title" value='#{mix.title}')
+					input(type='text', placeholder='Name', name='name' value=`${product.name}`)
+					input(type="text", name="title" value=`${mix.title}`)
 				else
 					input(type="text", name="title")
 				div.upload-label
 					| DJ
 				if mix.dj
-					input(type="text", name="dj" value='#{mix.dj}')
+					input(type="text", name="dj" value=`${mix.dj}`)
 				else
 					input(type="text", name="dj")
 				br
 				div.upload-label
 					| MCs
 				if mix.mcs.length > 0
-					input(type="text", name="mcs" value='#{mix.mcs}')
+					input(type="text", name="mcs" value=`${mix.mcs}`)
 				else
 					input(type="text", name="mcs")
 				div.upload-label
 					| Crews
 				if mix.crews.length > 0
-					input(type="text", name="crews" value='#{mix.crews}')
+					input(type="text", name="crews" value=`${mix.crews}`)
 				else
 					input(type="text", name="crews")
 				div.upload-label
 					| Radio Station / Rave:
 				if mix.station
-					input(type="text", name="station" value='#{mix.station}')
+					input(type="text", name="station" value=`${mix.station}`)
 				else
 					input(type="text", name="station")
 				br
 				div.upload-label
 					| Air Date
 				if mix.day
-					input(type="text", name="day" placeholder="day" class="date" value='#{mix.day}')
+					input(type="text", name="day" placeholder="day" class="date" value=`${mix.day}`)
 				else
 					input(type="text", name="day" placeholder="day" class="date")
 				if mix.month
-					input(type="text", name="month" placeholder="month" class="date" value='#{mix.month}')
+					input(type="text", name="month" placeholder="month" class="date" value=`${mix.month}`)
 				else
 					input(type="text", name="month" placeholder="month" class="date")
 				if mix.year
-					input(type="text", name="year" placeholder="year" class="date" value='#{mix.year}')
+					input(type="text", name="year" placeholder="year" class="date" value=`${mix.year}`)
 				else
 					input(type="text", name="year" placeholder="year" class="date")
 				br
