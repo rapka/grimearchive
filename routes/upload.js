@@ -57,7 +57,7 @@ const s3 = new AWS.S3();
 exports.routes = (app) => {
   app.get('/upload', exports.index);
   app.post('/upload', upload.single('mixUpload'), exports.add);
-  app.post('/edit', exports.edit);
+  app.post('/edit', upload.none(), exports.edit);
   app.get('/upload/:url', exports.checkFfmpeg);
 };
 
@@ -163,7 +163,7 @@ exports.edit = async (req, res) => {
   let mix;
 
   try {
-    // Server side check for no file selected
+    // Server side cheg ck for no file selected
     if (!req.body.editUrl) {
       console.log('error: no mix selected');
       return;
