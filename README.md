@@ -8,7 +8,7 @@ This is the source code for Grime Archive, a hosting site for recordings of grim
 # Requirements
 
 - Node 14+
-- [MongoDB 4+
+- MongoDB 4+
 - A valid AWS S3 bucket to store uploads
 
 ```shell
