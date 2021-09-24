@@ -159,14 +159,13 @@ exports.add = async (req, res) => {
 };
 
 exports.edit = async (req, res) => {
-  const { file } = req;
-  console.log('inn post EDIT endpoint', file);
+  console.log('test',JSON.stringify( req.body));
   let mix;
 
   try {
     // Server side check for no file selected
     if (!req.body.editUrl) {
-      console.log('error: no file selected');
+      console.log('error: no mix selected');
       return;
     } { // Edit mix
       mix = {
