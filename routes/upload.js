@@ -159,7 +159,6 @@ exports.add = async (req, res) => {
 };
 
 exports.edit = async (req, res) => {
-  console.log('test',JSON.stringify( req.body));
   let mix;
 
   try {

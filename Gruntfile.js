@@ -2,7 +2,7 @@ module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
-    autoprefixer: {
+    postcss: {
       options: {
       },
 
@@ -129,13 +129,13 @@ module.exports = function (grunt) {
 
   grunt.registerTask('buildstyles', 'Compile and autoprefix LESS to CSS', [
     'less:development',
-    'autoprefixer',
+    'postcss',
   ]);
 
   grunt.registerTask('buildprod', 'Builds all files for prod deploys', [
     'clean',
     'less:production',
-    'autoprefixer',
+    'postcss',
     'uglify',
     'copy:production',
   ]);
