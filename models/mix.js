@@ -1,7 +1,7 @@
 const id3Reader = require('id3_reader');
 const fs = require('fs');
 const path = require('path');
-const mm = require('musicmetadata');
+const musicmetadata = require('musicmetadata');
 const mongoose = require('mongoose');
 const AWS = require('aws-sdk');
 
@@ -153,7 +153,7 @@ mixSchema.methods.updateTags = function (preserve, albumTitle) {
         tags.APICPNG = albumArt;
         writeTagsAndUpload(filePath, filename, tags);
       } else {
-        mm(fs.createReadStream(filePath), (err2, metadata) => {
+        musicmetadata(fs.createReadStream(filePath), (err2, metadata) => {
           if (err2) {
             console.log(err2);
           }
@@ -189,7 +189,7 @@ mixSchema.methods.updateTags = function (preserve, albumTitle) {
 
           writeTagsAndUpload(filePath, filename, tags);
         } else {
-          mm(fs.createReadStream(filePath), (err3, metadata) => {
+          musicmetadata(fs.createReadStream(filePath), (err3, metadata) => {
             if (err3) {
               console.error(`ID3 reading error: ${err3}`);
             }
