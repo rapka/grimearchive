@@ -18,6 +18,17 @@ const FileStore = require('session-file-store')(expressSession);
 
 const app = express();
 
+if(process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https') {
+      res.redirect(`https://${req.header('host')}${req.url}`);
+    }
+    else {
+      next();
+    }
+  });
+}
+
 app.use(logger('dev'));
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -56,7 +67,7 @@ try {
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'development') {
+if (process.env.NODE_ENV !== 'production') {
   app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.render('error', {
