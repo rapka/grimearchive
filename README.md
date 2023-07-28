@@ -1,7 +1,7 @@
 grimearchive
 =========
 
-This is the source code for Grime Archive, a hosting site for recordings of grime mixes and sets. It's currently hosted at grimearchive.org.
+This is the source code for Grime Archive, a hosting site for recordings of grime mixes and sets. It's currently hosted at [grimearchive.org](grimearchive.org).
 
 ## Installation
 
