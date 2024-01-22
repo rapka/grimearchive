@@ -56,6 +56,13 @@ block content
 				else
 					input(type="text", name="year" placeholder="year" class="date")
 				br
+
+				div.upload-label
+					| YouTube URL (optional)
+				if mix.youtube
+					input(type="text", name="youtube" placeholder="https://www.youtube.com" id="youtubeField" value=`${mix.youtube}`)
+				else
+					input(type="text", name="youtube" placeholder="https://www.youtube.com" id="youtubeField")
 				div.upload-divider
 				br
 				div.upload-label
