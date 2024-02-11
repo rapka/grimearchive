@@ -77,7 +77,7 @@ exports.dj = async (req, res) => {
 exports.mc = async (req, res) => {
   const count = await Mix.countDocuments({ mcs: req.params.url, hidden: false });
   const { page, skip, hasNext } = createPagination(req.params.page, count);
-  const mixes = Mix.find({ mcs: req.params.url, hidden: false }).skip(skip).sort({ date: -1 }).limit(PAGE_COUNT);
+  const mixes = await Mix.find({ mcs: req.params.url, hidden: false }).skip(skip).sort({ date: -1 }).limit(PAGE_COUNT);
   const url = '/mc/' + req.params.url + '/page/';
 
   res.render('mixes', { title: 'Mixes featuring ' + req.params.url, mixes, url, page, hasNext });
@@ -114,7 +114,7 @@ exports.uploader = async (req, res) => {
 exports.station = async (req, res) => {
   const count = await Mix.countDocuments({ station: req.params.url, hidden: false });
   const { page, skip, hasNext } = createPagination(req.params.page, count);
-  const mixes	= Mix.find({ station: req.params.url, hidden: false }).skip(skip).sort({ date: -1 }).limit(PAGE_COUNT);
+  const mixes	= await Mix.find({ station: req.params.url, hidden: false }).skip(skip).sort({ date: -1 }).limit(PAGE_COUNT);
   const url = '/station/' + req.params.url + '/page/';
 
   res.render('mixes', { title: 'Mixes from ' + req.params.url, mixes, url, page, hasNext });
