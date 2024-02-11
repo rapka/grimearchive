@@ -75,7 +75,7 @@ exports.checkFfmpeg = (req, res) => {
 
   s3.headObject(params, (err) => {
     if (err) {
-      res.send('-1');
+      res.status(500).send(err)
     } else {
       res.send(req.params.url);
     }

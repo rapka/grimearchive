@@ -1,10 +1,4 @@
-const pmx = require('pmx').init({
-  http: true,
-  errors: true,
-  network: true,
-  ports: true,
-});
-
+const debug = require('debug')('grimelist');
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -15,6 +9,12 @@ const busboy = require('connect-busboy');
 const fs = require('fs');
 const expressSession = require('express-session');
 const FileStore = require('session-file-store')(expressSession);
+const pmx = require('pmx').init({
+  http: true,
+  errors: true,
+  network: true,
+  ports: true,
+});
 
 const app = express();
 
@@ -39,7 +39,7 @@ app.use(expressSession({
   store: new FileStore({}),
   saveUninitialized: true,
   resave: true,
-  secret: process.env.COOKIE_SECRET,
+  secret: process.env.COOKIE_SECRET || 'no secret',
   cookie: {
     secure: false,
   },
@@ -51,17 +51,6 @@ app.use(bodyParser.json());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-
-// Connect to mongo.
-try {
-  mongoose.connect(process.env.DATABASE_URL || 'mongodb://127.0.0.1/grime', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    ssl: true,
-  });
-} catch (err) {
-  console.error('Connection error:' + err);
-}
 
 /* eslint-disable, no-unused-vars */
 
@@ -115,4 +104,19 @@ app.use((req, res, next) => {
 
 app.use(pmx.expressErrorHandler());
 
-module.exports = app;
+app.set('port', process.env.PORT || 3000);
+
+var server = app.listen(app.get('port'), async () => {
+  // Connect to mongo.
+  try {
+
+    await mongoose.connect(process.env.DATABASE_URL || 'mongodb://127.0.0.1/grime', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('MongDB connected');
+  } catch (err) {
+    console.error('Connection error:' + err);
+  }
+  console.log('Express server listening on port ' + server.address().port);
+});
