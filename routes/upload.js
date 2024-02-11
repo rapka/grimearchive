@@ -6,6 +6,7 @@ const ffprobe = require('node-ffprobe');
 const multer = require('multer');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
+const getYouTubeID = require('get-youtube-id');
 
 require('../models/mix');
 
@@ -135,12 +136,7 @@ exports.add = async (req, res) => {
       mix.description = req.body.description;
     }
     if (req.body.youtube) {
-      // eslint-disable-next-line no-useless-escape
-      const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
-      const regexMatch = req.body.youtube.match(regex);
-      if (regexMatch && regexMatch[1]) {
-        mix.youtube = regexMatch[1];
-      }
+      mix.youtube = getYouTubeID(req.body.youtube);
     }
 
     // File written successfully, save the entry in mongo.
@@ -159,33 +155,22 @@ exports.add = async (req, res) => {
 };
 
 exports.edit = async (req, res) => {
+  const mixId = req.body.editUrl;
   let mix;
 
   try {
     // Server side cheg ck for no file selected
-    if (!req.body.editUrl) {
-      console.log('error: no mix selected');
-      return;
+    if (!mixId) {
+      return res.status(500).send('error: no mix selected');
     } { // Edit mix
       mix = {
         hidden: !!req.body.hidden,
+        title: req.body.title,
+        dj: req.body.dj,
+        station: req.body.station,
+        description: req.body.description,
+        youtube: req.body.youtube,
       };
-
-      if (req.body.title) {
-        // Hack to clear file names
-        if (req.body.title === '0xDEADBEEF') {
-          mix.title = '';
-        } else {
-          mix.title = req.body.title;
-        }
-      }
-
-      if (req.body.dj) {
-        mix.dj = req.body.dj;
-      }
-      if (req.body.station) {
-        mix.station = req.body.station;
-      }
 
       if (req.body.mcs) {
         mix.mcs = req.body.mcs.split(',');
@@ -202,22 +187,21 @@ exports.edit = async (req, res) => {
       if (req.body.crews) {
         mix.crews = req.body.crews.split(',');
       }
-      if (req.body.description) {
-        mix.description = req.body.description;
-      }
       if (req.body.youtube) {
-        mix.youtube = req.body.youtube;
+        mix.youtube = getYouTubeID(req.body.youtube);
       }
+
+      console.log('EDITING', mix);
 
       await Mix.updateOne({ url: req.body.editUrl }, mix).exec();
 
       const foundMix = await Mix.findOne({ url: req.body.editUrl }).exec();
 
-      foundMix.updateTags(true, req.body.albumtitle);
+      // foundMix.updateTags(true, req.body.albumtitle);
+
+      res.redirect(`/mix/${mixId}`);
     }
   } catch (err) {
-    console.error('Upload editing error:', err);
+    res.status(500).send(`Upload editing error: ${err}`);
   }
-
-  res.send('/mix/' + mix.file.split('.')[0]);
 };

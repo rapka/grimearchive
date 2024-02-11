@@ -11,8 +11,7 @@ block content
 				div.upload-label
 					| Title
 				if mix.title
-					input(type='text', placeholder='Name', name='name' value=`${product.name}`)
-					input(type="text", name="title" value=`${mix.title}`)
+					input(type="text", placeholder='Mix Title' name="title" value=`${mix.title}`)
 				else
 					input(type="text", name="title")
 				div.upload-label
@@ -58,9 +57,9 @@ block content
 				br
 
 				div.upload-label
-					| YouTube URL (optional)
+					| YouTube ID (optional)
 				if mix.youtube
-					input(type="text", name="youtube" placeholder="https://www.youtube.com" id="youtubeField" value=`${mix.youtube}`)
+					input(type="text", name="youtube" placeholder="https://www.youtube.com" id="youtubeField" value=`https://www.youtube.com/watch?v=${mix.youtube}`)
 				else
 					input(type="text", name="youtube" placeholder="https://www.youtube.com" id="youtubeField")
 				div.upload-divider

@@ -32,6 +32,7 @@ exports.view = async (req, res) => {
     res.render('mix', {
       title,
       mix,
+      loggedIn: req.session && req.session.username
     });
   } else {
     res.status(401).render('404.jade', { title: 'Not Found' });
