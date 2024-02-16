@@ -8,6 +8,7 @@
   "scripts": {
     "start": "node app.js",
     "build": "grunt buildprod",
+    "heroku-postbuild": "npm i @ffprobe-installer/linux-x64",
     "lint": "eslint ."
   },
   "dependencies": {
