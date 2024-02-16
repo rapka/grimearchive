@@ -11,7 +11,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@ffprobe-installer/ffprobe": "^1.1.0",
+    "@ffprobe-installer/ffprobe": "^2.1.2",
     "aws-sdk": "^2.897.0",
     "body-parser": "^1.19.0",
     "busboy": "~0.2.9",
