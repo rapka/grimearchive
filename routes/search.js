@@ -139,7 +139,7 @@ exports.search = async (req, res) => {
     { uploader: regexQuery, hidden: false },
   ] };
   const url = `/search/${searchTerm}/page/`;
-  const title = `Search results for '${searchTerm}`;
+  const title = `Search results for '${searchTerm}'`;
 
   await renderMixes(req, res, title, url, query);
 };
